@@ -1,0 +1,126 @@
+{
+  "name": "Courses",
+  "features": [
+    {
+      "$type": "Course",
+      "courseName": "Basics",
+      "description": "Learn the basics of the app.",
+      "lessons": [
+        {
+          "lessonName": "Know thy app",
+          "isActive": true,
+          "lessonParts": [
+            {
+              "$type": "Question",
+              "issue": "How do you like this app?",
+              "answers": [
+                {
+                  "answerText": "Very Good",
+                  "answerValue": 5
+                },
+                {
+                  "answerText": "Good",
+                  "answerValue": 4
+                },
+                {
+                  "answerText": "Neutral",
+                  "answerValue": 3
+                },
+                {
+                  "answerText": "Bad",
+                  "answerValue": 2
+                },
+                {
+                  "answerText": "Very Bad",
+                  "answerValue": 1
+                }
+              ]
+            },
+            {
+              "$type": "Question",
+              "issue": "How likely will you recommend this app?",
+              "answers": [
+                {
+                  "answerText": "Likely",
+                  "answerValue": 5
+                },
+                {
+                  "answerText": "Not likely",
+                  "answerValue": 1
+                }
+              ]
+            },
+            {
+              "$type": "Evaluation",
+              "evaluationResults": {
+                "2": "SERIOUS?",
+                "3": "WOW REALLY?",
+                "5": "OKAY",
+                "9": "Nice",
+                "10": "VERY GOOD"
+              }
+            }
+          ]
+        },
+        {
+          "lessonName": "Who is this app for?",
+          "lessonParts": [
+            {
+              "$type": "Question",
+              "issue": "Are you scared talking in front of people?",
+              "answers": [
+                {
+                  "answerText": "Yes! I always do.",
+                  "answerValue": 3
+                },
+                {
+                  "answerText": "I just get a little nervous",
+                  "answerValue": 2
+                },
+                {
+                  "answerText": "I actually like it",
+                  "answerValue": 1
+                }
+              ]
+            },
+            {
+              "$type": "Evaluation",
+              "evaluationResults": {
+                "1": "This app wont help you much. Nonetheless you are welcome to explore it.",
+                "2": "You might find some helpfull tricks and interesting information here and there.",
+                "3": "Dont worry! This app is made for you."
+              }
+            }
+          ]
+        },
+        {
+          "lessonName": "This is a dummy Question",
+          "lessonParts": [
+            {
+              "$type": "Question",
+              "issue": "Why would you even click on this?",
+              "answers": [
+                {
+                  "answerText": "Im sorry. It will never happen again.",
+                  "answerValue": 1
+                },
+                {
+                  "answerText": "You wouldn't get it.",
+                  "answerValue": 2
+                }
+              ]
+            },
+            {
+              "$type": "Evaluation",
+              "evaluationResults": {
+                "1": "Good to hear",
+                "2": "I at least hope you get the reference"
+              }
+            }
+          ]
+        }
+      ],
+      "isActive": true
+    }
+  ]
+}

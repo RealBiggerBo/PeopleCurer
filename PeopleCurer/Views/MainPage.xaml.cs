@@ -1,4 +1,6 @@
 ﻿using PeopleCurer.ViewModels;
+using PeopleCurer.Views;
+using System.Diagnostics;
 
 namespace PeopleCurer
 {

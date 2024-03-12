@@ -1,19 +1,28 @@
 ﻿using PeopleCurer.Models;
 using PeopleCurer.MVVMHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PeopleCurer.Services;
+using System.Collections.ObjectModel;
 
 namespace PeopleCurer.ViewModels
 {
     class MainPageViewModel : NotifyableBaseObject
     {
-        public TherapyPageViewModel[] TherapyPages { get; } = [new TherapyPageViewModel("Text"), new TherapyPageViewModel("Questions")];
+        public ObservableCollection<TherapyPageViewModel> TherapyPages { get; }
 
         public MainPageViewModel()
         {
+            //SerializationManager.RemoveCourses();
+
+            TherapyPages = new ObservableCollection<TherapyPageViewModel>();
+
+            if(SerializationManager.LoadCourses(out TherapyPage? page, true))
+            {
+                TherapyPageViewModel vm = new TherapyPageViewModel(page!);
+                ProgressUpdateManager.SetCoursesPage(vm);
+                TherapyPages.Add(vm);
+            }
+
+            TherapyPages.Add(new TherapyPageViewModel(new TherapyPage("Notes", [])));
         }
     }
 

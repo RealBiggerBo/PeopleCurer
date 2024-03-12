@@ -1,4 +1,6 @@
-﻿namespace PeopleCurer
+﻿using System.Diagnostics;
+
+namespace PeopleCurer
 {
     public partial class App : Application
     {
@@ -7,6 +9,7 @@
             InitializeComponent();
 
             MainPage = new AppShell();
+
         }
     }
 }

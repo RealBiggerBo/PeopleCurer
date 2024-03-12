@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:ts="clr-namespace:PeopleCurer.CustomDataTemplateSelectors"
+             xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+             x:Class="PeopleCurer.Views.LessonPage"
+             x:DataType="{x:Type vm:LessonViewModel}">
+
+    <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
+    
+    <ContentPage.Resources>
+        <vc:LessonPartToGroupNameConverter x:Key="LessonToGroupNameConverter"/>
+        <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
+            <ts:LessonPartVMTemplateSelector.QuestionTemplate>
+                <DataTemplate x:DataType="{x:Type vm:QuestionViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Issue}" FontSize="50"/>
+
+                            <CollectionView ItemsSource="{Binding Answers}" >
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:AnswerViewModel}">
+                                        <RadioButton Content="{Binding AnswerText}" IsChecked="{Binding IsChosen}"/>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.QuestionTemplate>
+            <ts:LessonPartVMTemplateSelector.EvaluationTemplate>
+                <DataTemplate x:DataType="{x:Type vm:EvaluationViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding EvaluationResult}" FontSize="50"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.EvaluationTemplate>
+        </ts:LessonPartVMTemplateSelector>
+    </ContentPage.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"  Text="{Binding LessonName}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold"/>
+
+        <CarouselView x:Name="CarouselView" Grid.Row="1" ItemsSource="{Binding LessonParts}" ItemTemplate="{StaticResource LessonTemplateSelector}" IsSwipeEnabled="False"/>
+
+        <Button Grid.Row="2" Text="Next" IsEnabled="{Binding CurrentLessonPart.CanGoToNextLessonPart}" Command="{Binding GoToNextLessonPart}"/>
+    </Grid>
+</ContentPage>

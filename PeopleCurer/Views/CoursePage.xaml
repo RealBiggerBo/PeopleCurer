@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.CoursePage"
+             x:DataType="{x:Type vm:CourseViewModel}">
+
+    <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" x:Name="pageHeading" Text="{Binding CourseName}" FontSize="Large" FontAttributes="Bold"/>
+        <ListView Grid.Row="1" ItemsSource="{Binding Lessons}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type vm:LessonViewModel}">
+                    <ViewCell Height="100">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding LessonName}" FontAttributes="Bold" FontSize="Large"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="Description?"/>
+                            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text=">" Command="{Binding GoToLessonPage}" IsEnabled="{Binding IsActive}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>
