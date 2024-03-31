@@ -8,27 +8,16 @@ namespace PeopleCurer.Services
 {
     public static class PreferenceManager
     {
-        //private const string currentLessonIndex = "curLessonIndex";
-        //private const string currentCourseIndex = "curCourseIndex";
+        private const string lastSymptomCheckDate = "lastSymptomCheckDate";
 
-        //public static void SetCurrentLessonIndex(int lessonIndex)
-        //{
-        //    Preferences.Set(currentLessonIndex, lessonIndex);
-        //}
+        public static void UpdateLastSymptomCheckDate()
+        {
+            Preferences.Set(lastSymptomCheckDate, DateTime.Today);
+        }
 
-        //public static int GetCurrentLessonIndex()
-        //{
-        //    return Preferences.Get(currentLessonIndex, 0);
-        //}
-
-        //public static void SetCurrentCourseIndex(int courseIndex)
-        //{
-        //    Preferences.Set(currentCourseIndex, courseIndex);
-        //}
-
-        //public static int GetCurrentCourseIndex()
-        //{
-        //    return Preferences.Get(currentCourseIndex, 0);
-        //}
+        public static DateTime GetLastSymptomCheckDate()
+        {
+            return Preferences.Get(lastSymptomCheckDate, DateTime.MinValue);
+        }
     }
 }

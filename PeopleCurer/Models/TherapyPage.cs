@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
-    public class TherapyPage
+    public sealed class TherapyPage
     {
         [JsonInclude]
         public readonly string name;
         [JsonInclude]
+        public readonly string description;
+        [JsonInclude]
         public readonly Feature[] features;
 
-        public TherapyPage(string name, params Feature[] features) 
+        public TherapyPage(string name, string description, params Feature[] features) 
         {
             this.name = name;
+            this.description = description;
             this.features = features;
         }
     }

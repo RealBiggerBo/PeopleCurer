@@ -99,6 +99,14 @@ namespace PeopleCurer.ViewModels
             {
                 return new EvaluationViewModel((Evaluation)lessonPart);
             }
+            else if(lessonPart.GetType() == typeof(InfoPage))
+            {
+                return new InfoPageViewModel((InfoPage)lessonPart);
+            }
+            else if(lessonPart.GetType() == typeof(SymptomCheckQuestion))
+            {
+                return new SymptomCheckQuestionViewModel((SymptomCheckQuestion)lessonPart);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }
@@ -107,10 +115,31 @@ namespace PeopleCurer.ViewModels
         {
             if (CurrentLessonPartIndex + 1 >= LessonParts.Length)
             {
-                ProgressUpdateManager.UpdateProgress(this);
+                //Check whether in SymptomCheck
+                if (CurrentLessonPart is SymptomCheckQuestionViewModel)
+                {
+                    for (int i = 0; i < LessonParts.Length; i++)
+                    {
+                        if (LessonParts[i] is SymptomCheckQuestionViewModel symptomCheckQuestionVM)
+                        {
+                            //Save data
+                            SerializationManager.SaveSymptomCheckResult(symptomCheckQuestionVM);
 
-                CurrentLessonPartIndex = 0;//resets view back to lessonPart 0
-                //Go back to page before
+                            //Reset vm
+                            symptomCheckQuestionVM.AnswerValue = 50;
+                        }
+                    }
+
+                    //save current date as last symptomCheck Date
+                    PreferenceManager.UpdateLastSymptomCheckDate();
+                }
+                else
+                {
+                    ProgressUpdateManager.UpdateProgress(this);
+
+                    CurrentLessonPartIndex = 0;//resets view back to lessonPart 0
+                                               //Go back to page before
+                }
                 await Shell.Current.GoToAsync("..");
             }
             else

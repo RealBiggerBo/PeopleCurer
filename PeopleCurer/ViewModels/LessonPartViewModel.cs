@@ -31,6 +31,38 @@ namespace PeopleCurer.ViewModels
         }
     }
 
+    public sealed class InfoPageViewModel : LessonPartViewModel
+    {
+        private readonly InfoPage infoPage;
+
+        public TextPartViewModel[] TextParts { get; }
+
+        public InfoPageViewModel(InfoPage infoPage)
+        {
+            this.infoPage = infoPage;
+
+            TextParts = new TextPartViewModel[infoPage.textParts.Length];
+            for (int i = 0; i < TextParts.Length; i++)
+            {
+                TextParts[i] = GetTextPartViewModelFromModel(infoPage.textParts[i]);
+            }
+        }
+
+        private static TextPartViewModel GetTextPartViewModelFromModel(in TextPart textPart)
+        {
+            if (textPart.GetType() == typeof(TextBlock))
+            {
+                return new TextBlockViewModel((TextBlock)textPart);
+            }
+            else if (textPart.GetType() == typeof(Enumeration))
+            {
+                return new EnumerationViewModel((Enumeration)textPart);
+            }
+            else
+                throw new ArgumentException("Error whilie trying to convert model to viewModel!");
+        }
+    }
+
     public sealed class QuestionViewModel : LessonPartViewModel
     {
         private readonly Question question;
@@ -123,6 +155,36 @@ namespace PeopleCurer.ViewModels
             {
                 EvaluationResult = evaluation.evaluationResults[currentEval];
             }
+        }
+    }
+
+    public sealed class SymptomCheckQuestionViewModel : LessonPartViewModel
+    {
+        private readonly SymptomCheckQuestion symptomCheckQuestion;
+
+        public string Issue { get => symptomCheckQuestion.issue; }
+
+        public string LowText { get =>  symptomCheckQuestion.lowText; }
+        public string HighText { get => symptomCheckQuestion.highText; }
+
+        public int AnswerValue
+        {
+            get => symptomCheckQuestion.answerValue;
+            set
+            {
+                if(value != symptomCheckQuestion.answerValue)
+                {
+                    symptomCheckQuestion.answerValue = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string StatisticsID { get => symptomCheckQuestion.statisticsID; }
+
+        public SymptomCheckQuestionViewModel(SymptomCheckQuestion symptomCheckQuestion)
+        {
+            this.symptomCheckQuestion = symptomCheckQuestion;
         }
     }
 }

@@ -8,14 +8,27 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
+    [JsonDerivedType(typeof(InfoPage), nameof(InfoPage))]
     [JsonDerivedType(typeof(Evaluation),nameof(Evaluation))]
     [JsonDerivedType(typeof(Question),nameof(Question))]
+    [JsonDerivedType(typeof(SymptomCheckQuestion), nameof(SymptomCheckQuestion))]
     public abstract class LessonPart
     {
         public LessonPart() { }
     }
 
-    public class Question : LessonPart
+    public sealed class InfoPage : LessonPart
+    {
+        [JsonInclude]
+        public readonly TextPart[] textParts;
+
+        public InfoPage(params TextPart[] textParts) 
+        {
+            this.textParts = textParts;
+        }
+    }
+
+    public sealed class Question : LessonPart
     {
         [JsonInclude]
         public readonly string issue;
@@ -30,7 +43,7 @@ namespace PeopleCurer.Models
         }
     }
 
-    public class Evaluation : LessonPart
+    public sealed class Evaluation : LessonPart
     {
         [JsonInclude]
         public readonly Dictionary<int, string> evaluationResults;
@@ -38,6 +51,34 @@ namespace PeopleCurer.Models
         public Evaluation(Dictionary<int, string> evaluationResults)
         {
             this.evaluationResults = evaluationResults;
+        }
+    }
+
+    public sealed class SymptomCheckQuestion : LessonPart
+    {
+        [JsonInclude]
+        public readonly string issue;
+        [JsonInclude]
+        public readonly string lowText;
+        [JsonInclude]
+        public readonly string highText;
+
+        [JsonInclude]
+        public int answerValue;
+
+        [JsonInclude]
+        public readonly string statisticsID;
+
+        public SymptomCheckQuestion(string issue, string lowText, string highText, int answerValue, string statisticsID)
+        {
+            this.issue = issue;
+
+            this.lowText = lowText;
+            this.highText = highText;
+
+            this.answerValue = answerValue;
+
+            this.statisticsID = statisticsID;
         }
     }
 }

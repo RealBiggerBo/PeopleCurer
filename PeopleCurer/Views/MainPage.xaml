@@ -2,8 +2,108 @@
 <ContentPage    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
-                x:Class="PeopleCurer.MainPage"
+                xmlns:ts="clr-namespace:PeopleCurer.CustomDataTemplateSelectors"
+                xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+                xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
+                x:Class="PeopleCurer.Views.MainPage"
                 x:DataType="{x:Type vm:MainPageViewModel}">
+
+    <ContentPage.Resources>
+        <vc:DictionaryToPathData x:Key="DictionaryToPathDataVC"/>
+        <x:Array Type="{x:Type x:Int32}" x:Key="CarouselPageArray">
+            <x:Int32>0</x:Int32>
+            <x:Int32>1</x:Int32>
+            <x:Int32>2</x:Int32>
+            <x:Int32>3</x:Int32>
+        </x:Array>
+        <ts:CarouselViewTemplateSelector x:Key="CarouselViewTemplateSelector">
+            <ts:CarouselViewTemplateSelector.MainPageTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout Spacing="30">
+                        <ProgressBar Progress="0.5" ProgressColor="Green"/>
+                        
+                        <Label HorizontalOptions="Center" Text="Schön, das du da bist!" FontSize="Title" FontAttributes="Bold"/>
+
+                        <Grid VerticalOptions="Center" HorizontalOptions="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="150"/>
+                                <RowDefinition Height="150"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="Red">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="150,0,0,0"></RoundRectangle>
+                                </Border.StrokeShape>
+
+                                <Button BackgroundColor="Transparent" Text="4"/>
+                            </Border>
+
+                            <Border Grid.Row="0" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="0,150,0,0"></RoundRectangle>
+                                </Border.StrokeShape>
+
+                                <Button BackgroundColor="Transparent" Text="Gedanken" Command="{Binding GoToThoughtsPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="Red">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="0,0,150,0"></RoundRectangle>
+                                </Border.StrokeShape>
+
+                                <Button BackgroundColor="Transparent" Text="3"/>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="0,0,0,150"></RoundRectangle>
+                                </Border.StrokeShape>
+
+                                <Button BackgroundColor="Transparent" Text="2"/>
+                            </Border>
+                        </Grid>
+
+                        <Button Grid.Row="3" HeightRequest="50" WidthRequest="250" Text="Symptomcheck" FontSize="Large" Command="{Binding GoToSymptomCheckLesson, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.MainPageTemplate>
+            <ts:CarouselViewTemplateSelector.StatisticsPage>
+                <DataTemplate>
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="30">
+                            <Label HorizontalOptions="Center" Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" FontSize="Title" FontAttributes="Bold"/>
+
+                            <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                            <CollectionView ItemsSource="{Binding TherapyPages[2].Features, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:StatisticsViewModel}">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label Text="{Binding StatisticsName}" FontSize="Caption"/>
+                                            <Label Text="{Binding StatisticsDescription}"/>
+
+                                            <cc:StatisticsControl 
+                                                WidthRequest="300" 
+                                                HeightRequest="300" 
+                                                Data="{Binding Data}" 
+                                                XAxisTextFontSize="12" 
+                                                TextColor="CadetBlue"
+                                                AxisColor="BlueViolet"
+                                                DataColor="Peru"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.StatisticsPage>
+        </ts:CarouselViewTemplateSelector>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <vm:MainPageViewModel/>
@@ -11,50 +111,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
-        <CarouselView x:Name="CarouselView" Grid.Row="0" IsSwipeEnabled="False" ItemsSource="{Binding TherapyPages}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type vm:TherapyPageViewModel}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        
-                        <Label Grid.Row="0" x:Name="pageHeading" Text="{Binding Name}" FontSize="Large" FontAttributes="Bold"/>
-                        <ListView Grid.Row="1" ItemsSource="{Binding Features}" HasUnevenRows="True">
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="{x:Type vm:CourseViewModel}">
-                                    <ViewCell Height="100">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding CourseName}" FontAttributes="Bold" FontSize="Large"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Description}"/>
-                                            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text=">" Command="{Binding GoToCoursePage}" IsEnabled="{Binding IsActive}"/>
-                                        </Grid>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
+        <CarouselView x:Name="CarouselView" Grid.Row="0" ItemsSource="{StaticResource CarouselPageArray}" ItemTemplate="{StaticResource CarouselViewTemplateSelector}" IsSwipeEnabled="False"/>
 
         <FlexLayout Grid.Row="1"  AlignContent="SpaceBetween" BackgroundColor="Green" JustifyContent="SpaceEvenly">
-            <RadioButton GroupName="ViewSelection" IsChecked="True" CheckedChanged="RadioButton_CheckedChanged_Info"/>
-            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_CheckedChanged_Questions"/>
+            <RadioButton GroupName="ViewSelection" IsChecked="True" CheckedChanged="RadioButton_MainPage_CheckedChanged"/>
+            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_StatisticsPage_CheckedChanged"/>
+            <RadioButton GroupName="ViewSelection"/>
+            <RadioButton GroupName="ViewSelection"/>
         </FlexLayout>
     </Grid>
 

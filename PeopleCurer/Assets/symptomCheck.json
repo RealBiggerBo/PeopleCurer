@@ -1,0 +1,27 @@
+{
+  "name": "SymptomCheck",
+  "description": "Check Your Symptoms",
+  "features": [
+    {
+      "$type": "Course",
+      "courseName": "Täglicher Symptomcheck",
+      "description": "-----",
+      "lessons": [
+        {
+          "lessonName": "Symptomcheck",
+          "isActive": true,
+          "lessonParts": [
+            {
+              "$type": "SymptomCheckQuestion",
+              "issue": "FRAGE",
+              "lowText": "gar nicht",
+              "highText": "ganz doll",
+              "answerValue": 50,
+              "statisticsID": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

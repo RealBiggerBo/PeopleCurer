@@ -9,14 +9,24 @@ namespace PeopleCurer.CustomDataTemplateSelectors
 {
     sealed class LessonPartVMTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate InfoPageTemplate { get; set; }
         public DataTemplate QuestionTemplate { get; set; }
         public DataTemplate EvaluationTemplate { get; set; }
+        public DataTemplate SymptomCheckQuestionTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
-            if(item is QuestionViewModel)
+            if(item is InfoPageViewModel)
+            {
+                return InfoPageTemplate;
+            }
+            else if(item is QuestionViewModel)
             {
                 return QuestionTemplate;
+            }
+            else if(item is SymptomCheckQuestionViewModel)
+            {
+                return SymptomCheckQuestionTemplate;
             }
             else //if(item is EvaluationViewModel)
             {

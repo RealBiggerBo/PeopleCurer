@@ -11,7 +11,48 @@
     
     <ContentPage.Resources>
         <vc:LessonPartToGroupNameConverter x:Key="LessonToGroupNameConverter"/>
+        <vc:DoubleToStringConverter x:Key="DoubleToIntConverter"/>
+        <ts:TextPartVMTemplateSelector x:Key="TextPartTemplateSelector">
+            <ts:TextPartVMTemplateSelector.TextBlockTemplate>
+                <DataTemplate x:DataType="{x:Type vm:TextBlockViewModel}">
+                    <Label Text="{Binding Text}"/>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.TextBlockTemplate>
+            <ts:TextPartVMTemplateSelector.EnumerationTemplate>
+                <DataTemplate x:DataType="{x:Type vm:EnumerationViewModel}">
+                    <CollectionView ItemsSource="{Binding Texts}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type x:String}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Ellipse Grid.Column="0" Margin="5" VerticalOptions="Start" Fill="Black" WidthRequest="10" HeightRequest="10"/>
+
+                                    <Label Grid.Column="1" Text="{Binding}" TextColor="Red"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.EnumerationTemplate>
+        </ts:TextPartVMTemplateSelector>
         <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
+            <ts:LessonPartVMTemplateSelector.InfoPageTemplate>
+                <DataTemplate x:DataType="{x:Type vm:InfoPageViewModel}">
+                    <ScrollView>
+                        <CollectionView 
+                            ItemsSource="{Binding TextParts}"
+                            ItemTemplate="{StaticResource TextPartTemplateSelector}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
+                            </CollectionView.ItemsLayout>
+                        </CollectionView>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.InfoPageTemplate>
             <ts:LessonPartVMTemplateSelector.QuestionTemplate>
                 <DataTemplate x:DataType="{x:Type vm:QuestionViewModel}">
                     <ScrollView>
@@ -38,6 +79,35 @@
                     </ScrollView>
                 </DataTemplate>
             </ts:LessonPartVMTemplateSelector.EvaluationTemplate>
+            <ts:LessonPartVMTemplateSelector.SymptomCheckQuestionTemplate>
+                <DataTemplate x:DataType="{x:Type vm:SymptomCheckQuestionViewModel}">
+                    <ScrollView Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Issue}" FontSize="50"/>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width=".1*"/>
+                                    <ColumnDefinition Width=".8*"/>
+                                    <ColumnDefinition Width=".1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding LowText}"/>
+                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding AnswerValue}"  Minimum="0" Maximum="100"/>
+                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding HighText}"/>
+
+                                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding AnswerValue}" Keyboard="Numeric"/>
+                            </Grid>
+                            <HorizontalStackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SymptomCheckQuestionTemplate>
         </ts:LessonPartVMTemplateSelector>
     </ContentPage.Resources>
     

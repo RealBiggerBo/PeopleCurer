@@ -7,14 +7,16 @@
 
     <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
 
-    <Grid>
+    <Grid RowSpacing="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" x:Name="pageHeading" Text="{Binding CourseName}" FontSize="Large" FontAttributes="Bold"/>
-        <ListView Grid.Row="1" ItemsSource="{Binding Lessons}" HasUnevenRows="True">
+        <Label Grid.Row="1" Text="{Binding Description}"/>
+        <ListView Grid.Row="2" ItemsSource="{Binding Lessons}" HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type vm:LessonViewModel}">
                     <ViewCell Height="100">

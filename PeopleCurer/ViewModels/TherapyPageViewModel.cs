@@ -15,6 +15,8 @@ namespace PeopleCurer.ViewModels
 
         public string Name { get => therapyPage.name;}
 
+        public string Description { get => therapyPage.description;}
+
         public FeatureViewModel[] Features { get; }
 
         public TherapyPageViewModel(TherapyPage therapyPage)
@@ -34,11 +36,13 @@ namespace PeopleCurer.ViewModels
             {
                 return new CourseViewModel((Course)feature);
             }
+            else if(feature.GetType() == typeof(Statistics))
+            {
+                return new StatisticsViewModel((Statistics)feature);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }
-
-
 
         public TherapyPage GetPage() => therapyPage;
     }

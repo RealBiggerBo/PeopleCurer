@@ -1,8 +1,9 @@
-﻿using PeopleCurer.ViewModels;
+﻿using Microsoft.Maui.Controls.Shapes;
+using PeopleCurer.ViewModels;
 using PeopleCurer.Views;
 using System.Diagnostics;
 
-namespace PeopleCurer
+namespace PeopleCurer.Views
 {
     public partial class MainPage : ContentPage
     {
@@ -11,14 +12,27 @@ namespace PeopleCurer
             InitializeComponent();
         }
 
-        private void RadioButton_CheckedChanged_Info(object sender, CheckedChangedEventArgs e)
+        protected override void OnAppearing()
         {
-            CarouselView.ScrollTo(0);
+            ((MainPageViewModel)this.BindingContext).GoToSymptomCheckLesson.RaiseCanExecuteChanged();
+
+            base.OnAppearing();
         }
 
-        private void RadioButton_CheckedChanged_Questions(object sender, CheckedChangedEventArgs e)
+        private void RadioButton_MainPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            CarouselView.ScrollTo(1);
+            if (e.Value == true)
+            {
+                CarouselView.ScrollTo(0);
+                //Update SymptomCheck -> Button
+                ((MainPageViewModel)this.BindingContext).GoToSymptomCheckLesson.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void RadioButton_StatisticsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if(e.Value == true)
+                CarouselView.ScrollTo(1);
         }
     }
 

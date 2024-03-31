@@ -57,4 +57,19 @@ namespace PeopleCurer.ViewModels
                 }));
         }
     }
+
+    public sealed class StatisticsViewModel : FeatureViewModel
+    {
+        private readonly Statistics statistics;
+
+        public string StatisticsName { get => statistics.statisticsName; }
+        public string StatisticsDescription { get => statistics.statisticsDescription; }
+
+        public Dictionary<DateTime, int> Data { get => statistics.data; }
+
+        public StatisticsViewModel(Statistics statistics)
+        {
+            this.statistics = statistics;
+        }
+    }
 }

@@ -36,7 +36,7 @@ namespace PeopleCurer.Services
 
         private static TherapyPage DifferentialUpdate(TherapyPage unmodified, TherapyPage modified)
         {
-            TherapyPage merged = new TherapyPage(unmodified.name, MergeFeatures(unmodified.features, modified.features));
+            TherapyPage merged = new TherapyPage(unmodified.name,unmodified.description, MergeFeatures(unmodified.features, modified.features));
             return merged;
         }
 

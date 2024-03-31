@@ -9,7 +9,6 @@ namespace PeopleCurer
             InitializeComponent();
 
             MainPage = new AppShell();
-
         }
     }
 }

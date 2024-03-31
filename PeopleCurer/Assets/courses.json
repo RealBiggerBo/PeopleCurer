@@ -1,69 +1,47 @@
 {
-  "name": "Courses",
+  "name": "Module",
+  "description": "-no-description-",
   "features": [
     {
       "$type": "Course",
-      "courseName": "Basics",
-      "description": "Learn the basics of the app.",
+      "courseName": "Gedanken",
+      "description": "Täglich durchfluten uns etwa 60.000 Gedanken. Diese Flut beeinflusst nicht nur unser Verhalten, sondern auch unsere Gefühlswlet. Daher is es entscheidend, zu verstehen, wie wir sie zu unserem Vorteil nutzen können.",
       "lessons": [
         {
-          "lessonName": "Know thy app",
+          "lessonName": "Das Kontinuum",
           "isActive": true,
           "lessonParts": [
             {
-              "$type": "Question",
-              "issue": "How do you like this app?",
-              "answers": [
+              "$type": "InfoPage",
+              "textParts": [
                 {
-                  "answerText": "Very Good",
-                  "answerValue": 5
+                  "$type": "TextBlock",
+                  "text": "In diesem Kapitel lernst du:-Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben\n\t-Was das Kontinuum der sozialen Angst ist"
                 },
                 {
-                  "answerText": "Good",
-                  "answerValue": 4
-                },
-                {
-                  "answerText": "Neutral",
-                  "answerValue": 3
-                },
-                {
-                  "answerText": "Bad",
-                  "answerValue": 2
-                },
-                {
-                  "answerText": "Very Bad",
-                  "answerValue": 1
+                  "$type": "Enumeration",
+                  "texts": [
+                    "A",
+                    "B",
+                    "C",
+                    "HALLLOOOOOOO\n Was gibts hier zu sehen\n????"
+                  ]
                 }
               ]
             },
             {
-              "$type": "Question",
-              "issue": "How likely will you recommend this app?",
-              "answers": [
+              "$type": "InfoPage",
+              "textParts": [
                 {
-                  "answerText": "Likely",
-                  "answerValue": 5
-                },
-                {
-                  "answerText": "Not likely",
-                  "answerValue": 1
+                  "$type": "TextBlock",
+                  "text": "In diesem Kapitel lernst du:\n\t-Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben\n\t-Was das Kontinuum der sozialen Angst ist"
                 }
               ]
-            },
-            {
-              "$type": "Evaluation",
-              "evaluationResults": {
-                "2": "SERIOUS?",
-                "3": "WOW REALLY?",
-                "5": "OKAY",
-                "9": "Nice",
-                "10": "VERY GOOD"
-              }
             }
           ]
         },
         {
-          "lessonName": "Who is this app for?",
+          "lessonName": "Die 4 Ebenen der Angst!",
           "lessonParts": [
             {
               "$type": "Question",

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.WelcomePage"
+             x:DataType="{x:Type vm:WelcomePageViewModel}">
+
+    <ContentPage.BindingContext>
+        <vm:WelcomePageViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView Background="Transparent">
+        <VerticalStackLayout Padding="15,0" Spacing="15">
+            <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Hallo, schön dass du da bist!" FontSize="Large" FontAttributes="Bold"/>
+
+            <Label HorizontalOptions="Start" Text="Zielbestimmung" FontSize="20" TextDecorations="Underline"/>
+
+            <Label Text="Bevor wir beginnen, möchten wir dich dazu ermutigen, deine persönlichen Ziele für die Nutzung dieser App zu setzen.
+                   Ziele können dir helfen, einen klaren Fokus zu entwickeln und deine Fortschritte zu beschleunigen." FontSize="16"/>
+
+            <Label Text="In welchen Situationen fühlst du dich durch Angst eingeschränkt?"/>
+
+            <Editor AutoSize="TextChanges"/>
+
+            <Label Text="Wie würdest du dich in diesen Situationen gerne verhalten?"/>
+
+            <Editor AutoSize="TextChanges"/>
+
+            <Label Text="Stelle dir vor, die Angst vor sozialen Kontakten wäre über Nacht verschwunden. Was würdest du dann gerne auprobieren?"/>
+
+            <Editor AutoSize="TextChanges"/>
+
+            <Label Text="Schreibe in einem Satz, was du mit dieser App erreichen möchtest."/>
+
+            <Editor AutoSize="TextChanges"/>
+
+            <Button WidthRequest="250" Text="Abschließen" Command="{Binding NavigateToMainPageCMD}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
