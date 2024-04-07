@@ -16,16 +16,18 @@
               "textParts": [
                 {
                   "$type": "TextBlock",
-                  "text": "In diesem Kapitel lernst du:-Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben\n\t-Was das Kontinuum der sozialen Angst ist"
+                  "text": "In diesem Kapitel lernst du:"
                 },
                 {
                   "$type": "Enumeration",
                   "texts": [
-                    "A",
-                    "B",
-                    "C",
-                    "HALLLOOOOOOO\n Was gibts hier zu sehen\n????"
+                    "Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben",
+                    "Was das Kontinuum der sozialen Angst ist"
                   ]
+                },
+                {
+                  "$type": "TextBlock",
+                  "text": "Weiterer Text"
                 }
               ]
             },
