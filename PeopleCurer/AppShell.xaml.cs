@@ -13,6 +13,7 @@ namespace PeopleCurer
             Routing.RegisterRoute(nameof(WelcomePage), typeof(WelcomePage));
             Routing.RegisterRoute(nameof(CoursePage), typeof(CoursePage));
             Routing.RegisterRoute(nameof(LessonPage), typeof(LessonPage));
+            Routing.RegisterRoute(nameof(BehaviourExperimentPage), typeof(BehaviourExperimentPage));
         }
     }
 }

@@ -11,6 +11,7 @@ namespace PeopleCurer.CustomDataTemplateSelectors
     {
         public DataTemplate TextBlockTemplate { get; set; }
         public DataTemplate EnumerationTemplate { get; set; }
+        public DataTemplate TextBoxTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -21,6 +22,10 @@ namespace PeopleCurer.CustomDataTemplateSelectors
             else if(item is EnumerationViewModel)
             {
                 return EnumerationTemplate;
+            }
+            else if(item is TextBoxViewModel)
+            {
+                return TextBoxTemplate;
             }
             else
             {

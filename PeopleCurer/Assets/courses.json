@@ -5,7 +5,7 @@
     {
       "$type": "Course",
       "courseName": "Gedanken",
-      "description": "Täglich durchfluten uns etwa 60.000 Gedanken. Diese Flut beeinflusst nicht nur unser Verhalten, sondern auch unsere Gefühlswlet. Daher is es entscheidend, zu verstehen, wie wir sie zu unserem Vorteil nutzen können.",
+      "description": "Täglich durchfluten uns etwa 60.000 Gedanken. Diese Flut beeinflusst nicht nur das Verhalten, sondern auch unsere Gefühlswelt. Daher is es entscheidend, zu verstehen, wie wir sie zu unserem Vorteil nutzen können.",
       "lessons": [
         {
           "lessonName": "Das Kontinuum",
@@ -21,7 +21,7 @@
                 {
                   "$type": "Enumeration",
                   "texts": [
-                    "Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben",
+                    "Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben und",
                     "Was das Kontinuum der sozialen Angst ist"
                   ]
                 },
@@ -36,66 +36,76 @@
               "textParts": [
                 {
                   "$type": "TextBlock",
-                  "text": "In diesem Kapitel lernst du:\n\t-Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben\n\t-Was das Kontinuum der sozialen Angst ist"
+                  "text": "Vielleicht kennst du das Gefühl, dass dein Herz schneller schlägt, wenn du vor anderen Leuten sprechen musst, oder dass deine Hände schwitzig werden, wenn du an der Kasse stehst und nach Münzen zum Bezahlen suchst. Situationen in denen wir Unsicherheit verspüren können sehr vielfältig sein. Kreuze die untenstehenden Situationen an, welche bei dir eine gewisse Angst auslösen.\nEinen Vortrag halten \nbereits gekauKes Produkt umtauschen \nVor Zuschauern etwas vortragen, auKreten \nVon anderen beobachtet werden, z.B. bei Schreiben \nEine Prüfung ablegen \nJemandem in einem Gespräch widersprechen \nIn der Öffentlichkeit telefonieren \nEssen in einem Restaurant zurückgeben oder es kritisieren \nAn der Kasse anstehen, wenn viele Leute hinter einem stehen \nZu spät zu einer Feier erscheinen \nVor den Arbeitskollegen vom Chef gelobt werden \nDen Nachbarn bitten, die Geburtstagsfeier doch leiser Abzuhalten \nfremde Menschen ansprechen, um z.B. nach dem Weg zu fragen \nin einer Veranstaltung weit vorne sitzen \n\nWas haben diese Situationen gemeinsam? \nIn all diesen Situationen wollen wir möglichst nicht unangenehm auffallen oder uns gar blamieren. Einige sorgen sich darüber, rot zu werden oder stark zu schwitzen, andere darüber unkontrolliert zu Zittern. Im Grunde genommen geht es um die Angst, nicht akzeptiert und daher ausgeschlossen zu werden. Daher zeigt sich diese Angst gerne, wenn wir uns in neuen oder unbekannten sozialen Situationen befinden, besonders wenn wir die Leute dort nicht gut kennen und nicht wissen, wie sie reagieren werden. Wir fürchten, dass sie uns nicht mögen oder verstehen werden, so wie wir wirklich sind. \nDie gute Nachricht: soziale Ängste sind erstmal ganz normal, und fast jeder von uns hat schon einmal Angst in bestimmten sozialen Situationen gespürt. Die Intensität und Häufigkeit können jedoch von Person zu Person stark variieren. Man sagt auch die Angst verläuft auf einem Kontinuum. Wenige Personen habe gar keine bis kaum Angst, der Großteil erlebt ab und zu soziale Angst und wieder wenige haben sehr häufig und intensive Ängste. In einer Umfrage aus der der Münchener EDSP-Studie berichteten 50% der Befragten von sozialer Angst und 25% gaben an, dass sie durch die Angst in ihrem Alltag eingeschränkt sind. Wenn du zu den 25% gehörst, dann lass dir sagen diese Einschränkungen musst du nicht akzeptieren. Es gibt viele wirksame Wege aus der sozialen Angst. Diese App ist einer. Sie wird dich dabei unterstützen, deine Angst zu reduzieren und auf dem Kontinuum immer weiter Richtung Mitte zu wandern."
                 }
               ]
             }
           ]
         },
         {
-          "lessonName": "Die 4 Ebenen der Angst!",
+          "lessonName": "Die 4 Ebenen der Angst",
+          "isActive": true,
           "lessonParts": [
             {
-              "$type": "Question",
-              "issue": "Are you scared talking in front of people?",
-              "answers": [
+              "$type": "InfoPage",
+              "textParts": [
                 {
-                  "answerText": "Yes! I always do.",
-                  "answerValue": 3
+                  "$type": "TextBlock",
+                  "text": "In diesem Kapitel lernst du:"
                 },
                 {
-                  "answerText": "I just get a little nervous",
-                  "answerValue": 2
+                  "$type": "Enumeration",
+                  "texts": [
+                    "Deine Angstsymptome näher kennen und",
+                    "Wie sich diese in die 4 Ebenen der Angst einordnen lassen"
+                  ]
                 },
                 {
-                  "answerText": "I actually like it",
-                  "answerValue": 1
+                  "$type": "TextBlock",
+                  "text": "Weiterer Text"
                 }
               ]
             },
             {
-              "$type": "Evaluation",
-              "evaluationResults": {
-                "1": "This app wont help you much. Nonetheless you are welcome to explore it.",
-                "2": "You might find some helpfull tricks and interesting information here and there.",
-                "3": "Dont worry! This app is made for you."
-              }
-            }
-          ]
-        },
-        {
-          "lessonName": "This is a dummy Question",
-          "lessonParts": [
-            {
-              "$type": "Question",
-              "issue": "Why would you even click on this?",
-              "answers": [
+              "$type": "InfoPage",
+              "textParts": [
                 {
-                  "answerText": "Im sorry. It will never happen again.",
-                  "answerValue": 1
+                  "$type": "TextBlock",
+                  "text": "Kennst du das? Im Alltag begegnen uns Redewendungen wie „Da ist mir das Herz in die Hose gerutscht“, „Kalte Füße bekommen.“ oder „Mir laufen kalte Schauer über den Rücken“. Diese Ausdrücke veranschaulichen das Gefühl von Unsicherheit und Angst. Doch was bedeutet Angst eigentlich genau? Lass uns einen genaueren Blick darauf werfen. Angst äußert sich auf vier Ebenen: Gedanken, Gefühle, Verhalten und körperliche Reaktionen.\nGedankenebene: Häufig beschäftigen uns Sorgen und Ängste über bevorstehende Situaonen. Zum Beispiel machen wir uns Gedanken darüber, was andere von uns denken könnten oder ob wir uns unangenehm verhalten."
                 },
                 {
-                  "answerText": "You wouldn't get it.",
-                  "answerValue": 2
+                  "$type": "TextBox",
+                  "question": "Stelle dir eine Situation vor, die dir richtig Angst bereitet. Welche Gedanken fallen dir in dieser Situation ein?"
+                },
+                {
+                  "$type": "TextBlock",
+                  "text": "Gefühlsebene: Wir erleben ein intensives Gefühl, das sich in unserem Körper manifestiert und verschiedene Verhaltensweisen auslösen kann. Vielleicht spürst du einen Kloß im Hals, eine Unruhe im Magen oder eine Enge in der Brust."
+                },
+                {
+                  "$type": "TextBox",
+                  "question": "Wo genau spürst du die Angst in deinem Körper? Wie erkennst du, dass du gerade Angst empfindest?"
+                },
+                {
+                  "$type": "TextBlock",
+                  "text": "Verhaltensebene: Unsere Reaktion auf die Angst äußert sich oft in typischen Verhaltensweisen wie Vermeidung oder dem Einsatz von Sicherheitsmaßnahmen, um uns vor der bedrohlichen Situation zu schützen."
+                },
+                {
+                  "$type": "TextBox",
+                  "question": "Wie reagierst du normalerweise in angstbesetzten Situationen? Stellst du dich der Situation oder versuchst du, ihr aus dem Weg zu gehen?"
+                },
+                {
+                  "$type": "TextBlock",
+                  "text": "Körperebene: Angst versetzt unseren Körper in Alarmbereitschaft, um uns auf eine vermeintliche Gefahr vorzubereiten. Dies führt zur Ausschüttung von Stresshormonen wie Cortisol, was wiederum körperliche Symptome wie Schwitzen, Erröten, kalten Füßen, Atemnot oder Engegefühl auslösen kann."
+                },
+                {
+                  "$type": "TextBox",
+                  "question": "Welche körperlichen Symptome von Angst kennst du bei dir?"
+                },
+                {
+                  "$type": "TextBlock",
+                  "text": "Diese vier Ebenen bilden die Grundlage der Angst und daher auch dieser App. In den einzelnen Modulen wirst du alle vier Ebenen kennenlernen und Lösungsansätze im Umgang mit diesen Ebenen trainieren. Besonders wichtig zu verstehen ist, dass diese Ebenen sich gegenseitig beeinflussen. Fortschritte auf einer Ebene können zu Fortschritten auf den anderen Ebenen führen. Zum Beispiel kann weniger Sorgen über eine Situation zu einem geringeren Angstgefühl und somit zu weniger körperlichen Reaktionen führen.Durch gezieltes Arbeiten an den verschiedenen Ebenen können wir die Intensität der Angst reduzieren, uns weniger Gedanken machen, weniger Vermeiden und gelassener in sozialen Situationen sein."
                 }
               ]
-            },
-            {
-              "$type": "Evaluation",
-              "evaluationResults": {
-                "1": "Good to hear",
-                "2": "I at least hope you get the reference"
-              }
             }
           ]
         }

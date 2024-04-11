@@ -37,7 +37,7 @@ namespace PeopleCurer.ViewModels
         public DelegateCommand GoToNextLessonPart { get; }
         public event EventHandler<IntEventArgs>? NextLessonPartEvent;
 
-        //members to evaluate lesson
+        //members to evaluate behaviourExperimentVM
         public LessonPartViewModel CurrentLessonPart 
         { 
             get => LessonParts[CurrentLessonPartIndex];
@@ -122,8 +122,20 @@ namespace PeopleCurer.ViewModels
                     {
                         if (LessonParts[i] is SymptomCheckQuestionViewModel symptomCheckQuestionVM)
                         {
-                            //Save data
-                            SerializationManager.SaveSymptomCheckResult(symptomCheckQuestionVM);
+                            //Add new entry to data
+                            symptomCheckQuestionVM.Data ??= new Dictionary<DateOnly, int>();
+
+                            DateOnly key = DateOnly.FromDateTime(DateTime.UtcNow);
+                            int val = symptomCheckQuestionVM.AnswerValue;
+
+                            if (symptomCheckQuestionVM.Data.ContainsKey(key))
+                            {
+                                symptomCheckQuestionVM.Data[key] = val;
+                            }
+                            else
+                            {
+                                symptomCheckQuestionVM.Data.Add(key, val);
+                            }
 
                             //Reset vm
                             symptomCheckQuestionVM.AnswerValue = 50;
@@ -132,6 +144,7 @@ namespace PeopleCurer.ViewModels
 
                     //save current date as last symptomCheck Date
                     PreferenceManager.UpdateLastSymptomCheckDate();
+                    ProgressUpdateManager.UpdateSymptomCheckData(); //saves data
                 }
                 else
                 {

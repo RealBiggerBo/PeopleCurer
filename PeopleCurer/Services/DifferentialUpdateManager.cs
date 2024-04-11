@@ -10,10 +10,9 @@ namespace PeopleCurer.Services
 {
     public static class DifferentialUpdateManager
     {
-        public static void UpdateModifiedVersion()
+        public static void UpdateModifiedCoursesVersion()
         {
-            //Check creation time to only update if necesarry
-
+            //TODO: Check creation time to only update if necesarry
 
             if(SerializationManager.LoadUnmodifiedCourses(out TherapyPage? unmodifiedCourse))
             {
@@ -30,6 +29,29 @@ namespace PeopleCurer.Services
                     //unmodified exists, modified not => save unmodified as modified
                     SerializationManager.SaveCourses(unmodifiedCourse!);
                     Trace.WriteLine("No modified version. Created new file.");
+                }
+            }
+        }
+
+        public static void UpdateModifiedSymptomCheckVersion()
+        {
+            //TODO: Check creation time to only update if necesarry
+
+            if (SerializationManager.LoadUnmodifiedSymptomCheckData(out TherapyPage? unmodifiedSymptomCheck))
+            {
+                if (SerializationManager.LoadSymptomCheckData(out TherapyPage? modifiedSymptomCheck, false))
+                {
+                    //get new SymptomCheck
+                    TherapyPage newModifiedSymptomCheck = DifferentialUpdate(unmodifiedSymptomCheck!, modifiedSymptomCheck!);
+                    //Serialize
+                    SerializationManager.SaveSymptomCheckData(newModifiedSymptomCheck);
+                    Trace.WriteLine("Merged modified and unmodified versions (SymptomCheck).");
+                }
+                else
+                {
+                    //unmodified exists, modified not => save unmodified as modified
+                    SerializationManager.SaveSymptomCheckData(unmodifiedSymptomCheck!);
+                    Trace.WriteLine("No modified version. Created new file (SymptomCheck).");
                 }
             }
         }
@@ -151,6 +173,52 @@ namespace PeopleCurer.Services
                     if (!foundQuestion)
                         merged[i] = unmodified[i];
                 }
+                else if (unmodified[i] is InfoPage unmodifiedInfoPage)
+                {
+                    bool foundInfoPage = false;
+
+                    for (int j = 0; j < modified.Length; j++)
+                    {
+                        if (modified[j] is InfoPage modifiedInfoPage)
+                        {
+                            if (AreInfoPagesSimilar(unmodifiedInfoPage, modifiedInfoPage))
+                            {
+                                merged[i] = new InfoPage(MergeTextParts(unmodifiedInfoPage.textParts, modifiedInfoPage.textParts));
+                                foundInfoPage = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!foundInfoPage)
+                        merged[i] = unmodified[i];
+                }
+                else if (unmodified[i] is SymptomCheckQuestion unmodifiedSymptomCheckQuestion)
+                {
+                    bool foundSymptomCheckQuestion = false;
+
+                    for (int j = 0; j < modified.Length; j++)
+                    {
+                        if (modified[j] is SymptomCheckQuestion modifiedSymptomCheckQuestion)
+                        {
+                            if(unmodifiedSymptomCheckQuestion.issue == modifiedSymptomCheckQuestion.issue)
+                            {
+                                merged[i] = new SymptomCheckQuestion(
+                                    unmodifiedSymptomCheckQuestion.issue,
+                                    unmodifiedSymptomCheckQuestion.description,
+                                    unmodifiedSymptomCheckQuestion.lowText,
+                                    unmodifiedSymptomCheckQuestion.highText,
+                                    unmodifiedSymptomCheckQuestion.answerValue,
+                                    modifiedSymptomCheckQuestion.data);
+                                foundSymptomCheckQuestion = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!foundSymptomCheckQuestion)
+                        merged[i] = unmodified[i];
+                }
                 else
                 {
                     merged[i] = unmodified[i];
@@ -158,6 +226,84 @@ namespace PeopleCurer.Services
             }
 
             return merged;
+        }
+
+        private static bool AreInfoPagesSimilar(InfoPage unmodified, InfoPage modified)
+        {
+            if(unmodified.textParts.Length == modified.textParts.Length)
+            {
+                for (int i = 0; i < unmodified.textParts.Length; i++)
+                {
+                    if (unmodified.textParts[i].GetType() != modified.textParts[i].GetType())
+                    {
+                        //types do not match 
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                //lengths do not match
+                return false;
+            }
+
+            return true;
+        }
+
+        private static TextPart[] MergeTextParts(TextPart[] unmodified, TextPart[] modified)
+        {
+            TextPart[] merged = new TextPart[unmodified.Length];
+            for (int i = 0; i < unmodified.Length; i++)
+            {
+                bool foundTextPart = false;
+
+                for (int j = 0; j < modified.Length; j++)
+                {
+                    if (AreTextPartsSimilar(modified[j], unmodified[i]))
+                    {
+                        merged[i] = MergeTextPart(unmodified[i], modified[j]);
+                        foundTextPart = true;
+                        break;
+                    }
+                }
+
+                if(!foundTextPart)
+                    merged[i] = unmodified[i];
+            }
+
+            return merged;
+        }
+
+        private static bool AreTextPartsSimilar(TextPart unmodified, TextPart modified)
+        {
+            if(unmodified.GetType() == modified.GetType())
+            {
+                if(unmodified is TextBox unmodifiedTextBox && modified is TextBox modifiedTextBox)
+                {
+                    if(unmodifiedTextBox.question == modifiedTextBox.question)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static TextPart MergeTextPart(TextPart unmodified, TextPart modified)
+        {
+            if (unmodified is TextBox unmodifiedTextBox && modified is TextBox modifiedTextBox)
+            {
+                if (unmodifiedTextBox.question == modifiedTextBox.question)
+                {
+                    return modifiedTextBox;
+                }
+            }
+
+            return unmodified;
         }
 
         private static Answer[] MergeAnswers(Answer[] unmodified, Answer[] modified)

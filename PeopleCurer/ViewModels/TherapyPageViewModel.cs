@@ -23,10 +23,10 @@ namespace PeopleCurer.ViewModels
         {
             this.therapyPage = therapyPage;
 
-            Features = new FeatureViewModel[therapyPage.features.Length];
-            for (int i = 0; i < therapyPage.features.Length; i++)
+            Features = new FeatureViewModel[therapyPage.features?.Length ?? 0];
+            for (int i = 0; i < (therapyPage.features?.Length ?? 0); i++)
             {
-                Features[i] = GetFeatureViewModelFromModel(therapyPage.features[i]);
+                Features[i] = GetFeatureViewModelFromModel(therapyPage.features![i]);
             }
         }
 
@@ -36,9 +36,9 @@ namespace PeopleCurer.ViewModels
             {
                 return new CourseViewModel((Course)feature);
             }
-            else if(feature.GetType() == typeof(Statistics))
+            else if(feature.GetType() == typeof(BehaviourExperiment))
             {
-                return new StatisticsViewModel((Statistics)feature);
+                return new BehaviourExperimentViewModel((BehaviourExperiment)feature);
             }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");

@@ -15,8 +15,8 @@ namespace PeopleCurer.Services
         static readonly string relativeUnmodifiedCoursesDataPath = Path.Combine("Assets", "courses.json");
         static readonly string modifiedCoursesDataPath = Path.Combine(FileSystem.AppDataDirectory, "Assets", "courses.json");
 
-        static readonly string realtiveSymptomCheckDataPath = Path.Combine("Assets", "symptomCheck.json");
-        static readonly string symptomCheckResultsDirectory = Path.Combine(FileSystem.AppDataDirectory, "Assets", "SymptomCheckResults");
+        static readonly string relativeUnmodifiedSymptomCheckDataPath = Path.Combine("Assets", "symptomCheck.json");
+        static readonly string modifiedSymptomCheckDataPath = Path.Combine(FileSystem.AppDataDirectory, "Assets", "symptomCheck.json");
 
         //Courses
         public static bool LoadUnmodifiedCourses(out TherapyPage? coursesPage)
@@ -37,7 +37,7 @@ namespace PeopleCurer.Services
         public static bool LoadCourses(out TherapyPage? coursesPage, bool tryDifferentialUpdate)
         {
             if (tryDifferentialUpdate)
-                DifferentialUpdateManager.UpdateModifiedVersion();
+                DifferentialUpdateManager.UpdateModifiedCoursesVersion();
 
             if (!File.Exists(modifiedCoursesDataPath))
             {
@@ -66,76 +66,50 @@ namespace PeopleCurer.Services
         }
 
         //SymptomCheck
-        public static bool LoadSymptomCheckData(out TherapyPage? symptomCheckPage)
+        public static bool LoadUnmodifiedSymptomCheckData(out TherapyPage? symptomCheckPage)
         {
-            if (!FileSystem.AppPackageFileExistsAsync(realtiveSymptomCheckDataPath).Result)
+            if (!FileSystem.AppPackageFileExistsAsync(relativeUnmodifiedSymptomCheckDataPath).Result)
             {
                 symptomCheckPage = null;
                 return false;
             }
 
-            using (Stream fs = FileSystem.OpenAppPackageFileAsync(realtiveSymptomCheckDataPath).Result)
+            using (Stream fs = FileSystem.OpenAppPackageFileAsync(relativeUnmodifiedSymptomCheckDataPath).Result)
             {
                 symptomCheckPage = JsonSerializer.Deserialize<TherapyPage>(fs);
             }
 
             return symptomCheckPage is not null;
         }
-        public static void SaveSymptomCheckResult(in SymptomCheckQuestionViewModel symptomCheckPage)
+        public static bool LoadSymptomCheckData(out TherapyPage? symptomCheckPage, bool tryDifferentialUpdate)
         {
-            string data = JsonSerializer.Serialize<int>(symptomCheckPage.AnswerValue);
+            if (tryDifferentialUpdate)
+                DifferentialUpdateManager.UpdateModifiedSymptomCheckVersion();
 
-            string path = Path.Combine(symptomCheckResultsDirectory, DateTime.Today.ToFileTime().ToString(), symptomCheckPage.StatisticsID + ".json");
-
-            if(!Directory.Exists(path))
+            if (!File.Exists(modifiedSymptomCheckDataPath))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                symptomCheckPage = null;
+                return false;
             }
+            string data = File.ReadAllText(modifiedSymptomCheckDataPath);
 
-            File.WriteAllText(path, data);
+            symptomCheckPage = JsonSerializer.Deserialize<TherapyPage>(data);
+
+            return symptomCheckPage is not null;
         }
-        public static bool LoadSymptomCheckResults(out Dictionary<DateTime, int> results, string statisticsID)
+        public static void SaveSymptomCheckData(in TherapyPage symptomCheckPage)
         {
-            //Get all directories(dates) of symptom checks
-            string[] directories = Directory.GetFileSystemEntries(symptomCheckResultsDirectory);
+            string data = JsonSerializer.Serialize<TherapyPage>(symptomCheckPage);
 
-            List<DateTime> dates = new List<DateTime>(directories.Length);
+            if (!Directory.Exists(modifiedSymptomCheckDataPath))
+                Directory.CreateDirectory(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!);
 
-            //Get creationTime of all entries
-            for (int i = 0; i < directories.Length; i++)
-            {
-                if(long.TryParse(new DirectoryInfo(directories[i]).Name,out long parsedDate))
-                {
-                    dates.Add(DateTime.FromFileTime(parsedDate));
-                }
-            }
-
-            //sort dates
-            dates.Sort(0,int.Min(7,dates.Count), null);
-
-
-            results = new Dictionary<DateTime, int>();
-
-            //access 7 latest paths
-            for (int i = 0; i < int.Min(7,dates.Count); i++)
-            {
-                //access path and 
-                string path = Path.Combine(symptomCheckResultsDirectory, dates[i].ToFileTime().ToString(), statisticsID + ".json");
-                if (File.Exists(path))
-                {
-                    int value = JsonSerializer.Deserialize<int>(File.ReadAllText(path));
-
-                    results.Add(dates[i],value);
-                }
-
-                //
-            }
-
-             return true;
+            File.WriteAllText(modifiedSymptomCheckDataPath, data);
         }
         public static void RemoveSymptomCheckResults()
         {
-            Directory.Delete(symptomCheckResultsDirectory!, true);
+            File.Delete(modifiedSymptomCheckDataPath);
+            Directory.Delete(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!);
         }
     }
 }

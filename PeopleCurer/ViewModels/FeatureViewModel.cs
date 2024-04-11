@@ -4,9 +4,11 @@ using PeopleCurer.MVVMHelpers;
 using PeopleCurer.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
@@ -42,7 +44,7 @@ namespace PeopleCurer.ViewModels
             //set name and description
             this.course = course;
 
-            //create lesson vm 
+            //create behaviourExperimentVM vm 
             Lessons = new LessonViewModel[course.lessons.Length];
             for (int i = 0; i < course.lessons.Length; i++)
             {
@@ -58,18 +60,32 @@ namespace PeopleCurer.ViewModels
         }
     }
 
-    public sealed class StatisticsViewModel : FeatureViewModel
+    public sealed class BehaviourExperimentViewModel : FeatureViewModel
     {
-        private readonly Statistics statistics;
+        private readonly BehaviourExperiment behaviourExperiment;
 
-        public string StatisticsName { get => statistics.statisticsName; }
-        public string StatisticsDescription { get => statistics.statisticsDescription; }
+        public DelegateCommand AddSituation { get; }
 
-        public Dictionary<DateTime, int> Data { get => statistics.data; }
+        [JsonInclude]
+        public ObservableCollection<SituationViewModel> Situations { get; }
 
-        public StatisticsViewModel(Statistics statistics)
+        public BehaviourExperimentViewModel(BehaviourExperiment behaviourExperiment)
         {
-            this.statistics = statistics;
+            this.behaviourExperiment = behaviourExperiment;
+
+            Situations = new ObservableCollection<SituationViewModel>();
+            for (int i = 0; i < (behaviourExperiment.situations?.Count ?? 0); i++)
+            {
+                Situations.Add(new SituationViewModel(behaviourExperiment.situations![i]));
+            }
+
+            AddSituation = new DelegateCommand((obj) =>
+            {
+                SituationViewModel vm = new SituationViewModel(new Situation("neue Situation", "", [], [], 0, string.Empty));
+                Situations.Add(vm);
+
+                //Go to next page and allow editing
+            });
         }
     }
 }

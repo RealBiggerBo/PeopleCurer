@@ -11,7 +11,9 @@ namespace PeopleCurer.CustomDataTemplateSelectors
     sealed class CarouselViewTemplateSelector : DataTemplateSelector
     {
         public DataTemplate MainPageTemplate { get; set; }
-        public DataTemplate StatisticsPage { get; set; }
+        public DataTemplate TrainingPageTemplate { get; set; }
+        public DataTemplate StrengthsPageTemplate { get; set; }
+        public DataTemplate StatisticsPageTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -23,11 +25,11 @@ namespace PeopleCurer.CustomDataTemplateSelectors
                     case 0:
                         return MainPageTemplate;
                     case 1:
-                        return StatisticsPage;
+                        return TrainingPageTemplate;
                     case 2:
-                        break;
+                        return StrengthsPageTemplate;
                     case 3:
-                        break;
+                        return StatisticsPageTemplate;
                     default:
                         break;
                 }

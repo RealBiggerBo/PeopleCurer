@@ -1,4 +1,5 @@
 ﻿using PeopleCurer.Models;
+using PeopleCurer.MVVMHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
 {
-    public abstract class TextPartViewModel
+    public abstract class TextPartViewModel : NotifyableBaseObject
     {
         public TextPartViewModel() { }
     }
@@ -40,6 +41,34 @@ namespace PeopleCurer.ViewModels
         public EnumerationViewModel(Enumeration enumeration)
         {
             this.enumeration = enumeration;
+        }
+    }
+
+    public sealed class TextBoxViewModel : TextPartViewModel
+    {
+        public readonly TextBox textBox;
+
+        public string Question
+        {
+            get => textBox.question;
+        }
+
+        public string Text
+        {
+            get => textBox.text;
+            set
+            {
+                if(value != textBox.text)
+                {
+                    textBox.text = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public TextBoxViewModel(TextBox textBox)
+        {
+            this.textBox = textBox;
         }
     }
 }

@@ -58,6 +58,10 @@ namespace PeopleCurer.ViewModels
             {
                 return new EnumerationViewModel((Enumeration)textPart);
             }
+            else if(textPart.GetType() == typeof(TextBox))
+            {
+                return new TextBoxViewModel((TextBox)textPart);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }
@@ -163,6 +167,7 @@ namespace PeopleCurer.ViewModels
         private readonly SymptomCheckQuestion symptomCheckQuestion;
 
         public string Issue { get => symptomCheckQuestion.issue; }
+        public string Description { get => symptomCheckQuestion.description; }
 
         public string LowText { get =>  symptomCheckQuestion.lowText; }
         public string HighText { get => symptomCheckQuestion.highText; }
@@ -180,7 +185,18 @@ namespace PeopleCurer.ViewModels
             }
         }
 
-        public string StatisticsID { get => symptomCheckQuestion.statisticsID; }
+        public Dictionary<DateOnly, int> Data 
+        { 
+            get => symptomCheckQuestion.data; 
+            set
+            {
+                if(value != symptomCheckQuestion.data)
+                {
+                    symptomCheckQuestion.data = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
 
         public SymptomCheckQuestionViewModel(SymptomCheckQuestion symptomCheckQuestion)
         {

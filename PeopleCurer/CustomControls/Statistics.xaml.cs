@@ -9,7 +9,7 @@ namespace PeopleCurer.CustomControls;
 public partial class StatisticsControl : ContentView
 {
     public static readonly BindableProperty DataProperty =
-        BindableProperty.Create(nameof(Data), typeof(Dictionary<DateTime, int>), typeof(StatisticsControl),
+        BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(StatisticsControl),
             propertyChanged: (bindable, oldVal, newVal) =>
             {
                 StatisticsControl ctrl = (StatisticsControl)bindable;
@@ -31,9 +31,9 @@ public partial class StatisticsControl : ContentView
     public static readonly BindableProperty DataColorProperty =
         BindableProperty.Create(nameof(DataColor), typeof(Color), typeof(StatisticsControl));
 
-    public Dictionary<DateTime, int> Data
+    public Dictionary<DateOnly, int> Data
 	{
-		get => (Dictionary<DateTime, int>)GetValue(DataProperty);
+		get => (Dictionary<DateOnly, int>)GetValue(DataProperty);
 		set => SetValue(DataProperty, value);
 	}
 
@@ -101,20 +101,22 @@ public partial class StatisticsControl : ContentView
         dataPath.Data = GetDataGeometry(Data);
 
         //text
+        Data ??= [];
+
         if(Data.Count > 0)
-            labelX1.Text = DateTimeToString(Data.ElementAt(0).Key);
+            labelX1.Text = DateToString(Data.ElementAt(0).Key);
         if (Data.Count > 1)
-            labelX2.Text = DateTimeToString(Data.ElementAt(1).Key);
+            labelX2.Text = DateToString(Data.ElementAt(1).Key);
         if (Data.Count > 2)
-            labelX3.Text = DateTimeToString(Data.ElementAt(2).Key);
+            labelX3.Text = DateToString(Data.ElementAt(2).Key);
         if (Data.Count > 3)
-            labelX4.Text = DateTimeToString(Data.ElementAt(3).Key);
+            labelX4.Text = DateToString(Data.ElementAt(3).Key);
         if (Data.Count > 4)
-            labelX5.Text = DateTimeToString(Data.ElementAt(4).Key);
+            labelX5.Text = DateToString(Data.ElementAt(4).Key);
         if (Data.Count > 5)
-            labelX6.Text = DateTimeToString(Data.ElementAt(5).Key);
+            labelX6.Text = DateToString(Data.ElementAt(5).Key);
         if (Data.Count > 6)
-            labelX7.Text = DateTimeToString(Data.ElementAt(6).Key);
+            labelX7.Text = DateToString(Data.ElementAt(6).Key);
 
         //Update UI
         base.Dispatcher.Dispatch(() => base.InvalidateMeasure());
@@ -149,9 +151,9 @@ public partial class StatisticsControl : ContentView
         return new PathGeometry(figureCollection);
     }
 
-    private static string DateTimeToString(DateTime dateTime)
+    private static string DateToString(DateOnly date)
     {
-        return dateTime.Day + "." + dateTime.Month;
+        return date.Day + "." + date.Month;
     }
 
     private void GetYAxisString(StringBuilder s, float yAxisLength)
@@ -226,66 +228,16 @@ public partial class StatisticsControl : ContentView
         }
     }
 
-    //private void DrawChar(StringBuilder s, char c, Vector2 pos)
-    //{
-    //    switch (c)
-    //    {
-    //        case '0':
-    //            s.Append('M');
-    //            s.Append(3 * TextSize + pos.X);
-    //            s.Append(',');
-    //            s.Append(pos.Y);
-    //            DrawCubic(s, pos, pos + new Vector2(0, 3) * TextSize, new Vector2(0, 4.5f) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(0,6) * TextSize, pos + new Vector2(0, 9) * TextSize, new Vector2(3, 9) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(6, 9) * TextSize, pos + new Vector2(6, 6) * TextSize, new Vector2(6, 4.5f) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(6, 3) * TextSize, pos + new Vector2(6, 0) * TextSize, new Vector2(3, 0) * TextSize + pos);
-    //            s.Append('M');
-    //            s.Append(3 * TextSize + pos.X);
-    //            s.Append(',');
-    //            s.Append(1 * TextSize + pos.Y);
-    //            DrawCubic(s, pos + new Vector2(1, 1) * TextSize, pos + new Vector2(1, 3) * TextSize, new Vector2(1, 4.5f) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(1, 6) * TextSize, pos + new Vector2(1, 8) * TextSize, new Vector2(3, 8) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(5, 8) * TextSize, pos + new Vector2(5, 6) * TextSize, new Vector2(5, 4.5f) * TextSize + pos);
-    //            DrawCubic(s, pos + new Vector2(5, 3) * TextSize, pos + new Vector2(5, 1) * TextSize, new Vector2(3, 1) * TextSize + pos);
-    //            break;
-    //        case '1':
-    //            s.Append('M');
-    //            s.Append(3 * TextSize + pos.X);
-    //            s.Append(',');
-    //            s.Append(pos.Y);
-    //            s.Append('V');
-    //            s.Append(9 * TextSize + pos.Y);
-    //            s.Append('H');
-    //            s.Append(2 * TextSize + pos.X);
-    //            s.Append('V');
-    //            s.Append(1 * TextSize + pos.Y);
-    //            s.Append('L');
-    //            s.Append(pos.X);
-    //            s.Append(',');
-    //            s.Append(3 * TextSize + pos.Y);
-    //            s.Append('V');
-    //            s.Append(2 * TextSize + pos.Y);
-    //            s.Append('L');
-    //            s.Append(2 * TextSize + pos.X);
-    //            s.Append(',');
-    //            s.Append(pos.Y);
-    //            s.Append('H');
-    //            s.Append(3 * TextSize + pos.X);
-    //            s.Append('Z');
-    //            break;
-    //    }
-    //}
-
     private PathGeometry? GetDataGeometry(object value)
     {
-        if (value is Dictionary<DateTime, int> data)
+        if (value is Dictionary<DateOnly, int> data)
         {
             return StringToGeometry(GetDataString(data));
         }
         return null;
     }
 
-    private string GetDataString(Dictionary<DateTime, int> data)
+    private string GetDataString(Dictionary<DateOnly, int> data)
     {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < data.Count; i++)

@@ -9,7 +9,6 @@
                 x:DataType="{x:Type vm:MainPageViewModel}">
 
     <ContentPage.Resources>
-        <vc:DictionaryToPathData x:Key="DictionaryToPathDataVC"/>
         <x:Array Type="{x:Type x:Int32}" x:Key="CarouselPageArray">
             <x:Int32>0</x:Int32>
             <x:Int32>1</x:Int32>
@@ -71,20 +70,53 @@
                     </VerticalStackLayout>
                 </DataTemplate>
             </ts:CarouselViewTemplateSelector.MainPageTemplate>
-            <ts:CarouselViewTemplateSelector.StatisticsPage>
+            <ts:CarouselViewTemplateSelector.TrainingPageTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <StackLayout Spacing="15">
+                            <Label Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            <StackLayout Spacing="10">
+                                <Button Text="Verhaltensexperimente" Command="{Binding GoToBehaivourExperimentPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Gedankentest" Command="{Binding GoToThoughtTestPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Entspannungsverfahren" Command="{Binding GoToRelaxPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Schlagfertigkeitstraining"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.TrainingPageTemplate>
+            <ts:CarouselViewTemplateSelector.StrengthsPageTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <StackLayout>
+
+                            <Label>Stärken</Label>
+                            <Label>Hier kommt die Beschreibung hin</Label>
+                            <StackLayout>
+                                <Button Text="Gedankenexperimente"/>
+                                <Button Text="Gedankenexperimente2"/>
+                                <Button Text="Gedankenexperimente3"/>
+                                <Button Text="Gedankenexperimente4"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.StrengthsPageTemplate>
+            <ts:CarouselViewTemplateSelector.StatisticsPageTemplate>
                 <DataTemplate>
                     <ScrollView>
                         <VerticalStackLayout Spacing="30">
-                            <Label HorizontalOptions="Center" Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" FontSize="Title" FontAttributes="Bold"/>
+                            <Label HorizontalOptions="Center" Text="{Binding TherapyPages[1].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" FontSize="Title" FontAttributes="Bold"/>
 
-                            <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            <Label Text="{Binding TherapyPages[1].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
 
-                            <CollectionView ItemsSource="{Binding TherapyPages[2].Features, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                            <CollectionView ItemsSource="{Binding TherapyPages[1].Features[0].Lessons[0].LessonParts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
                                 <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="{x:Type vm:StatisticsViewModel}">
+                                    <DataTemplate x:DataType="{x:Type vm:SymptomCheckQuestionViewModel}">
                                         <VerticalStackLayout Spacing="10">
-                                            <Label Text="{Binding StatisticsName}" FontSize="Caption"/>
-                                            <Label Text="{Binding StatisticsDescription}"/>
+                                            <Label Text="{Binding Issue}" FontSize="Caption"/>
+                                            <Label Text="{Binding Description}"/>
 
                                             <cc:StatisticsControl 
                                                 WidthRequest="300" 
@@ -101,7 +133,7 @@
                         </VerticalStackLayout>
                     </ScrollView>
                 </DataTemplate>
-            </ts:CarouselViewTemplateSelector.StatisticsPage>
+            </ts:CarouselViewTemplateSelector.StatisticsPageTemplate>
         </ts:CarouselViewTemplateSelector>
     </ContentPage.Resources>
 
@@ -119,9 +151,9 @@
 
         <FlexLayout Grid.Row="1"  AlignContent="SpaceBetween" BackgroundColor="Green" JustifyContent="SpaceEvenly">
             <RadioButton GroupName="ViewSelection" IsChecked="True" CheckedChanged="RadioButton_MainPage_CheckedChanged"/>
+            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_TrainingPage_CheckedChanged"/>
+            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_StrengthsPage_CheckedChanged"/>
             <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_StatisticsPage_CheckedChanged"/>
-            <RadioButton GroupName="ViewSelection"/>
-            <RadioButton GroupName="ViewSelection"/>
         </FlexLayout>
     </Grid>
 

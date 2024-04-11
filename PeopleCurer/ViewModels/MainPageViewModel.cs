@@ -13,6 +13,10 @@ namespace PeopleCurer.ViewModels
 
         public DelegateCommand GoToThoughtsPage { get; }
         public DelegateCommand GoToSymptomCheckLesson { get; }
+        public DelegateCommand GoToBehaivourExperimentPage { get; }
+        public DelegateCommand GoToThoughtTestPage { get; }
+        public DelegateCommand GoToRelaxPage { get; }
+        //public DelegateCommand GoToResponseTraining { get; }
 
         public MainPageViewModel()
         {
@@ -41,9 +45,10 @@ namespace PeopleCurer.ViewModels
             }
 
             //Load Symptomcheckfragen
-            if (SerializationManager.LoadSymptomCheckData(out TherapyPage? symptomCheckPage))
+            if (SerializationManager.LoadSymptomCheckData(out TherapyPage? symptomCheckPage,true))
             {
                 TherapyPageViewModel vm = new TherapyPageViewModel(symptomCheckPage!);
+                ProgressUpdateManager.SetSymptomCheckPage(vm);
                 TherapyPages.Add(vm);
 
                 GoToSymptomCheckLesson = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(LessonPage),
@@ -53,7 +58,7 @@ namespace PeopleCurer.ViewModels
                     }),
                     (obj) =>
                     {
-                        if(DateTime.Now.Date > PreferenceManager.GetLastSymptomCheckDate().Date)
+                        if(DateOnly.FromDateTime(DateTime.UtcNow) > PreferenceManager.GetLastSymptomCheckDate())
                         {
                             return true;
                         }
@@ -65,14 +70,22 @@ namespace PeopleCurer.ViewModels
                 GoToSymptomCheckLesson = new DelegateCommand(null);
             }
 
-            //Create Statistics TherapyPage
-            TherapyPage statisticsPage = new TherapyPage("Statistiken", "Statisken aus Symptomchecks", GetStatistics());
-            TherapyPages.Add(new TherapyPageViewModel(statisticsPage));
+            //Create Training TherapyPage
+            TherapyPage trainingPage = new TherapyPage("Trainingsbereich", "Herzlich wilkommen im Trainingsbereich. Wie im Sport sind theoretische Inhalte die Vorraussetzung, um die Übungen gut auszuführen. Doch die eigentlichen Ergebnisse werden Ergebnisse werden erst im Training erzielt.", GetTrainingPageFeatures());
+            TherapyPages.Add(new TherapyPageViewModel(trainingPage));
+
+            GoToBehaivourExperimentPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(BehaviourExperimentPage),
+                new Dictionary<string, object>
+                {
+                    ["BehaviourExperimentVM"] = (BehaviourExperimentViewModel)TherapyPages[2].Features[0]
+                }));
         }
 
-        private Statistics[] GetStatistics()
+        private Feature[] GetTrainingPageFeatures()
         {
-            return [new Statistics("A", "CDC", "1")];
+            return [
+                new BehaviourExperiment([new Situation("neue Situation", "", [], [], 0, string.Empty),new Situation("neue Situation2", "", [], [], 0, string.Empty)])
+                ];
         }
     }
 

@@ -59,6 +59,9 @@ namespace PeopleCurer.Models
         [JsonInclude]
         public readonly string issue;
         [JsonInclude]
+        public readonly string description;
+
+        [JsonInclude]
         public readonly string lowText;
         [JsonInclude]
         public readonly string highText;
@@ -67,18 +70,19 @@ namespace PeopleCurer.Models
         public int answerValue;
 
         [JsonInclude]
-        public readonly string statisticsID;
+        public Dictionary<DateOnly, int> data;
 
-        public SymptomCheckQuestion(string issue, string lowText, string highText, int answerValue, string statisticsID)
+        public SymptomCheckQuestion(string issue, string description, string lowText, string highText, int answerValue, Dictionary<DateOnly, int> data)
         {
             this.issue = issue;
+            this.description = description;
 
             this.lowText = lowText;
             this.highText = highText;
 
             this.answerValue = answerValue;
 
-            this.statisticsID = statisticsID;
+            this.data = data;
         }
     }
 }

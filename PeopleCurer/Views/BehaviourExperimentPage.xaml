@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm ="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.BehaviourExperimentPage"
+             x:DataType="{x:Type vm:BehaviourExperimentViewModel}">
+    <ScrollView>
+
+        <VerticalStackLayout>
+            <Label 
+            Text="{Binding Situations.Count}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+            <VerticalStackLayout>
+                <Button Text="Neue Situation" Command="{Binding AddSituation}"/>
+
+                <CollectionView ItemsSource="{Binding Situations}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type vm:SituationViewModel}">
+                            <Border>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding SituationName}"/>
+                                    <Button Text="Bearbeiten/Einsehen"/>
+                                    <Button Text="Löschen - Hier weiter arbeiten"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

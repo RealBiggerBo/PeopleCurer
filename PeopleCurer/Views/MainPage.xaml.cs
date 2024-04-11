@@ -29,10 +29,22 @@ namespace PeopleCurer.Views
             }
         }
 
+        private void RadioButton_TrainingPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (e.Value == true)
+                CarouselView.ScrollTo(1);
+        }
+
+        private void RadioButton_StrengthsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (e.Value == true)
+                CarouselView.ScrollTo(2);
+        }
+
         private void RadioButton_StatisticsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if(e.Value == true)
-                CarouselView.ScrollTo(1);
+                CarouselView.ScrollTo(3);
         }
     }
 

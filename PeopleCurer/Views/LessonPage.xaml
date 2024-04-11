@@ -15,7 +15,8 @@
         <ts:TextPartVMTemplateSelector x:Key="TextPartTemplateSelector">
             <ts:TextPartVMTemplateSelector.TextBlockTemplate>
                 <DataTemplate x:DataType="{x:Type vm:TextBlockViewModel}">
-                    <Label Text="{Binding Text}"/>
+                    <Label FormattedText="{Binding Text}"/>
+                    <!--<WebView Source="{Binding Text}"/>-->
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.TextBlockTemplate>
             <ts:TextPartVMTemplateSelector.EnumerationTemplate>
@@ -38,6 +39,14 @@
                     </CollectionView>
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.EnumerationTemplate>
+            <ts:TextPartVMTemplateSelector.TextBoxTemplate>
+                <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding Question}"/>
+                        <Editor Text="{Binding Text}"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.TextBoxTemplate>
         </ts:TextPartVMTemplateSelector>
         <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
             <ts:LessonPartVMTemplateSelector.InfoPageTemplate>
@@ -120,7 +129,7 @@
 
         <Label Grid.Row="0"  Text="{Binding LessonName}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold"/>
 
-        <CarouselView x:Name="CarouselView" Grid.Row="1" ItemsSource="{Binding LessonParts}" ItemTemplate="{StaticResource LessonTemplateSelector}" IsSwipeEnabled="False"/>
+        <CarouselView x:Name="CarouselView" Grid.Row="1" Margin="10" ItemsSource="{Binding LessonParts}" ItemTemplate="{StaticResource LessonTemplateSelector}" IsSwipeEnabled="False"/>
 
         <Button Grid.Row="2" Text="Next" IsEnabled="{Binding CurrentLessonPart.CanGoToNextLessonPart}" Command="{Binding GoToNextLessonPart}"/>
     </Grid>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PeopleCurer.Models
 {
     [JsonDerivedType(typeof(Course),nameof(Course))]
-    [JsonDerivedType(typeof(Statistics),nameof(Statistics))]
+    [JsonDerivedType(typeof(BehaviourExperiment), nameof(BehaviourExperiment))]
     public abstract class Feature;
 
     public sealed class Course : Feature
@@ -34,27 +34,14 @@ namespace PeopleCurer.Models
         }
     }
 
-    public sealed class Statistics : Feature
+    public sealed class BehaviourExperiment : Feature
     {
         [JsonInclude]
-        public readonly string statisticsName;
-        [JsonInclude]
-        public readonly string statisticsDescription;
-        [JsonInclude]
-        public readonly string statisticsID;
-        [JsonIgnore]
-        public Dictionary<DateTime, int> data;
+        public List<Situation> situations;
 
-        public Statistics(string statisticsName, string statisticsDescription, string statisticsID)
+        public BehaviourExperiment(List<Situation> situations)
         {
-            this.statisticsName = statisticsName;
-            this.statisticsDescription = statisticsDescription;
-
-            this.statisticsID = statisticsID;
-
-            SerializationManager.LoadSymptomCheckResults(out data, statisticsID);
+            this.situations = situations;
         }
     }
-
-    //statistics etc
 }

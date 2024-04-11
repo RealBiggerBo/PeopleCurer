@@ -12,12 +12,22 @@ namespace PeopleCurer.Services
 
         public static void UpdateLastSymptomCheckDate()
         {
-            Preferences.Set(lastSymptomCheckDate, DateTime.Today);
+            Preferences.Set(lastSymptomCheckDate, DateOnly.FromDateTime(DateTime.UtcNow).ToString());
         }
 
-        public static DateTime GetLastSymptomCheckDate()
+        public static DateOnly GetLastSymptomCheckDate()
         {
-            return Preferences.Get(lastSymptomCheckDate, DateTime.MinValue);
+            DateOnly defaultVal = DateOnly.MinValue;
+
+            if (DateOnly.TryParse(Preferences.Get(lastSymptomCheckDate, defaultVal.ToString()), out DateOnly result))
+                return result;
+            return DateOnly.MinValue;
+
+        }
+
+        public static void RemoveLastSymptomCheckDate()
+        {
+            Preferences.Remove(lastSymptomCheckDate);
         }
     }
 }
