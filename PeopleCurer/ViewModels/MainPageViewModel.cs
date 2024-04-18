@@ -11,7 +11,11 @@ namespace PeopleCurer.ViewModels
     {
         public ObservableCollection<TherapyPageViewModel> TherapyPages { get; }
 
-        public DelegateCommand GoToThoughtsPage { get; }
+        public CourseViewModel? Module1 { get; }
+        public CourseViewModel? Module2 { get; }
+        public CourseViewModel? Module3 { get; }
+        public CourseViewModel? Module4 { get; }
+
         public DelegateCommand GoToSymptomCheckLesson { get; }
         public DelegateCommand GoToBehaivourExperimentPage { get; }
         public DelegateCommand GoToThoughtTestPage { get; }
@@ -20,9 +24,8 @@ namespace PeopleCurer.ViewModels
 
         public MainPageViewModel()
         {
-            Shell.Current.GoToAsync(nameof(WelcomePage));
-
-            //SerializationManager.RemoveCourses();
+            if(!PreferenceManager.GetWelcomePageCompletionStatus())
+                Shell.Current.GoToAsync(nameof(WelcomePage));
 
             TherapyPages = new ObservableCollection<TherapyPageViewModel>();
 
@@ -33,15 +36,10 @@ namespace PeopleCurer.ViewModels
                 ProgressUpdateManager.SetCoursesPage(vm);
                 TherapyPages.Add(vm);
 
-                GoToThoughtsPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(CoursePage),
-                    new Dictionary<string, object>
-                    {
-                        ["Course"] = vm.Features[0]
-                    }));
-            }
-            else
-            {
-                GoToThoughtsPage = new DelegateCommand(null);
+                Module1 = vm.Features[0] as CourseViewModel;
+                Module2 = vm.Features[1] as CourseViewModel;
+                Module3 = vm.Features[2] as CourseViewModel;
+                Module4 = vm.Features[3] as CourseViewModel;
             }
 
             //Load Symptomcheckfragen
@@ -70,28 +68,37 @@ namespace PeopleCurer.ViewModels
                 GoToSymptomCheckLesson = new DelegateCommand(null);
             }
 
-            //Create Training TherapyPage
-            TherapyPage trainingPage = new TherapyPage("Trainingsbereich", "Herzlich wilkommen im Trainingsbereich. Wie im Sport sind theoretische Inhalte die Vorraussetzung, um die Übungen gut auszuführen. Doch die eigentlichen Ergebnisse werden Ergebnisse werden erst im Training erzielt.", GetTrainingPageFeatures());
-            TherapyPages.Add(new TherapyPageViewModel(trainingPage));
+            //Load Training TherapyPage
+            if (SerializationManager.LoadTrainingPage(out TherapyPage? trainingPage, true))
+            {
+                TherapyPageViewModel vm = new TherapyPageViewModel(trainingPage!);
+                ProgressUpdateManager.SetTrainingPage(vm);
+                TherapyPages.Add(vm);
 
-            GoToBehaivourExperimentPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(BehaviourExperimentPage),
-                new Dictionary<string, object>
-                {
-                    ["BehaviourExperimentVM"] = (BehaviourExperimentViewModel)TherapyPages[2].Features[0]
-                }));
+                GoToBehaivourExperimentPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(BehaviourExperimentPage),
+                    new Dictionary<string, object>
+                    {
+                        ["BehaviourExperimentVM"] = (BehaviourExperimentViewModel)TherapyPages[2].Features[0]
+                    }));
+                GoToThoughtTestPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(ThoughtTestContainerPage),
+                    new Dictionary<string, object>
+                    {
+                        ["ThoughtTestContainerVM"] = ((ThoughtTestContainerViewModel)vm.Features[1])
+                    }));
+    /// <summary>
+    /// 
+    /// TODO: 
+    /// create lessonparts for kognitive umstrukturierung etc
+    ///     
+    /// 
+    /// 
+    /// Audio und Video????
+    /// 
+    /// 
+    /// Meine Stärken uns Meilensteine
+    /// 
+    /// </summary>
+            }
         }
-
-        private Feature[] GetTrainingPageFeatures()
-        {
-            return [
-                new BehaviourExperiment([new Situation("neue Situation", "", [], [], 0, string.Empty),new Situation("neue Situation2", "", [], [], 0, string.Empty)])
-                ];
-        }
-    }
-
-    enum Pages
-    {
-        Info,
-        Questions
     }
 }

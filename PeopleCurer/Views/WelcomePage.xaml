@@ -20,19 +20,19 @@
 
             <Label Text="In welchen Situationen fühlst du dich durch Angst eingeschränkt?"/>
 
-            <Editor AutoSize="TextChanges"/>
+            <Editor AutoSize="TextChanges" Text="{Binding Welcome1}"/>
 
             <Label Text="Wie würdest du dich in diesen Situationen gerne verhalten?"/>
 
-            <Editor AutoSize="TextChanges"/>
+            <Editor AutoSize="TextChanges" Text="{Binding Welcome2}"/>
 
             <Label Text="Stelle dir vor, die Angst vor sozialen Kontakten wäre über Nacht verschwunden. Was würdest du dann gerne auprobieren?"/>
 
-            <Editor AutoSize="TextChanges"/>
+            <Editor AutoSize="TextChanges" Text="{Binding Welcome3}"/>
 
             <Label Text="Schreibe in einem Satz, was du mit dieser App erreichen möchtest."/>
 
-            <Editor AutoSize="TextChanges"/>
+            <Editor AutoSize="TextChanges" Text="{Binding Welcome4}"/>
 
             <Button WidthRequest="250" Text="Abschließen" Command="{Binding NavigateToMainPageCMD}"/>
         </VerticalStackLayout>

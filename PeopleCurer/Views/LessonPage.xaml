@@ -10,8 +10,8 @@
     <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
     
     <ContentPage.Resources>
-        <vc:LessonPartToGroupNameConverter x:Key="LessonToGroupNameConverter"/>
-        <vc:DoubleToStringConverter x:Key="DoubleToIntConverter"/>
+        <!--<vc:LessonPartToGroupNameConverter x:Key="LessonToGroupNameConverter"/>-->
+        <!--<vc:DoubleToStringConverter x:Key="DoubleToIntConverter"/>-->
         <ts:TextPartVMTemplateSelector x:Key="TextPartTemplateSelector">
             <ts:TextPartVMTemplateSelector.TextBlockTemplate>
                 <DataTemplate x:DataType="{x:Type vm:TextBlockViewModel}">
@@ -47,6 +47,74 @@
                     </VerticalStackLayout>
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.TextBoxTemplate>
+            <ts:TextPartVMTemplateSelector.UserInputTextBoxTemplate>
+                <DataTemplate x:DataType="{x:Type vm:UserInputTextBlockViewModel}">
+                    <Label TextColor="Green" Text="{Binding Text}"></Label>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.UserInputTextBoxTemplate>
+            <ts:TextPartVMTemplateSelector.FearCircleTemplate>
+                <DataTemplate x:DataType="{x:Type vm:FearCircleDiagramViewModel}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width=".1*"/>
+                            <ColumnDefinition Width=".8*"/>
+                            <ColumnDefinition Width=".1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Path Grid.Row="3" Grid.Column="0" Grid.RowSpan="7" Fill="Black" Margin="0,10" 
+                              Data="M64.7076 8.70711C65.0981 8.31658 65.0981 7.68342 64.7076 7.29289L58.3436 0.928932C57.9531 0.538408 57.32 0.538408 56.9294 0.928932C56.5389 1.31946 56.5389 1.95262 56.9294 2.34315L62.5863 8L56.9294 13.6569C56.5389 14.0474 56.5389 14.6805 56.9294 15.0711C57.32 15.4616 57.9531 15.4616 58.3436 15.0711L64.7076 8.70711ZM64.0005 179C44.1616 179 28.9473 168.488 18.5723 152.579C8.18223 136.646 2.68556 115.342 2.37513 93.9855C2.06468 72.6278 6.94254 51.3347 17.1697 35.4155C27.3749 19.5305 42.8924 9 64.0005 9V7C42.1084 7 26.0007 17.9695 15.487 34.3345C4.9954 50.6653 0.0607531 72.3722 0.375341 94.0145C0.689948 115.658 6.25587 137.354 16.8971 153.671C27.5535 170.012 43.3393 181 64.0005 181V179Z" 
+                              Stroke="Black" Aspect="Fill"/>
+
+                        <Editor Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Trigger}" AutoSize="TextChanges"
+                               Placeholder="Auslöser z.B. eine anstehende Situation, Gedanken wie 'Ich schaffe das nicht', Empfindungen wie Unruhe"/>
+                        <Editor Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Perception}" AutoSize="TextChanges"
+                               Placeholder="Wahrnehmung z.B. 'Alle schauen mich an', 'Ich werde ganz rot im Gesicht'"/>
+                        <Editor Grid.Row="4" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Thoughts}" AutoSize="TextChanges"
+                               Placeholder="Gedanken z.B. 'Ich blamiere mich', 'Gleich werden sie über mich lachen'"/>
+                        <Editor Grid.Row="6" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Emotion}" AutoSize="TextChanges"
+                               Placeholder="Gefühl von Angst"/>
+                        <Editor Grid.Row="8" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Change}" AutoSize="TextChanges"
+                               Placeholder="Körperliche Veränderungen z.B. Schwitzen, Erröten, schneller Herzschlag, Schwindel, Übelkeit"/>
+                        <Editor Grid.Row="10" Grid.Column="1" Grid.RowSpan="2" Text="{Binding Behaviour}" AutoSize="TextChanges"
+                               Placeholder="Verhalten z.B. Situation verlassen, Termin absagen, Situation generell ehre vermeiden"/>
+
+                        <Path Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Fill="Black" 
+                              Data="M0.654092 172.293C0.263567 172.683 0.263567 173.317 0.654092 173.707L7.01805 180.071C7.40858 180.462 8.04174 180.462 8.43227 180.071C8.82279 179.681 8.82279 179.047 8.43227 178.657L2.77541 173L8.43227 167.343C8.82279 166.953 8.82279 166.319 8.43227 165.929C8.04174 165.538 7.40858 165.538 7.01805 165.929L0.654092 172.293ZM1.3612 2C21.2001 2 36.4144 12.512 46.7893 28.4212C57.1795 44.3537 62.6761 65.6581 62.9866 87.0145C63.297 108.372 58.4192 129.665 48.192 145.584C37.9868 161.469 22.4693 172 1.3612 172V174C23.2533 174 39.361 163.031 49.8746 146.666C60.3663 130.335 65.3009 108.628 64.9864 86.9855C64.6717 65.3419 59.1058 43.6463 48.4646 27.3288C37.8082 10.988 22.0224 0 1.3612 0V2Z" 
+                              Stroke="Black" Aspect="UniformToFill"/>
+
+                        <Path Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Fill="Black" 
+                              Data="M0.654092 172.293C0.263567 172.683 0.263567 173.317 0.654092 173.707L7.01805 180.071C7.40858 180.462 8.04174 180.462 8.43227 180.071C8.82279 179.681 8.82279 179.047 8.43227 178.657L2.77541 173L8.43227 167.343C8.82279 166.953 8.82279 166.319 8.43227 165.929C8.04174 165.538 7.40858 165.538 7.01805 165.929L0.654092 172.293ZM1.3612 2C21.2001 2 36.4144 12.512 46.7893 28.4212C57.1795 44.3537 62.6761 65.6581 62.9866 87.0145C63.297 108.372 58.4192 129.665 48.192 145.584C37.9868 161.469 22.4693 172 1.3612 172V174C23.2533 174 39.361 163.031 49.8746 146.666C60.3663 130.335 65.3009 108.628 64.9864 86.9855C64.6717 65.3419 59.1058 43.6463 48.4646 27.3288C37.8082 10.988 22.0224 0 1.3612 0V2Z" 
+                              Stroke="Black" Aspect="UniformToFill"/>
+
+                        <Path Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Fill="Black" 
+                              Data="M0.654092 172.293C0.263567 172.683 0.263567 173.317 0.654092 173.707L7.01805 180.071C7.40858 180.462 8.04174 180.462 8.43227 180.071C8.82279 179.681 8.82279 179.047 8.43227 178.657L2.77541 173L8.43227 167.343C8.82279 166.953 8.82279 166.319 8.43227 165.929C8.04174 165.538 7.40858 165.538 7.01805 165.929L0.654092 172.293ZM1.3612 2C21.2001 2 36.4144 12.512 46.7893 28.4212C57.1795 44.3537 62.6761 65.6581 62.9866 87.0145C63.297 108.372 58.4192 129.665 48.192 145.584C37.9868 161.469 22.4693 172 1.3612 172V174C23.2533 174 39.361 163.031 49.8746 146.666C60.3663 130.335 65.3009 108.628 64.9864 86.9855C64.6717 65.3419 59.1058 43.6463 48.4646 27.3288C37.8082 10.988 22.0224 0 1.3612 0V2Z" 
+                              Stroke="Black" Aspect="UniformToFill"/>
+
+                        <Path Grid.Row="7" Grid.Column="2" Grid.RowSpan="2" Fill="Black" 
+                              Data="M0.654092 172.293C0.263567 172.683 0.263567 173.317 0.654092 173.707L7.01805 180.071C7.40858 180.462 8.04174 180.462 8.43227 180.071C8.82279 179.681 8.82279 179.047 8.43227 178.657L2.77541 173L8.43227 167.343C8.82279 166.953 8.82279 166.319 8.43227 165.929C8.04174 165.538 7.40858 165.538 7.01805 165.929L0.654092 172.293ZM1.3612 2C21.2001 2 36.4144 12.512 46.7893 28.4212C57.1795 44.3537 62.6761 65.6581 62.9866 87.0145C63.297 108.372 58.4192 129.665 48.192 145.584C37.9868 161.469 22.4693 172 1.3612 172V174C23.2533 174 39.361 163.031 49.8746 146.666C60.3663 130.335 65.3009 108.628 64.9864 86.9855C64.6717 65.3419 59.1058 43.6463 48.4646 27.3288C37.8082 10.988 22.0224 0 1.3612 0V2Z" 
+                              Stroke="Black" Aspect="UniformToFill"/>
+
+                        <Path Grid.Row="9" Grid.Column="2" Grid.RowSpan="2" Fill="Black" 
+                              Data="M0.654092 172.293C0.263567 172.683 0.263567 173.317 0.654092 173.707L7.01805 180.071C7.40858 180.462 8.04174 180.462 8.43227 180.071C8.82279 179.681 8.82279 179.047 8.43227 178.657L2.77541 173L8.43227 167.343C8.82279 166.953 8.82279 166.319 8.43227 165.929C8.04174 165.538 7.40858 165.538 7.01805 165.929L0.654092 172.293ZM1.3612 2C21.2001 2 36.4144 12.512 46.7893 28.4212C57.1795 44.3537 62.6761 65.6581 62.9866 87.0145C63.297 108.372 58.4192 129.665 48.192 145.584C37.9868 161.469 22.4693 172 1.3612 172V174C23.2533 174 39.361 163.031 49.8746 146.666C60.3663 130.335 65.3009 108.628 64.9864 86.9855C64.6717 65.3419 59.1058 43.6463 48.4646 27.3288C37.8082 10.988 22.0224 0 1.3612 0V2Z" 
+                              Stroke="Black" Aspect="UniformToFill"/>
+
+                    </Grid>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.FearCircleTemplate>
         </ts:TextPartVMTemplateSelector>
         <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
             <ts:LessonPartVMTemplateSelector.InfoPageTemplate>

@@ -68,9 +68,13 @@
 	<ItemGroup>
 	  <None Remove="Assets\courses.json" />
 	  <None Remove="Assets\symptomCheck.json" />
+	  <None Remove="Assets\training.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Include="Assets\training.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </MauiAsset>
 	  <MauiAsset Include="Assets\symptomCheck.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
@@ -86,13 +90,28 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="CustomControls\LineChart.xaml.cs">
+	    <DependentUpon>LineChart.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\CoursePage.xaml.cs">
 	    <DependentUpon>CoursePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SituationCompletedPage.xaml.cs">
+	    <DependentUpon>SituationCompletedPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\SituationFinishPage.xaml.cs">
+	    <DependentUpon>SituationFinishPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\ThoughtTestCompletedPage.xaml.cs">
+	    <DependentUpon>ThoughtTestCompletedPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="CustomControls\Statistics.xaml">
+	  <MauiXaml Update="CustomControls\LineChart.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CustomControls\PieChart.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\BehaviourExperimentPage.xaml">
@@ -102,6 +121,27 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LessonPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SituationCompletedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SituationFinishPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SituationEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ThoughtTestContainerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ThoughtTestEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ThoughtTestCompletedPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ThoughtTestFinishPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\WelcomePage.xaml">

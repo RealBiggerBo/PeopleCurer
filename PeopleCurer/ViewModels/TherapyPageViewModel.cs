@@ -32,13 +32,17 @@ namespace PeopleCurer.ViewModels
 
         private FeatureViewModel GetFeatureViewModelFromModel(in Feature feature)
         {
-            if (feature.GetType() == typeof(Course))
+            if (feature is Course course)
             {
-                return new CourseViewModel((Course)feature);
+                return new CourseViewModel(course);
             }
-            else if(feature.GetType() == typeof(BehaviourExperiment))
+            else if(feature is BehaviourExperiment behExp)
             {
-                return new BehaviourExperimentViewModel((BehaviourExperiment)feature);
+                return new BehaviourExperimentViewModel(behExp);
+            }
+            else if(feature is ThoughtTestContainer thoughtTest)
+            {
+                return new ThoughtTestContainerViewModel(thoughtTest);
             }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.ThoughtTestContainerPage"
+             x:DataType="{x:Type vm:ThoughtTestContainerViewModel}">
+    
+    <ScrollView>
+        <StackLayout VerticalOptions="FillAndExpand">
+
+            <StackLayout VerticalOptions="FillAndExpand">
+                <Button Text="Neuer Gedankentest" Command="{Binding AddSituation}"/>
+
+                <CollectionView ItemsSource="{Binding ThoughtTests}" ItemSizingStrategy="MeasureFirstItem" VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type vm:ThoughtTestViewModel}">
+                            <Border>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding SituationName}"/>
+                                    <Button Text="Einsehen" Command="{Binding GoToThoughtTestPage}"/>
+                                    <Button 
+                                    Text="Löschen" 
+                                    Command="{Binding DeleteSituation, Source={RelativeSource AncestorType={x:Type vm:ThoughtTestContainerViewModel}}}"
+                                    CommandParameter="{Binding}"/>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

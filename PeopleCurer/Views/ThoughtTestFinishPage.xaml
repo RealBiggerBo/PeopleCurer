@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
+             x:Class="PeopleCurer.Views.ThoughtTestFinishPage"
+             x:DataType="{x:Type vm:ThoughtTestViewModel}">
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <cc:PieChart/>
+
+            <Label Text="Wie du siehst, gibt es mehere Erklärungen für diese Situation. Sich nur auf den einen negativen Gedanken zu beschränken ist daher nicht besonders realitätsnah."/>
+
+            <Label Text="Wie fühlst du dich nun, wenn du die alternativen Gedanken betrachtest?"/>
+
+            <Editor Text="{Binding Conclusion}"/>
+
+            <Button Text="Abschließen" Command="{Binding CompletedThoughtTest}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

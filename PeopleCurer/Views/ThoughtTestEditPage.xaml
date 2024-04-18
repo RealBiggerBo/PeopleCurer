@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.ThoughtTestEditPage"
+             x:DataType="{x:Type vm:ThoughtTestViewModel}">
+    <ScrollView>
+        <VerticalStackLayout Spacing="5">
+            <Label Text="Gedankentest"/>
+
+            <Label Text="Hier nehmen wir unsere Gedanken genau unter die Lupe und überprüfen was wirklich wahr ist."/>
+
+            <Label Text="Beschreibe eine Situation, welche dich sehr belastet hat. Was hätte eine Kamera in dieser Situation aufgezeichnet?"/>
+
+            <Entry Text="{Binding SituationName}"/>
+
+            <Label Text="Beschreibe den Gedanken, der dir in dieser Situation durch den Kopf ging."/>
+
+            <Entry Text="{Binding MainThought.ThoughtName}"/>
+            <Label Text="Wie wahrscheinlich ist diese Erklärung?"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".1*"/>
+                    <ColumnDefinition Width=".8*"/>
+                    <ColumnDefinition Width=".1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding MainThought.ThoughtProbability}"  Minimum="0" Maximum="100"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding MainThought.ThoughtProbability}" Keyboard="Numeric"/>
+            </Grid>
+
+            <Label Text="Beschreibe die Gefühle, die mit diesem Gedanken einhergingen."/>
+
+            <Button Text="Neues Gefühl hinzufügen" Command="{Binding AddEmotion}"/>
+
+            <CollectionView ItemsSource="{Binding Emotions}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:EmotionViewModel}">
+                        <Border Margin="0,10">
+                            <Entry Text="{Binding EmotionName}"/>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Prüfe nun wie ein Detektiv, ob dieser Gedanke wirklich wahr ist. Entwickle dazu alternative Erklärungen."/>
+
+            <Button Text="Neue Alternative hinzufügen" Command="{Binding AddAlternateThought}"/>
+
+            <CollectionView ItemsSource="{Binding AlternateThoughts}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:ThoughtViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Entry Text="{Binding ThoughtName}"/>
+                                <Label Text="Wie wahrscheinlich ist diese Erklärung?"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding ThoughtProbability}"  Minimum="0" Maximum="100"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding ThoughtProbability}" Keyboard="Numeric"/>
+                                </Grid>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Auswerten" Command="{Binding FinishThoughtTest}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+             x:Class="PeopleCurer.Views.SituationCompletedPage"
+             x:DataType="{x:Type vm:SituationViewModel}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="5">
+            <Label Text="{Binding SituationName}"/>
+
+            <Label Text="{Binding SituationTime}"/>
+
+            <Label Text="Diese Befürchtungen hattest du:"/>
+
+            <CollectionView ItemsSource="{Binding SituationFears}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Label Text="{Binding FearName}"/>
+                                <Label Text="Erwartung"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding FearProbability}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                                    <Label Grid.Row="1" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="1" Grid.Column="1" Value="{Binding ActualFearStrength}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                    <Label Grid.Row="1" Grid.Column="2" Text="100 extrem"/>
+                                </Grid>
+                                <Label Text="eingetreten"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Eingesetzte Sicherheitsverhalten:"/>
+
+            <CollectionView ItemsSource="{Binding SituationSafetyBehaviours}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SafetyBehaviourViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Label Text="{Binding SafetyBehaviourName}"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SafetyBehaviourAmount}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+                                </Grid>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Stärke der Angst:"/>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".1*"/>
+                    <ColumnDefinition Width=".8*"/>
+                    <ColumnDefinition Width=".1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding OverallFear}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+            </Grid>
+
+            <Label Text="Deine Schlussfolgerung aus dem Experiment:"/>
+
+            <Editor Text="{Binding Conclusion}" IsReadOnly="True"/>
+
+            <Button Text="Abschließen" Command="{Binding SaveSituation}" CommandParameter="False"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

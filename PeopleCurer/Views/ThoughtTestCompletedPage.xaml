@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.ThoughtTestCompletedPage"
+             x:DataType="{x:Type vm:ThoughtTestViewModel}">
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="{Binding SituationName}"/>
+
+            <Label Text="Deine eigentliche Erfahrung, emotionen und die alternative erklärungen"/>
+
+            <Label Text="Dein Urteil:"/>
+
+            <Label Text="{Binding Conclusion}"/>
+
+            <Label>DIAGRAMMMMMMMMMM</Label>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

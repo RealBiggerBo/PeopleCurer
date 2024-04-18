@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
+    [JsonDerivedType(typeof(FearCircleDiagram),nameof(FearCircleDiagram))]
+    [JsonDerivedType(typeof(UserInputTextBlock), nameof(UserInputTextBlock))]
     [JsonDerivedType(typeof(TextBlock), nameof(TextBlock))]
     [JsonDerivedType(typeof(Enumeration), nameof(Enumeration))]
     [JsonDerivedType(typeof(TextBox), nameof(TextBox))]
@@ -50,6 +52,43 @@ namespace PeopleCurer.Models
             this.question = question;
 
             this.text = text;
+        }
+    }
+
+    public sealed class UserInputTextBlock : TextPart
+    {
+        [JsonInclude]
+        public readonly string id;
+
+        public UserInputTextBlock(string id)
+        {
+            this.id = id;
+        }
+    }
+
+    public sealed class FearCircleDiagram : TextPart
+    {
+        [JsonInclude]
+        public string trigger;
+        [JsonInclude]
+        public string perception;
+        [JsonInclude]
+        public string thoughts;
+        [JsonInclude]
+        public string emotion;
+        [JsonInclude]
+        public string change;
+        [JsonInclude]
+        public string behaviour;
+
+        public FearCircleDiagram(string trigger, string perception, string thoughts, string emotion, string change, string behaviour)
+        {
+            this.trigger = trigger;
+            this.perception = perception;
+            this.thoughts = thoughts;
+            this.emotion = emotion;
+            this.change = change;
+            this.behaviour = behaviour;
         }
     }
 }

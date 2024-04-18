@@ -13,6 +13,7 @@ namespace PeopleCurer.Services
     {
         private static TherapyPageViewModel? coursesPage;
         private static TherapyPageViewModel? symptomCheckPage;
+        private static TherapyPageViewModel? trainingPage;
 
         public static void SetCoursesPage(TherapyPageViewModel page)
         {
@@ -22,11 +23,41 @@ namespace PeopleCurer.Services
         {
             symptomCheckPage = page;
         }
+        public static void SetTrainingPage(TherapyPageViewModel page)
+        {
+            trainingPage = page;
+        }
 
         public static void UpdateProgress(in LessonViewModel finishedLesson)
         {
             if (coursesPage is null)
                 return;
+
+            //Courses needs Saving if there is an TextBox or any other input form
+            bool needsSaving = false;
+            for (int i = 0; i < finishedLesson.LessonParts.Length; i++)
+            {
+                if (finishedLesson.LessonParts[i] is InfoPageViewModel infoPage)
+                {
+                    for (int j = 0; j < infoPage.TextParts.Length; j++)
+                    {
+                        if (infoPage.TextParts[j] is TextBoxViewModel)
+                        {
+                            needsSaving = true;
+                            break;
+                        }
+                        else if (infoPage.TextParts[j] is FearCircleDiagramViewModel)
+                        {
+                            needsSaving = true;
+                            break;
+                        }
+                    }
+                    if (needsSaving)
+                        break;
+                }
+            }
+
+            //Check if next lesson needs to be set active
             if (finishedLesson.IsActive)
             {
                 finishedLesson.IsActive = true;
@@ -43,12 +74,14 @@ namespace PeopleCurer.Services
                                 //check if finishedLessin is last behaviourExperimentVM
                                 if(j+1 < course.Lessons.Length)
                                 {
-                                    //not last behaviourExperimentVM => enable next Lesson
+                                    //not last behaviourExperimentVM => enable next Situation
                                     if (!course.Lessons[j + 1].IsActive) //check whether update (serialization) is necessary
                                     {
                                         course.Lessons[j + 1].IsActive = true;
                                         SerializationManager.SaveCourses(coursesPage.GetPage());
                                     }
+                                    else if(needsSaving) //save nonetheless if there was an component that required saving
+                                        SerializationManager.SaveCourses(coursesPage.GetPage());
                                     return;
                                 }
                                 else
@@ -64,26 +97,12 @@ namespace PeopleCurer.Services
                                                 (coursesPage.Features[i + 1] as CourseViewModel)!.IsActive = true;
                                                 SerializationManager.SaveCourses(coursesPage.GetPage());
                                             }
+                                            else if(needsSaving) //save nonetheless if there was an component that required saving
+                                                SerializationManager.SaveCourses(coursesPage.GetPage());
                                         }
                                         return;
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-
-                //Save Courses if there is an TextBox or SymptomCheckLesson
-                for (int i = 0; i < finishedLesson.LessonParts.Length; i++)
-                {
-                    if (finishedLesson.LessonParts[i] is InfoPageViewModel infoPage)
-                    {
-                        for (int j = 0; j < infoPage.TextParts.Length; j++)
-                        {
-                            if (infoPage.TextParts[j] is TextBoxViewModel)
-                            {
-                                SerializationManager.SaveCourses(coursesPage.GetPage());
-                                return;
                             }
                         }
                     }
@@ -96,6 +115,12 @@ namespace PeopleCurer.Services
             if (symptomCheckPage is null)
                 return;
             SerializationManager.SaveSymptomCheckData(symptomCheckPage.GetPage());
+        }
+        public static void UpdateTrainingData()
+        {
+            if(trainingPage is null) 
+                return;
+            SerializationManager.SaveTrainingPage(trainingPage.GetPage());
         }
     }
 }

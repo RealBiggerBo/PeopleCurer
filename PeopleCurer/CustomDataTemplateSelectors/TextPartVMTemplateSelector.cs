@@ -12,6 +12,8 @@ namespace PeopleCurer.CustomDataTemplateSelectors
         public DataTemplate TextBlockTemplate { get; set; }
         public DataTemplate EnumerationTemplate { get; set; }
         public DataTemplate TextBoxTemplate { get; set; }
+        public DataTemplate UserInputTextBoxTemplate { get; set; }
+        public DataTemplate FearCircleTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
@@ -26,6 +28,14 @@ namespace PeopleCurer.CustomDataTemplateSelectors
             else if(item is TextBoxViewModel)
             {
                 return TextBoxTemplate;
+            }
+            else if(item is UserInputTextBlockViewModel)
+            {
+                return UserInputTextBoxTemplate;
+            }
+            else if(item is FearCircleDiagramViewModel)
+            {
+                return FearCircleTemplate;
             }
             else
             {

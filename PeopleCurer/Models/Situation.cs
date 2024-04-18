@@ -19,7 +19,7 @@ namespace PeopleCurer.Models
         public List<SituationFear> situationFears;
 
         [JsonInclude]
-        public List<string> situationSafetyBehaviour;
+        public List<SafetyBehaviour> situationSafetyBehaviours;
 
         [JsonInclude]
         public int overallFear;
@@ -27,14 +27,18 @@ namespace PeopleCurer.Models
         [JsonInclude]
         public string conclusion;
 
-        public Situation(string situationName, string situationTime, List<SituationFear> situationFears, List<string> situationSafetyBehaviour, int overallFear, string conclusion)
+        [JsonInclude]
+        public bool isFinished;
+
+        public Situation(string situationName, string situationTime, List<SituationFear> situationFears, List<SafetyBehaviour> situationSafetyBehaviours, int overallFear, string conclusion, bool isFinished)
         {
             this.situationName = situationName;
             this.situationTime = situationTime;
             this.situationFears = situationFears;
-            this.situationSafetyBehaviour = situationSafetyBehaviour;
+            this.situationSafetyBehaviours = situationSafetyBehaviours;
             this.overallFear = overallFear;
             this.conclusion = conclusion;
+            this.isFinished = isFinished;
         }
     }
 
@@ -54,6 +58,21 @@ namespace PeopleCurer.Models
             this.fearName = fearName;
             this.fearProbability = fearProbability;
             this.actualFearStrength = actualFearStrength;
+        }
+    }
+
+    public sealed class SafetyBehaviour
+    {
+        [JsonInclude]
+        public string safetyBehaviourName;
+
+        [JsonInclude]
+        public int safetyBehaviourAmount;
+
+        public SafetyBehaviour(string safetyBehaviourName, int safetyBehaviourAmount)
+        {
+            this.safetyBehaviourName = safetyBehaviourName;
+            this.safetyBehaviourAmount = safetyBehaviourAmount;
         }
     }
 }

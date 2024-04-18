@@ -1,6 +1,7 @@
 ﻿using PeopleCurer.CustomEventArgs;
 using PeopleCurer.Models;
 using PeopleCurer.MVVMHelpers;
+using PeopleCurer.Services;
 using PeopleCurer.Views;
 using System;
 using System.Collections.Generic;
@@ -64,10 +65,10 @@ namespace PeopleCurer.ViewModels
     {
         private readonly BehaviourExperiment behaviourExperiment;
 
-        public DelegateCommand AddSituation { get; }
-
-        [JsonInclude]
         public ObservableCollection<SituationViewModel> Situations { get; }
+
+        public DelegateCommand AddSituation { get; }
+        public DelegateCommand DeleteSituation { get; }
 
         public BehaviourExperimentViewModel(BehaviourExperiment behaviourExperiment)
         {
@@ -76,16 +77,103 @@ namespace PeopleCurer.ViewModels
             Situations = new ObservableCollection<SituationViewModel>();
             for (int i = 0; i < (behaviourExperiment.situations?.Count ?? 0); i++)
             {
-                Situations.Add(new SituationViewModel(behaviourExperiment.situations![i]));
+                SituationViewModel vm = new SituationViewModel(behaviourExperiment.situations![i]);
+                vm.OnSituationFinishEditEvent += SaveBehaviourExperiment;
+                Situations.Add(vm);
             }
 
             AddSituation = new DelegateCommand((obj) =>
             {
-                SituationViewModel vm = new SituationViewModel(new Situation("neue Situation", "", [], [], 0, string.Empty));
+                Situation newSituation = new Situation("neue Situation", "", [], [], 0, string.Empty, false);
+                //Model
+                behaviourExperiment.situations ??= [];
+                behaviourExperiment.situations.Add(newSituation);
+                //VM
+                SituationViewModel vm = new SituationViewModel(newSituation);
+                vm.OnSituationFinishEditEvent += SaveBehaviourExperiment;
                 Situations.Add(vm);
 
                 //Go to next page and allow editing
+                Shell.Current.GoToAsync(nameof(SituationEditPage),
+                    new Dictionary<string, object>
+                    {
+                        ["Situation"] = vm
+                    });
             });
+
+            DeleteSituation = new DelegateCommand((obj) =>
+            {
+                if (obj is SituationViewModel situation)
+                {
+                    //Model
+                    behaviourExperiment.situations?.Remove(situation.situation);
+                    //VM
+                    Situations.Remove(situation);
+                }
+            });
+        }
+
+        private void SaveBehaviourExperiment(object? obj, EventArgs e)
+        {
+            //Save new data
+            ProgressUpdateManager.UpdateTrainingData();
+        }
+    }
+
+    public sealed class ThoughtTestContainerViewModel : FeatureViewModel
+    {
+        public readonly ThoughtTestContainer thoughtTestContainer;
+
+        public ObservableCollection<ThoughtTestViewModel> ThoughtTests { get; }
+
+        public DelegateCommand AddSituation { get; }
+        public DelegateCommand DeleteSituation { get; }
+
+        public ThoughtTestContainerViewModel(ThoughtTestContainer thoughtTestContainer)
+        {
+            this.thoughtTestContainer = thoughtTestContainer;
+
+            ThoughtTests = new ObservableCollection<ThoughtTestViewModel>();
+            for (int i = 0; i < (thoughtTestContainer.thoughtTests?.Count ?? 0); i++)
+            {
+                ThoughtTests.Add(new ThoughtTestViewModel(thoughtTestContainer.thoughtTests![i]));
+            }
+
+            AddSituation = new DelegateCommand((obj) =>
+            {
+                ThoughtTest newTest = new ThoughtTest("neuer Gedankentest", new Thought("neuer Gedanke",50), [], [], string.Empty, false);
+                //Model
+                thoughtTestContainer.thoughtTests ??= [];
+                thoughtTestContainer.thoughtTests.Add(newTest);
+                //VM
+                ThoughtTestViewModel vm = new ThoughtTestViewModel(newTest);
+                vm.OnTestFinishEditEvent += SaveThoughtTestExperiment;
+                ThoughtTests.Add(vm);
+
+                //Go to next page and allow editing
+                Shell.Current.GoToAsync(nameof(ThoughtTestEditPage),
+                    new Dictionary<string, object>
+                    {
+                        ["ThoughtTestVM"] = vm
+                    });
+            });
+
+            DeleteSituation = new DelegateCommand((obj) =>
+            {
+                if (obj is ThoughtTestViewModel test)
+                {
+                    //Model
+                    thoughtTestContainer.thoughtTests?.Remove(test.thoughtTest);
+                    //VM
+                    ThoughtTests.Remove(test);
+                }
+            });
+        }
+
+        private void SaveThoughtTestExperiment(object? obj, EventArgs e)
+        {
+            //Save new data
+            ProgressUpdateManager.UpdateTrainingData();
         }
     }
 }

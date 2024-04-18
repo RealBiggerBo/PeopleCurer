@@ -1,5 +1,6 @@
 ﻿using PeopleCurer.Models;
 using PeopleCurer.MVVMHelpers;
+using PeopleCurer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,135 @@ namespace PeopleCurer.ViewModels
         public TextBoxViewModel(TextBox textBox)
         {
             this.textBox = textBox;
+        }
+    }
+
+    public sealed class UserInputTextBlockViewModel : TextPartViewModel
+    {
+        public readonly UserInputTextBlock userInputTextBlock;
+
+        private string text;
+        public string Text
+        {
+            get => text;
+            set
+            {
+                if(value != text)
+                {
+                    this.text = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public UserInputTextBlockViewModel(UserInputTextBlock userInputTextBlock)
+        {
+            this.userInputTextBlock = userInputTextBlock;
+
+            if(!UserInputDataManager.GetUserInputData(userInputTextBlock.id, out string text))
+            {
+                Text = string.Empty;
+            }
+            Text = text;
+
+            UserInputDataManager.userInputDataChangedEvent += UserInputDataChanged;
+        }
+
+        private void UserInputDataChanged(object? obj, EventArgs e)
+        {
+            if (!UserInputDataManager.GetUserInputData(userInputTextBlock.id, out string text))
+            {
+                Text = string.Empty;
+            }
+            Text = text;
+        }
+    }
+
+    public sealed class FearCircleDiagramViewModel : TextPartViewModel
+    {
+        public readonly FearCircleDiagram fearCircleDiagram;
+        
+        public string Trigger
+        {
+            get => fearCircleDiagram.trigger;
+            set
+            {
+                if(value != fearCircleDiagram.trigger)
+                {
+                    fearCircleDiagram.trigger = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+        
+        public string Perception
+        {
+            get => fearCircleDiagram.perception;
+            set
+            {
+                if (value != fearCircleDiagram.perception)
+                {
+                    fearCircleDiagram.perception = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string Thoughts
+        {
+            get => fearCircleDiagram.thoughts;
+            set
+            {
+                if (value != fearCircleDiagram.thoughts)
+                {
+                    fearCircleDiagram.thoughts = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string Emotion
+        {
+            get => fearCircleDiagram.emotion;
+            set
+            {
+                if (value != fearCircleDiagram.emotion)
+                {
+                    fearCircleDiagram.emotion = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string Change
+        {
+            get => fearCircleDiagram.change;
+            set
+            {
+                if (value != fearCircleDiagram.change)
+                {
+                    fearCircleDiagram.change = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string Behaviour
+        {
+            get => fearCircleDiagram.behaviour;
+            set
+            {
+                if (value != fearCircleDiagram.behaviour)
+                {
+                    fearCircleDiagram.behaviour = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public FearCircleDiagramViewModel(FearCircleDiagram fearCircleDiagram)
+        {
+            this.fearCircleDiagram = fearCircleDiagram;
         }
     }
 }

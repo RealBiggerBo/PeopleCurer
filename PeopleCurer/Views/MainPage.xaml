@@ -38,7 +38,11 @@
                                     <RoundRectangle CornerRadius="150,0,0,0"></RoundRectangle>
                                 </Border.StrokeShape>
 
-                                <Button BackgroundColor="Transparent" Text="4"/>
+                                <Button 
+                                    BackgroundColor="Transparent" 
+                                    Text="{Binding Module4.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module4.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    IsEnabled="{Binding Module4.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
                             <Border Grid.Row="0" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
@@ -46,7 +50,11 @@
                                     <RoundRectangle CornerRadius="0,150,0,0"></RoundRectangle>
                                 </Border.StrokeShape>
 
-                                <Button BackgroundColor="Transparent" Text="Gedanken" Command="{Binding GoToThoughtsPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button 
+                                    BackgroundColor="Transparent" 
+                                    Text="{Binding Module1.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module1.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    IsEnabled="{Binding Module1.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
                             <Border Grid.Row="1" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="Red">
@@ -54,7 +62,11 @@
                                     <RoundRectangle CornerRadius="0,0,150,0"></RoundRectangle>
                                 </Border.StrokeShape>
 
-                                <Button BackgroundColor="Transparent" Text="3"/>
+                                <Button 
+                                    BackgroundColor="Transparent" 
+                                    Text="{Binding Module3.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module3.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    IsEnabled="{Binding Module3.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
                             <Border Grid.Row="1" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
@@ -62,7 +74,11 @@
                                     <RoundRectangle CornerRadius="0,0,0,150"></RoundRectangle>
                                 </Border.StrokeShape>
 
-                                <Button BackgroundColor="Transparent" Text="2"/>
+                                <Button 
+                                    BackgroundColor="Transparent" 
+                                    Text="{Binding Module2.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module2.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    IsEnabled="{Binding Module2.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
                         </Grid>
 
@@ -118,7 +134,7 @@
                                             <Label Text="{Binding Issue}" FontSize="Caption"/>
                                             <Label Text="{Binding Description}"/>
 
-                                            <cc:StatisticsControl 
+                                            <cc:LineChart 
                                                 WidthRequest="300" 
                                                 HeightRequest="300" 
                                                 Data="{Binding Data}" 

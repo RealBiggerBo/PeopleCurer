@@ -62,6 +62,14 @@ namespace PeopleCurer.ViewModels
             {
                 return new TextBoxViewModel((TextBox)textPart);
             }
+            else if(textPart.GetType() == typeof(UserInputTextBlock))
+            {
+                return new UserInputTextBlockViewModel((UserInputTextBlock)textPart);
+            }
+            else if(textPart.GetType() == typeof(FearCircleDiagram))
+            {
+                return new FearCircleDiagramViewModel((FearCircleDiagram)textPart);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }

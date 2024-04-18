@@ -4,31 +4,31 @@
              xmlns:vm ="clr-namespace:PeopleCurer.ViewModels"
              x:Class="PeopleCurer.Views.BehaviourExperimentPage"
              x:DataType="{x:Type vm:BehaviourExperimentViewModel}">
+
     <ScrollView>
+        <StackLayout VerticalOptions="FillAndExpand">
 
-        <VerticalStackLayout>
-            <Label 
-            Text="{Binding Situations.Count}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-
-            <VerticalStackLayout>
+            <StackLayout VerticalOptions="FillAndExpand">
                 <Button Text="Neue Situation" Command="{Binding AddSituation}"/>
 
-                <CollectionView ItemsSource="{Binding Situations}">
+                <CollectionView ItemsSource="{Binding Situations}" ItemSizingStrategy="MeasureFirstItem" VerticalOptions="FillAndExpand">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="{x:Type vm:SituationViewModel}">
                             <Border>
                                 <VerticalStackLayout>
                                     <Label Text="{Binding SituationName}"/>
-                                    <Button Text="Bearbeiten/Einsehen"/>
-                                    <Button Text="Löschen - Hier weiter arbeiten"/>
+                                    <Button Text="Bearbeiten/Einsehen" Command="{Binding GoToSituationPage}"/>
+                                    <Button 
+                                        Text="Löschen" 
+                                        Command="{Binding DeleteSituation, Source={RelativeSource AncestorType={x:Type vm:BehaviourExperimentViewModel}}}"
+                                        CommandParameter="{Binding}"/>
+                                    <Button Text="Abschließen" Command="{Binding FinishSituation}"/>
                                 </VerticalStackLayout>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </VerticalStackLayout>
-        </VerticalStackLayout>
+            </StackLayout>
+        </StackLayout>
     </ScrollView>
 </ContentPage>

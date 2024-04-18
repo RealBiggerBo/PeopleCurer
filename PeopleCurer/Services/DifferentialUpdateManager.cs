@@ -56,6 +56,29 @@ namespace PeopleCurer.Services
             }
         }
 
+        public static void UpdateModifiedTrainingPageVersion()
+        {
+            //TODO: Check creation time to only update if necesarry
+
+            if (SerializationManager.LoadUnmodifiedTrainingPage(out TherapyPage? unmodifiedTrainingPage))
+            {
+                if (SerializationManager.LoadTrainingPage(out TherapyPage? modifiedTrainingPage, false))
+                {
+                    //get new SymptomCheck
+                    TherapyPage newModifiedSymptomCheck = DifferentialUpdate(unmodifiedTrainingPage!, modifiedTrainingPage!);
+                    //Serialize
+                    SerializationManager.SaveTrainingPage(newModifiedSymptomCheck);
+                    Trace.WriteLine("Merged modified and unmodified versions (TraininPage).");
+                }
+                else
+                {
+                    //unmodified exists, modified not => save unmodified as modified
+                    SerializationManager.SaveTrainingPage(unmodifiedTrainingPage!);
+                    Trace.WriteLine("No modified version. Created new file (TrainingPage).");
+                }
+            }
+        }
+
         private static TherapyPage DifferentialUpdate(TherapyPage unmodified, TherapyPage modified)
         {
             TherapyPage merged = new TherapyPage(unmodified.name,unmodified.description, MergeFeatures(unmodified.features, modified.features));
@@ -99,6 +122,40 @@ namespace PeopleCurer.Services
                     }
 
                     if(!foundCourse)
+                        merged[i] = unmodified[i];
+                }
+                else if (unmodified[i] is BehaviourExperiment unmodifiedBehaviourExperiment)
+                {
+                    bool foundBehaviourExperiment = false;
+
+                    for (int j = 0; j < modified.Length; j++)
+                    {
+                        if (modified[j] is BehaviourExperiment modifiedBehaviourExperiment)
+                        {
+                            merged[i] = new BehaviourExperiment(modifiedBehaviourExperiment.situations);
+                            foundBehaviourExperiment = true;
+                            break;
+                        }
+                    }
+
+                    if(!foundBehaviourExperiment)
+                        merged[i] = unmodified[i];
+                }
+                else if (unmodified[i] is ThoughtTestContainer unmodifiedThoughtTestContainer)
+                {
+                    bool foundThoughtTestContainer = false;
+
+                    for (int j = 0; j < modified.Length; j++)
+                    {
+                        if (modified[j] is ThoughtTestContainer modifiedThoughtTestContainer)
+                        {
+                            merged[i] = new ThoughtTestContainer(modifiedThoughtTestContainer.thoughtTests);
+                            foundThoughtTestContainer = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundThoughtTestContainer)
                         merged[i] = unmodified[i];
                 }
                 else
@@ -301,6 +358,10 @@ namespace PeopleCurer.Services
                 {
                     return modifiedTextBox;
                 }
+            }
+            else if (unmodified is FearCircleDiagram unmodifiedFearCircleDiagram && modified is FearCircleDiagram modifiedFearCircleDiagram)
+            {
+                return modifiedFearCircleDiagram;
             }
 
             return unmodified;

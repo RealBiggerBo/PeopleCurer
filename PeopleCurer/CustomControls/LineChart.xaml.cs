@@ -2,34 +2,33 @@ using Microsoft.Maui.Controls.Shapes;
 using System.IO;
 using System.Numerics;
 using System.Text;
-using static System.Net.WebRequestMethods;
 
 namespace PeopleCurer.CustomControls;
 
-public partial class StatisticsControl : ContentView
+public partial class LineChart : ContentView
 {
     public static readonly BindableProperty DataProperty =
-        BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(StatisticsControl),
+        BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(LineChart),
             propertyChanged: (bindable, oldVal, newVal) =>
             {
-                StatisticsControl ctrl = (StatisticsControl)bindable;
+                LineChart ctrl = (LineChart)bindable;
                 ctrl.dataPath.Data = ctrl.GetDataGeometry(newVal);
             });
 
     public static readonly BindableProperty YAxisTextFontSizeProperty =
-        BindableProperty.Create(nameof(YAxisTextFontSize), typeof(double), typeof(StatisticsControl), 15d);
+        BindableProperty.Create(nameof(YAxisTextFontSize), typeof(double), typeof(LineChart), 15d);
 
     public static readonly BindableProperty XAxisTextFontSizeProperty =
-        BindableProperty.Create(nameof(XAxisTextFontSize), typeof(double), typeof(StatisticsControl), 15d);
+        BindableProperty.Create(nameof(XAxisTextFontSize), typeof(double), typeof(LineChart), 15d);
 
     public static readonly BindableProperty TextColorProperty =
-        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(StatisticsControl));
+        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(LineChart));
 
     public static readonly BindableProperty AxisColorProperty =
-        BindableProperty.Create(nameof(AxisColor), typeof(Color), typeof(StatisticsControl));
+        BindableProperty.Create(nameof(AxisColor), typeof(Color), typeof(LineChart));
 
     public static readonly BindableProperty DataColorProperty =
-        BindableProperty.Create(nameof(DataColor), typeof(Color), typeof(StatisticsControl));
+        BindableProperty.Create(nameof(DataColor), typeof(Color), typeof(LineChart));
 
     public Dictionary<DateOnly, int> Data
 	{
@@ -74,7 +73,7 @@ public partial class StatisticsControl : ContentView
     Vector2 barDimensions = new Vector2(6,6);
     Vector2 textSpace = new Vector2(30, 30);
 
-	public StatisticsControl()
+	public LineChart()
 	{
 		InitializeComponent();
 	}

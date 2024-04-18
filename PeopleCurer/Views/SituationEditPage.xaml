@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+             x:Class="PeopleCurer.Views.SituationEditPage"
+             x:DataType="{x:Type vm:SituationViewModel}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="5">
+            <Label Text="In welcher Situation willst du deine Befürchtungen testen?"/>
+
+            <Entry Text="{Binding SituationName}"/>
+
+            <Label Text="Wann findet diese Situation statt?"/>
+
+            <Entry Text="{Binding SituationTime}"/>
+
+            <Label Text="Welche Befürchtungen hast du, wenn du an die Situationen denkst?"/>
+
+            <Button Text="Neue Angst hinzufügen" Command="{Binding AddSituationFear}"/>
+
+            <CollectionView ItemsSource="{Binding SituationFears}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Entry Text="{Binding FearName}"/>
+                                <Label Text="Wie sicher bist du dir, dass deine Befürchtung eintritt?"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding FearProbability}"  Minimum="0" Maximum="100"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding FearProbability}" Keyboard="Numeric"/>
+                                </Grid>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Welches Sicherheitsverhalten möchtest du unterlassen?"/>
+
+            <Button Text="Neues Sicherheitsverhalten hinzufügen" Command="{Binding AddSafetyBehaviour}"/>
+
+            <CollectionView ItemsSource="{Binding SituationSafetyBehaviours}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SafetyBehaviourViewModel}">
+                        <Border Margin="0,10">
+                            <Entry Text="{Binding SafetyBehaviourName}"/>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Speichern" Command="{Binding SaveSituation}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

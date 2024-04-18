@@ -17,7 +17,7 @@ namespace PeopleCurer.CustomValueConverters
             {
                 return Math.Floor(d).ToString();
             }
-            return 50;
+            return 50.ToString();
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -29,7 +29,7 @@ namespace PeopleCurer.CustomValueConverters
                     return d;
                 }
             }
-            return "50";
+            return 50d;
         }
     }
 }

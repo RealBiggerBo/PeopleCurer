@@ -10,6 +10,7 @@ namespace PeopleCurer.Models
 {
     [JsonDerivedType(typeof(Course),nameof(Course))]
     [JsonDerivedType(typeof(BehaviourExperiment), nameof(BehaviourExperiment))]
+    [JsonDerivedType(typeof(ThoughtTestContainer), nameof(ThoughtTestContainer))]
     public abstract class Feature;
 
     public sealed class Course : Feature
@@ -42,6 +43,17 @@ namespace PeopleCurer.Models
         public BehaviourExperiment(List<Situation> situations)
         {
             this.situations = situations;
+        }
+    }
+
+    public sealed class ThoughtTestContainer : Feature
+    {
+        [JsonInclude]
+        public List<ThoughtTest> thoughtTests;
+
+        public ThoughtTestContainer(List<ThoughtTest> thoughtTests)
+        {
+            this.thoughtTests = thoughtTests;
         }
     }
 }

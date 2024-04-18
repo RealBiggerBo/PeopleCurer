@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+             x:Class="PeopleCurer.Views.SituationFinishPage"
+             x:DataType="{x:Type vm:SituationViewModel}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="5">
+            <Label Text="{Binding SituationName}"/>
+
+            <Label Text="{Binding SituationTime}"/>
+
+            <Label Text="Wie sehr sind deine Befürchtungen eingetreten?"/>
+
+            <CollectionView ItemsSource="{Binding SituationFears}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Label Text="{Binding FearName}"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding ActualFearStrength}"  Minimum="0" Maximum="100"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding ActualFearStrength}" Keyboard="Numeric"/>
+                                </Grid>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Welches Sicherheitsverhalten möchtest du unterlassen?"/>
+
+            <CollectionView ItemsSource="{Binding SituationSafetyBehaviours}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type vm:SafetyBehaviourViewModel}">
+                        <Border Margin="0,10">
+                            <StackLayout>
+                                <Label Text="{Binding SafetyBehaviourName}"/>
+                                <Label Text="Wie sehr hast du dein Sicherheitsverhalten eingesetzt?"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width=".1*"/>
+                                        <ColumnDefinition Width=".8*"/>
+                                        <ColumnDefinition Width=".1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SafetyBehaviourAmount}"  Minimum="0" Maximum="100"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                                    <Entry Grid.Row="1" Grid.Column="1" Text="{Binding SafetyBehaviourAmount}" Keyboard="Numeric"/>
+                                </Grid>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Wie stark war deine Angst?"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width=".1*"/>
+                    <ColumnDefinition Width=".8*"/>
+                    <ColumnDefinition Width=".1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding OverallFear}"  Minimum="0" Maximum="100"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+
+                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding OverallFear}" Keyboard="Numeric"/>
+            </Grid>
+
+            <Label Text="Was ist deine Schlussfolgerung aus diesem Experiment?"/>
+
+            <Editor Text="{Binding Conclusion}"/>
+
+            <Button Text="Abschließen" Command="{Binding CompletedSituation}"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
