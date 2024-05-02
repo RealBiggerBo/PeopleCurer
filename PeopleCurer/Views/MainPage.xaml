@@ -23,6 +23,8 @@
                         
                         <Label HorizontalOptions="Center" Text="Schön, das du da bist!" FontSize="Title" FontAttributes="Bold"/>
 
+                        <!--<cc:PieChart/>-->
+
                         <Grid VerticalOptions="Center" HorizontalOptions="Center">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="150"/>
@@ -41,7 +43,7 @@
                                 <Button 
                                     BackgroundColor="Transparent" 
                                     Text="{Binding Module4.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
-                                    Command="{Binding Module4.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module4.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
                                     IsEnabled="{Binding Module4.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
@@ -53,7 +55,7 @@
                                 <Button 
                                     BackgroundColor="Transparent" 
                                     Text="{Binding Module1.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
-                                    Command="{Binding Module1.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module1.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
                                     IsEnabled="{Binding Module1.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
@@ -65,7 +67,7 @@
                                 <Button 
                                     BackgroundColor="Transparent" 
                                     Text="{Binding Module3.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
-                                    Command="{Binding Module3.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module3.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
                                     IsEnabled="{Binding Module3.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
@@ -77,7 +79,7 @@
                                 <Button 
                                     BackgroundColor="Transparent" 
                                     Text="{Binding Module2.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
-                                    Command="{Binding Module2.GoToCoursePage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module2.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
                                     IsEnabled="{Binding Module2.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
                         </Grid>
@@ -93,9 +95,9 @@
                             <Label Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             <StackLayout Spacing="10">
-                                <Button Text="Verhaltensexperimente" Command="{Binding GoToBehaivourExperimentPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                                <Button Text="Gedankentest" Command="{Binding GoToThoughtTestPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                                <Button Text="Entspannungsverfahren" Command="{Binding GoToRelaxPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Verhaltensexperimente" Command="{Binding BehaviourExperiment.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Gedankentest" Command="{Binding ThoughtTestContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Entspannungsverfahren" Command="{Binding RelaxationProcedureContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                                 <Button Text="Schlagfertigkeitstraining"/>
                             </StackLayout>
                         </StackLayout>
@@ -106,14 +108,30 @@
                 <DataTemplate>
                     <ScrollView>
                         <StackLayout>
-
-                            <Label>Stärken</Label>
-                            <Label>Hier kommt die Beschreibung hin</Label>
+                            <Label Text="{Binding TherapyPages[3].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            <Label Text="{Binding TherapyPages[3].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             <StackLayout>
-                                <Button Text="Gedankenexperimente"/>
-                                <Button Text="Gedankenexperimente2"/>
-                                <Button Text="Gedankenexperimente3"/>
-                                <Button Text="Gedankenexperimente4"/>
+                                <Button Text="Meine Stärken" Command="{Binding TherapyPages[3].Features[0].StrengthsLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                                <CollectionView ItemsSource="{Binding TherapyPages[3].Features[0].StrengthsLesson.LessonParts[1].TextParts[9].Texts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
+                                            <Label Text="{Binding Text}"/>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                                <Button Text="Meine Erfolgsmomente" Command="{Binding TherapyPages[3].Features[0].SuccessMomentsLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                                <CollectionView ItemsSource="{Binding TherapyPages[3].Features[0].SuccessMomentsLesson.LessonParts[1].TextParts[2].Texts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
+                                            <Label Text="{Binding Text}"/>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                                
+                                <Button Text="Meine Trainingserfolge" Command="{Binding TherapyPages[3].Features[0].TrainingSuccessLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </StackLayout>
                         </StackLayout>
                     </ScrollView>

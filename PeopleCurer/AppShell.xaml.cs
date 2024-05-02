@@ -21,6 +21,8 @@ namespace PeopleCurer
             Routing.RegisterRoute(nameof(ThoughtTestEditPage), typeof(ThoughtTestEditPage));
             Routing.RegisterRoute(nameof(ThoughtTestFinishPage), typeof(ThoughtTestFinishPage));
             Routing.RegisterRoute(nameof(ThoughtTestCompletedPage), typeof(ThoughtTestCompletedPage));
+            Routing.RegisterRoute(nameof(RelaxationProcedureContainerPage), typeof(RelaxationProcedureContainerPage));
+            Routing.RegisterRoute(nameof(RelaxationProcedurePage), typeof(RelaxationProcedurePage));
         }
     }
 }

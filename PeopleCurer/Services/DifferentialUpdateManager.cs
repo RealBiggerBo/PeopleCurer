@@ -79,6 +79,29 @@ namespace PeopleCurer.Services
             }
         }
 
+        public static void UpdateModifiedStrengthsPageVersion()
+        {
+            //TODO: Check creation time to only update if necesarry
+
+            if (SerializationManager.LoadUnmodifiedStrengthsPage(out TherapyPage? unmodifiedStrengthsPage))
+            {
+                if (SerializationManager.LoadStrengthsPage(out TherapyPage? modifiedStrengthsPage, false))
+                {
+                    //get new SymptomCheck
+                    TherapyPage newModifiedStrengthsPage = DifferentialUpdate(unmodifiedStrengthsPage!, modifiedStrengthsPage!);
+                    //Serialize
+                    SerializationManager.SaveStrengthsPage(newModifiedStrengthsPage);
+                    Trace.WriteLine("Merged modified and unmodified versions (StrengthsPage).");
+                }
+                else
+                {
+                    //unmodified exists, modified not => save unmodified as modified
+                    SerializationManager.SaveStrengthsPage(unmodifiedStrengthsPage!);
+                    Trace.WriteLine("No modified version. Created new file (StrengthsPage).");
+                }
+            }
+        }
+
         private static TherapyPage DifferentialUpdate(TherapyPage unmodified, TherapyPage modified)
         {
             TherapyPage merged = new TherapyPage(unmodified.name,unmodified.description, MergeFeatures(unmodified.features, modified.features));
@@ -158,6 +181,26 @@ namespace PeopleCurer.Services
                     if (!foundThoughtTestContainer)
                         merged[i] = unmodified[i];
                 }
+                else if (unmodified[i] is StrengthsCourse unmodifiedStrengthsCourse)
+                {
+                    bool foundStrengthsCourse = false;
+
+                    for (int j = 0; j < modified.Length; j++)
+                    {
+                        if (modified[j] is StrengthsCourse modifiedStrengthsCourse)
+                        {
+                            merged[i] = new StrengthsCourse(
+                                MergeLesson(unmodifiedStrengthsCourse.strengthsLesson, modifiedStrengthsCourse.strengthsLesson),
+                                MergeLesson(unmodifiedStrengthsCourse.successMomentsLesson, modifiedStrengthsCourse.successMomentsLesson),
+                                MergeLesson(unmodifiedStrengthsCourse.trainingSuccessLesson, modifiedStrengthsCourse.trainingSuccessLesson));
+                            foundStrengthsCourse = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundStrengthsCourse)
+                        merged[i] = unmodified[i];
+                }
                 else
                 {
                     merged[i] = unmodified[i];
@@ -165,6 +208,11 @@ namespace PeopleCurer.Services
             }
 
             return merged;
+        }
+
+        private static Lesson MergeLesson(Lesson unmodified, Lesson modified)
+        {
+            return new Lesson(unmodified.lessonName, MergeLessonParts(unmodified.lessonParts, modified.lessonParts));
         }
 
         private static Lesson[] MergeLessons(Lesson[] unmodified, Lesson[] modified)
@@ -362,6 +410,13 @@ namespace PeopleCurer.Services
             else if (unmodified is FearCircleDiagram unmodifiedFearCircleDiagram && modified is FearCircleDiagram modifiedFearCircleDiagram)
             {
                 return modifiedFearCircleDiagram;
+            }
+            else if(unmodified is ListText unmodifiedListText && modified is ListText modifiedListText)
+            {
+                if(unmodifiedListText.maxAmount == modifiedListText.maxAmount)
+                {
+                    return modifiedListText;
+                }
             }
 
             return unmodified;

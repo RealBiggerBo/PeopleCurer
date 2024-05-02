@@ -8,7 +8,7 @@
 
     <ScrollView>
         <VerticalStackLayout>
-            <cc:PieChart/>
+            <cc:PieChart Data="{Binding ChartData}" RenderWith="400" RenderHeight="400"/>
 
             <Label Text="Wie du siehst, gibt es mehere Erklärungen für diese Situation. Sich nur auf den einen negativen Gedanken zu beschränken ist daher nicht besonders realitätsnah."/>
 

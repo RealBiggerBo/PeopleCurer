@@ -7,6 +7,26 @@
     },
     {
       "$type": "ThoughtTestContainer"
+    },
+    {
+      "$type": "RelaxationProcedureContainer",
+      "relaxationProcedures": [
+        {
+          "title": "Progressive Muskelrelaxation (PMR)",
+          "explanation": "Erklärung 1",
+          "effectiveness": "Wirksamkeit 1"
+        },
+        {
+          "title": "Autogenes Training",
+          "explanation": "Erklärung 2",
+          "effectiveness": "Wirksamkeit 2"
+        },
+        {
+          "title": "Atemübung",
+          "explanation": "Erklärung 3",
+          "effectiveness": "Wirksamkeit 3"
+        }
+      ]
     }
   ]
 }

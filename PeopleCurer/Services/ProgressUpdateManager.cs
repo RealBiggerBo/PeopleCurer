@@ -14,6 +14,7 @@ namespace PeopleCurer.Services
         private static TherapyPageViewModel? coursesPage;
         private static TherapyPageViewModel? symptomCheckPage;
         private static TherapyPageViewModel? trainingPage;
+        private static TherapyPageViewModel? strengthsPage;
 
         public static void SetCoursesPage(TherapyPageViewModel page)
         {
@@ -26,6 +27,10 @@ namespace PeopleCurer.Services
         public static void SetTrainingPage(TherapyPageViewModel page)
         {
             trainingPage = page;
+        }
+        public static void SetStrengthsPage(TherapyPageViewModel page)
+        {
+            strengthsPage = page;
         }
 
         public static void UpdateProgress(in LessonViewModel finishedLesson)
@@ -51,13 +56,18 @@ namespace PeopleCurer.Services
                             needsSaving = true;
                             break;
                         }
+                        else if (infoPage.TextParts[j] is ListTextViewModel)
+                        {
+                            needsSaving = true;
+                            break;
+                        }
                     }
                     if (needsSaving)
                         break;
                 }
             }
 
-            //Check if next lesson needs to be set active
+            //Check if next relaxationProcedureVM needs to be set active
             if (finishedLesson.IsActive)
             {
                 finishedLesson.IsActive = true;
@@ -108,6 +118,11 @@ namespace PeopleCurer.Services
                     }
                 }
             }
+
+            if (needsSaving)
+            {
+                UpdateStrengthsData();
+            }
         }
 
         public static void UpdateSymptomCheckData()
@@ -121,6 +136,12 @@ namespace PeopleCurer.Services
             if(trainingPage is null) 
                 return;
             SerializationManager.SaveTrainingPage(trainingPage.GetPage());
+        }
+        public static void UpdateStrengthsData()
+        {
+            if (strengthsPage is null)
+                return;
+            SerializationManager.SaveStrengthsPage(strengthsPage.GetPage());
         }
     }
 }

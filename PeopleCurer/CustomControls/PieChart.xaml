@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PeopleCurer.CustomControls.PieChart">
-    <VerticalStackLayout>
+             x:Class="PeopleCurer.CustomControls.PieChart"
+             x:Name="this">
+    <VerticalStackLayout x:Name="stackLayout" VerticalOptions="Center" Spacing="10">
         <Image x:Name="chartImage" WidthRequest="200" HeightRequest="200"/>
-        
     </VerticalStackLayout>
 </ContentView>

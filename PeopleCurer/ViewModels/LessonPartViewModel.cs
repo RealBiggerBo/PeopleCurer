@@ -70,6 +70,10 @@ namespace PeopleCurer.ViewModels
             {
                 return new FearCircleDiagramViewModel((FearCircleDiagram)textPart);
             }
+            else if (textPart is ListText listText)
+            {
+                return new ListTextViewModel(listText);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }
@@ -158,7 +162,7 @@ namespace PeopleCurer.ViewModels
                 }
             }
 
-            //Failed to find a fitting evaluation
+            //Failed to find StrengthsLesson fitting evaluation
             if (currentEval == int.MaxValue)
             {
                 EvaluationResult = errorMsg;

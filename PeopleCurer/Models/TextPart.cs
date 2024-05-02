@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
+    [JsonDerivedType(typeof(ListText),nameof(ListText))]
     [JsonDerivedType(typeof(FearCircleDiagram),nameof(FearCircleDiagram))]
     [JsonDerivedType(typeof(UserInputTextBlock), nameof(UserInputTextBlock))]
     [JsonDerivedType(typeof(TextBlock), nameof(TextBlock))]
@@ -89,6 +90,20 @@ namespace PeopleCurer.Models
             this.emotion = emotion;
             this.change = change;
             this.behaviour = behaviour;
+        }
+    }
+
+    public sealed class ListText : TextPart
+    {
+        [JsonInclude]
+        public List<TextBox> texts;
+        [JsonInclude]
+        public readonly int maxAmount;
+
+        public ListText(List<TextBox> texts, int maxAmount) 
+        {
+            this.texts = texts;
+            this.maxAmount = maxAmount;
         }
     }
 }

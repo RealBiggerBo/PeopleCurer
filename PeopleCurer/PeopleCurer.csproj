@@ -67,11 +67,15 @@
 
 	<ItemGroup>
 	  <None Remove="Assets\courses.json" />
+	  <None Remove="Assets\strengths.json" />
 	  <None Remove="Assets\symptomCheck.json" />
 	  <None Remove="Assets\training.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Include="Assets\strengths.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </MauiAsset>
 	  <MauiAsset Include="Assets\training.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </MauiAsset>
@@ -121,6 +125,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LessonPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\RelaxationProcedureContainerPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\RelaxationProcedurePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SituationCompletedPage.xaml">

@@ -14,7 +14,10 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
 {
-    public abstract class FeatureViewModel : NotifyableBaseObject;
+    public abstract class FeatureViewModel : NotifyableBaseObject
+    {
+        public virtual DelegateCommand? VisitFeature { get; protected set; }
+    }
 
     public sealed class CourseViewModel : FeatureViewModel
     {
@@ -38,7 +41,7 @@ namespace PeopleCurer.ViewModels
             }
         }
 
-        public DelegateCommand GoToCoursePage { get; }
+        //public DelegateCommand GoToCoursePage { get; }
 
         public CourseViewModel(Course course)
         {
@@ -53,7 +56,7 @@ namespace PeopleCurer.ViewModels
             }
 
             //Routing command
-            GoToCoursePage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(CoursePage),
+            base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(CoursePage),
                 new Dictionary<string, object>
                 {
                     ["Course"] = this
@@ -78,9 +81,14 @@ namespace PeopleCurer.ViewModels
             for (int i = 0; i < (behaviourExperiment.situations?.Count ?? 0); i++)
             {
                 SituationViewModel vm = new SituationViewModel(behaviourExperiment.situations![i]);
-                vm.OnSituationFinishEditEvent += SaveBehaviourExperiment;
                 Situations.Add(vm);
             }
+
+            base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(BehaviourExperimentPage),
+            new Dictionary<string, object>
+            {
+                ["BehaviourExperimentVM"] = this
+            }));
 
             AddSituation = new DelegateCommand((obj) =>
             {
@@ -90,8 +98,10 @@ namespace PeopleCurer.ViewModels
                 behaviourExperiment.situations.Add(newSituation);
                 //VM
                 SituationViewModel vm = new SituationViewModel(newSituation);
-                vm.OnSituationFinishEditEvent += SaveBehaviourExperiment;
                 Situations.Add(vm);
+
+                //save changes
+                ProgressUpdateManager.UpdateTrainingData();
 
                 //Go to next page and allow editing
                 Shell.Current.GoToAsync(nameof(SituationEditPage),
@@ -109,14 +119,11 @@ namespace PeopleCurer.ViewModels
                     behaviourExperiment.situations?.Remove(situation.situation);
                     //VM
                     Situations.Remove(situation);
+
+                    //save changes
+                    ProgressUpdateManager.UpdateTrainingData();
                 }
             });
-        }
-
-        private void SaveBehaviourExperiment(object? obj, EventArgs e)
-        {
-            //Save new data
-            ProgressUpdateManager.UpdateTrainingData();
         }
     }
 
@@ -139,6 +146,12 @@ namespace PeopleCurer.ViewModels
                 ThoughtTests.Add(new ThoughtTestViewModel(thoughtTestContainer.thoughtTests![i]));
             }
 
+            base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(ThoughtTestContainerPage),
+                    new Dictionary<string, object>
+                    {
+                        ["ThoughtTestContainerVM"] = this
+                    }));
+
             AddSituation = new DelegateCommand((obj) =>
             {
                 ThoughtTest newTest = new ThoughtTest("neuer Gedankentest", new Thought("neuer Gedanke",50), [], [], string.Empty, false);
@@ -156,6 +169,9 @@ namespace PeopleCurer.ViewModels
                     {
                         ["ThoughtTestVM"] = vm
                     });
+
+                //save changes
+                ProgressUpdateManager.UpdateTrainingData();
             });
 
             DeleteSituation = new DelegateCommand((obj) =>
@@ -166,6 +182,9 @@ namespace PeopleCurer.ViewModels
                     thoughtTestContainer.thoughtTests?.Remove(test.thoughtTest);
                     //VM
                     ThoughtTests.Remove(test);
+
+                    //save changes
+                    ProgressUpdateManager.UpdateTrainingData();
                 }
             });
         }
@@ -174,6 +193,48 @@ namespace PeopleCurer.ViewModels
         {
             //Save new data
             ProgressUpdateManager.UpdateTrainingData();
+        }
+    }
+
+    public sealed class RelaxationProcedureContainerViewModel : FeatureViewModel
+    {
+        public readonly RelaxationProcedureContainer relaxationProcedureContainer;
+
+        public RelaxationProcedureViewModel[] RelaxationProcedures { get; }
+
+        public RelaxationProcedureContainerViewModel(RelaxationProcedureContainer relaxationProcedureContainer)
+        {
+            this.relaxationProcedureContainer = relaxationProcedureContainer;
+
+            RelaxationProcedures = new RelaxationProcedureViewModel[relaxationProcedureContainer.relaxationProcedures?.Count ?? 0];
+            for (int i = 0; i < (relaxationProcedureContainer.relaxationProcedures?.Count ?? 0); i++)
+            {
+                RelaxationProcedures[i] = new RelaxationProcedureViewModel(relaxationProcedureContainer.relaxationProcedures![i]);
+            }
+
+            base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(RelaxationProcedureContainerPage),
+                    new Dictionary<string, object>
+                    {
+                        ["RelaxationProcedureContainerVM"] = this
+                    }));
+        }
+    }
+
+    public sealed class StrengthsCourseViewModel : FeatureViewModel
+    {
+        public readonly StrengthsCourse strengthsCourse;
+
+        public LessonViewModel StrengthsLesson { get; }
+        public LessonViewModel SuccessMomentsLesson { get; }
+        public LessonViewModel TrainingSuccessLesson { get; }
+
+        public StrengthsCourseViewModel(StrengthsCourse strengthsCourse)
+        {
+            this.strengthsCourse = strengthsCourse;
+
+            StrengthsLesson = new LessonViewModel(strengthsCourse.strengthsLesson);
+            SuccessMomentsLesson = new LessonViewModel(strengthsCourse.successMomentsLesson);
+            TrainingSuccessLesson = new LessonViewModel(strengthsCourse.trainingSuccessLesson);
         }
     }
 }

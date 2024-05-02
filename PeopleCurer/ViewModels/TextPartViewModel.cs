@@ -3,6 +3,7 @@ using PeopleCurer.MVVMHelpers;
 using PeopleCurer.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -200,5 +201,49 @@ namespace PeopleCurer.ViewModels
         {
             this.fearCircleDiagram = fearCircleDiagram;
         }
+    }
+
+    public sealed class ListTextViewModel : TextPartViewModel
+    {
+        public readonly ListText listText;
+
+        public ObservableCollection<TextBoxViewModel> Texts { get; }
+
+        public int MaxAmount { get => listText.maxAmount; }
+
+        public DelegateCommand AddTextCMD { get; }
+        public DelegateCommand RemoveTextCMD { get; }
+
+        public ListTextViewModel(ListText listText)
+        {
+            this.listText = listText;
+
+            listText.texts ??= new List<TextBox>();
+            Texts = new ObservableCollection<TextBoxViewModel>();
+            for (int i = 0; i < listText.texts.Count; i++)
+            {
+                Texts.Add(new TextBoxViewModel(listText.texts[i]));
+            }
+
+            AddTextCMD = new DelegateCommand((obj) =>
+            {
+                TextBox box = new TextBox(string.Empty, "");
+                Texts.Add(new TextBoxViewModel(box));
+                listText.texts.Add(box);
+
+                AddTextCMD?.RaiseCanExecuteChanged();
+            },
+            (obj) => MaxAmount == -1 || (Texts.Count < MaxAmount));
+            RemoveTextCMD = new DelegateCommand((obj) =>
+            {
+                if (obj is TextBoxViewModel box)
+                {
+                    Texts.Remove(box);
+                    listText.texts.Remove(box.textBox);
+                    AddTextCMD?.RaiseCanExecuteChanged();
+                }
+            });
+        }
+
     }
 }

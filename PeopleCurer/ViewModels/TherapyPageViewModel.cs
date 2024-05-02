@@ -44,6 +44,14 @@ namespace PeopleCurer.ViewModels
             {
                 return new ThoughtTestContainerViewModel(thoughtTest);
             }
+            else if(feature is RelaxationProcedureContainer relaxProcedure)
+            {
+                return new RelaxationProcedureContainerViewModel(relaxProcedure);
+            }
+            else if(feature is StrengthsCourse strengthsCourse)
+            {
+                return new StrengthsCourseViewModel(strengthsCourse);
+            }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }

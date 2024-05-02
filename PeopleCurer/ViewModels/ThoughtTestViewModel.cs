@@ -60,6 +60,17 @@ namespace PeopleCurer.ViewModels
             }
         }
 
+        public List<Thought> ChartData 
+        {
+            get
+            {
+                List<Thought> allThoughts = new List<Thought>(thoughtTest.alternateThoughts);
+                allThoughts.Insert(0,thoughtTest.mainThought);
+
+                return allThoughts;
+            }
+        }
+
         public DelegateCommand GoToThoughtTestPage { get; }
         public DelegateCommand AddEmotion { get; }
         public DelegateCommand DeleteEmotion { get; }

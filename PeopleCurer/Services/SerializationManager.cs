@@ -18,6 +18,9 @@ namespace PeopleCurer.Services
         static readonly string relativeUnmodifiedTrainingPageDataPath = Path.Combine("Assets", "training.json");
         static readonly string modifiedTrainingPageDataPath = Path.Combine(FileSystem.AppDataDirectory, "Assets", "training.json");
 
+        static readonly string relativeUnmodifiedStrengthsPageDataPath = Path.Combine("Assets", "strengths.json");
+        static readonly string modifiedStrengthsPageDataPath = Path.Combine(FileSystem.AppDataDirectory, "Assets", "strengths.json");
+
         static readonly string relativeUnmodifiedSymptomCheckDataPath = Path.Combine("Assets", "symptomCheck.json");
         static readonly string modifiedSymptomCheckDataPath = Path.Combine(FileSystem.AppDataDirectory, "Assets", "symptomCheck.json");
 
@@ -67,7 +70,7 @@ namespace PeopleCurer.Services
         public static void RemoveCourses()
         {
             File.Delete(modifiedCoursesDataPath);
-            if(!Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedCoursesDataPath)!).Any())
+            if (!Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedCoursesDataPath)!).Any())
                 Directory.Delete(Path.GetDirectoryName(modifiedCoursesDataPath)!);
         }
 
@@ -98,7 +101,7 @@ namespace PeopleCurer.Services
                 return false;
             }
             string data = File.ReadAllText(modifiedTrainingPageDataPath);
-           
+
             trainingPage = JsonSerializer.Deserialize<TherapyPage>(data);
 
             return trainingPage is not null;
@@ -117,6 +120,62 @@ namespace PeopleCurer.Services
             File.Delete(modifiedTrainingPageDataPath);
             if (Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedTrainingPageDataPath)!).Length != 0)
                 Directory.Delete(Path.GetDirectoryName(modifiedTrainingPageDataPath)!);
+        }
+
+        //StrengthsPage
+        public static bool LoadUnmodifiedStrengthsPage(out TherapyPage? strengthsPage)
+        {
+            if (!FileSystem.AppPackageFileExistsAsync(relativeUnmodifiedStrengthsPageDataPath).Result)
+            {
+                strengthsPage = null;
+                return false;
+            }
+
+            try
+            {
+                using (Stream fs = FileSystem.OpenAppPackageFileAsync(relativeUnmodifiedStrengthsPageDataPath).Result)
+                {
+                    strengthsPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return strengthsPage is not null;
+        }
+        public static bool LoadStrengthsPage(out TherapyPage? strengthsPage, bool tryDifferentialUpdate)
+        {
+            if (tryDifferentialUpdate)
+                DifferentialUpdateManager.UpdateModifiedStrengthsPageVersion();
+
+            if (!File.Exists(modifiedStrengthsPageDataPath))
+            {
+                strengthsPage = null;
+                return false;
+            }
+            string data = File.ReadAllText(modifiedStrengthsPageDataPath);
+
+            strengthsPage = JsonSerializer.Deserialize<TherapyPage>(data);
+
+            return strengthsPage is not null;
+        }
+        public static void SaveStrengthsPage(in TherapyPage strengthsPage)
+        {
+            string data = JsonSerializer.Serialize<TherapyPage>(strengthsPage);
+
+            if (!Directory.Exists(modifiedStrengthsPageDataPath))
+                Directory.CreateDirectory(Path.GetDirectoryName(modifiedStrengthsPageDataPath)!);
+
+            File.WriteAllText(modifiedStrengthsPageDataPath, data);
+        }
+        public static void RemoveStrengthsPage()
+        {
+            File.Delete(modifiedStrengthsPageDataPath);
+            if (Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedStrengthsPageDataPath)!).Length != 0)
+                Directory.Delete(Path.GetDirectoryName(modifiedStrengthsPageDataPath)!);
         }
 
         //BehaviourExperiment
@@ -213,9 +272,9 @@ namespace PeopleCurer.Services
 
             return userInputData is not null;
         }
-        public static void SaveUserInputData(in Dictionary<string,string> userInputData)
+        public static void SaveUserInputData(in Dictionary<string, string> userInputData)
         {
-            string data = JsonSerializer.Serialize<Dictionary<string,string>>(userInputData);
+            string data = JsonSerializer.Serialize<Dictionary<string, string>>(userInputData);
 
             if (!Directory.Exists(absoluteUserInputDataPath))
                 Directory.CreateDirectory(Path.GetDirectoryName(absoluteUserInputDataPath)!);

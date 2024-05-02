@@ -94,7 +94,7 @@ namespace PeopleCurer.ViewModels
         public DelegateCommand FinishSituation { get; }
         public DelegateCommand CompletedSituation { get; }
 
-        public EventHandler OnSituationFinishEditEvent;
+        //public EventHandler OnSituationFinishEditEvent;
 
         public SituationViewModel(Situation situation)
         {
@@ -174,7 +174,7 @@ namespace PeopleCurer.ViewModels
             SaveSituation = new DelegateCommand((obj) =>
             {
                 if(!(obj is string s && s == "False"))
-                    OnSituationFinishEditEvent?.Invoke(this, EventArgs.Empty);
+                    ProgressUpdateManager.UpdateTrainingData();
                 Shell.Current.GoToAsync("..");
             });
             FinishSituation = new DelegateCommand((obj) =>
@@ -188,7 +188,7 @@ namespace PeopleCurer.ViewModels
             CompletedSituation = new DelegateCommand((obj) =>
             {
                 this.IsFinished = true;
-                OnSituationFinishEditEvent?.Invoke(this, EventArgs.Empty);
+                ProgressUpdateManager.UpdateTrainingData();
                 Shell.Current.GoToAsync("../" + nameof(SituationCompletedPage),
                     new Dictionary<string, object>
                     {

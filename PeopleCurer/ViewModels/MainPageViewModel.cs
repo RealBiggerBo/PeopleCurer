@@ -16,10 +16,14 @@ namespace PeopleCurer.ViewModels
         public CourseViewModel? Module3 { get; }
         public CourseViewModel? Module4 { get; }
 
+        public BehaviourExperimentViewModel? BehaviourExperiment { get; }
+        public ThoughtTestContainerViewModel? ThoughtTestContainer { get; }
+        public RelaxationProcedureContainerViewModel? RelaxationProcedureContainer { get; }
+
         public DelegateCommand GoToSymptomCheckLesson { get; }
-        public DelegateCommand GoToBehaivourExperimentPage { get; }
-        public DelegateCommand GoToThoughtTestPage { get; }
-        public DelegateCommand GoToRelaxPage { get; }
+        //public DelegateCommand GoToBehaivourExperimentPage { get; }
+        //public DelegateCommand GoToThoughtTestPage { get; }
+        //public DelegateCommand GoToRelaxPage { get; }
         //public DelegateCommand GoToResponseTraining { get; }
 
         public MainPageViewModel()
@@ -75,29 +79,16 @@ namespace PeopleCurer.ViewModels
                 ProgressUpdateManager.SetTrainingPage(vm);
                 TherapyPages.Add(vm);
 
-                GoToBehaivourExperimentPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(BehaviourExperimentPage),
-                    new Dictionary<string, object>
-                    {
-                        ["BehaviourExperimentVM"] = (BehaviourExperimentViewModel)TherapyPages[2].Features[0]
-                    }));
-                GoToThoughtTestPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(ThoughtTestContainerPage),
-                    new Dictionary<string, object>
-                    {
-                        ["ThoughtTestContainerVM"] = ((ThoughtTestContainerViewModel)vm.Features[1])
-                    }));
-    /// <summary>
-    /// 
-    /// TODO: 
-    /// create lessonparts for kognitive umstrukturierung etc
-    ///     
-    /// 
-    /// 
-    /// Audio und Video????
-    /// 
-    /// 
-    /// Meine Stärken uns Meilensteine
-    /// 
-    /// </summary>
+                this.BehaviourExperiment = vm.Features[0] as BehaviourExperimentViewModel;
+                this.ThoughtTestContainer = vm.Features[1] as ThoughtTestContainerViewModel;
+                this.RelaxationProcedureContainer = vm.Features[2] as RelaxationProcedureContainerViewModel;
+            }
+
+            if(SerializationManager.LoadStrengthsPage(out TherapyPage? strengthsPage, true))
+            {
+                TherapyPageViewModel vm = new TherapyPageViewModel(strengthsPage!);
+                ProgressUpdateManager.SetStrengthsPage(vm);
+                TherapyPages.Add(vm);
             }
         }
     }

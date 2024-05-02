@@ -8,10 +8,8 @@
              x:DataType="{x:Type vm:LessonViewModel}">
 
     <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
-    
+
     <ContentPage.Resources>
-        <!--<vc:LessonPartToGroupNameConverter x:Key="LessonToGroupNameConverter"/>-->
-        <!--<vc:DoubleToStringConverter x:Key="DoubleToIntConverter"/>-->
         <ts:TextPartVMTemplateSelector x:Key="TextPartTemplateSelector">
             <ts:TextPartVMTemplateSelector.TextBlockTemplate>
                 <DataTemplate x:DataType="{x:Type vm:TextBlockViewModel}">
@@ -115,6 +113,26 @@
                     </Grid>
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.FearCircleTemplate>
+            <ts:TextPartVMTemplateSelector.ListTextTemplate>
+                <DataTemplate x:DataType="{x:Type vm:ListTextViewModel}">
+                    <VerticalStackLayout>
+                        <Button Text="Neu" Command="{Binding AddTextCMD}"/>
+                        <CollectionView ItemsSource="{Binding Texts}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
+                                    <HorizontalStackLayout>
+                                        <Entry Text="{Binding Text}"/>
+                                        <Button 
+                                        Text="-" 
+                                        Command="{Binding RemoveTextCMD, Source={RelativeSource AncestorType={x:Type vm:ListTextViewModel}}}" 
+                                        CommandParameter="{Binding}"/>
+                                    </HorizontalStackLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </ts:TextPartVMTemplateSelector.ListTextTemplate>
         </ts:TextPartVMTemplateSelector>
         <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
             <ts:LessonPartVMTemplateSelector.InfoPageTemplate>

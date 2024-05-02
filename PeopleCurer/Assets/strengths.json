@@ -1,0 +1,154 @@
+{
+  "name": "Meine Stärken & Trainingsmeilensteine",
+  "description": "Diese Seite zeigt dir ganz konkret, was du bereits alles geschafft hast. Sie soll dich motivieren dran zu-bleiben um deine Ziele zu erreichen.",
+  "features": [
+    {
+      "$type": "StrengthsCourse",
+      "strengthsLesson": {
+        "isActive": true,
+        "lessonName": "Meine Stärken",
+        "lessonParts": [
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "In diesem Kapitel lernst du:"
+              },
+              {
+                "$type": "Enumeration",
+                "texts": [
+                  "Was Stärken sind und",
+                  "Wie du deine eigenen Stärken findest"
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "Stärken sind Talente, Fähigkeiten und Eigenschaften, die uns besonders auszeichnen. Sie sind die Bausteine unserer Persönlichkeit, die uns individuell, authentisch und einzigartig machen.Die Einteilung in Stärken und Schwächen ist dabei allerdings etwas irreführend, viel mehr sind es Eigenschaften die mehr oder weniger vorteilhaft eingesetzt werden.\n\n Ein faszinierendes Beispiel hierfür ist der Pinguin. Seine aerodynamische, torpedoähnliche Form ermöglicht es ihm, blitzschnell durch das Wasser zu gleiten und schützt ihn gleichzeitig vor den eisigen Temperaturen. Tatsächlich ist ein Pinguin in aerodynamischer Hinsicht sogar um ein vielfaches effizienter als ein Porsche, was ihn zum Spitzenreiter in Sachen Aerodynamik macht. Doch versetzen wir den Pinguin in die Wüste, verliert seine Form an Bedeutung. Dort ist Wärme im Überfluss vorhanden, und Wasser ist ein kostbares Gut. Seine besonderen Eigenheiten sind hier nicht viel mehr als eine riesengroße Schwäche.\n Ähnlich verhält es sich mit unseren Eigenschaften und Fähigkeiten. Was in einem Kontext als Stärke gilt, kann in einem anderen als ´Schwäche´ wahrgenommen werden und umgekehrt. Ein beeindruckendes Beispiel dafür liefert die deutsche Managementtrainerin und Sachbuchautorin Vera F. Birkenbihl. Sie berichtete in einem Vortrag davon, dass sie von Bekannten oft als zu gesprächig empfunden wurde. In ihrem Hauptberuf als Vortragsrednerin und Trainerin jedoch stellt genau diese Eigenschaft einen entscheidenden Vorteil dar.\n\nJeder von uns hat einzigartige Eigenschaften und Talente, die ihn besonders machen. Oft sind sie uns nicht sofort bewusst oder werden sogar übersehen.\n\nDie folgenden Fragen sollen dir dabei helfen, deine besonderen Eigenschaften und Stärken zu erkennen:"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Was sind Tätigkeiten oder Aufgaben, bei denen ich mich besonders motiviert fühle und die mir leichtfallen?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Welche Komplimente bekomme ich häufig von anderen Menschen über meine Leistungen oder Fähigkeiten?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Welche Eigenschaften bewundern andere Menschen an mir?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "In welchen Situationen fühle ich mich besonders selbstbewusst und kompetent?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Welche Aktivitäten oder Hobbys übe ich gerne aus, und was sagt das über meine Stärken aus?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Welche Rückmeldungen habe ich von Lehrern, Vorgesetzten oder Kollegen erhalten, die meine Stärken betonen?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Welche vermeintlichen Schwächen können in anderen Situationen durchaus eine Stärke sein?"
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Trage in dem folgenden Textfeld deine 5 größten Stärken ein: "
+              },
+              {
+                "$type": "ListText",
+                "maxAmount": 5
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Gerne kannst du zu einem späteren Zeitpunkt zurückkommen und die Fragen erneut durchgehen. Unsere Eigenschaften und Stärken entwickeln sich im Laufe des Lebens stetig weiter."
+              }
+            ]
+          }
+        ]
+      },
+      "successMomentsLesson": {
+        "lessonName": "Meine Erfolgsmomente",
+        "isActive": true,
+        "lessonParts": [
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "In diesem Kapitel lernst du:"
+              },
+              {
+                "$type": "Enumeration",
+                "texts": [
+                  "Das du mutiger bist, als du denkst"
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "Angst kann uns oft den Blick vernebeln. Sie stellt unsere Erfolge in den Schatten und lässt unsere Fehler hell aufleuchten. Vielleicht fühlst du dich klein, schwach und hilflos. Lass mir dir sagen, dass bist du nicht. Es ist die Angst die dich das glauben lässt. Du hast bereits viele Situationen gemeistert, die dir Angst bereitet haben. Das zeugt von deiner inneren Stärke und deinen Mut.\n\nNimm dir einen Augenblick Zeit und denke zurück. Welche herausfordernden Situationen oder Aufgaben hast du schon gemeistert? Vielleicht hast du einem Freund in einer schwierigen Lage geholfen, eine Präsentation vor einer Gruppe gehalten oder ein neues Hobby entdeckt. Vielleicht hast du auch den Mut gehabt, ein Gespräch mit jemandem zu starten, den du nicht kennst. Was hast du in deinem Leben bereits erreicht, auf das du stolz bist? Wofür haben dich andere schon einmal gelobt? "
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Erstelle eine Liste mit all den Herausforderungen die du bereits gemeistert hast."
+              },
+              {
+                "$type": "ListText",
+                "maxAmount": -1
+              },
+              {
+                "$type": "TextBlock",
+                "text": "Wenn du vor einer neuen Herausforderung stehst, erinnere dich daran: Es ist normal, Nervosität oder Angst zu spüren. Doch jede bewältigte Herausforderung stärkt dich weiter. Du kannst dir selbst vertrauen – du schaffst das.\n\nMut bedeutet nicht, keine Angst zu haben, sondern trotz Angst zu handeln. Jemand, der sich trotz sozialer Ängste sozialen Situationen stellt, ist daher nicht ängstlich, sondern wirklich mutig.\n\nMit dieser App hast du einen verlässlichen Begleiter an deiner Seite. Du bist nicht allein auf deinem Weg, und du hast die Kraft, jede Herausforderung zu meistern."
+              }
+            ]
+          }
+        ]
+      },
+      "trainingSuccessLesson": {
+        "lessonName": "Meine Trainingserfolge",
+        "isActive": true,
+        "lessonParts": [
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "In diesem Kapitel lernst du:"
+              },
+              {
+                "$type": "Enumeration",
+                "texts": [
+                  "Warum Training nicht nur im Sport wichtig ist und",
+                  "Warum du unbedingt dranbleiben solltest"
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "InfoPage",
+            "textParts": [
+              {
+                "$type": "TextBlock",
+                "text": "Training ist nicht nur im Sport von Bedeutung, sondern spielt auch eine zentrale Rolle bei der Bewältigung von sozialen Ängsten. Ähnlich wie körperliche Übungen unsere physische Fitness verbessern, können gezielte Übungen und Techniken auch unseren emotionalen und mentalen Zustand verbessern und so Ängste reduzieren.\n\nSoziale Ängste halten uns davon ab, neue Menschen kennenzulernen, an sozialen Aktivitäten teilzunehmen oder uns in beruflichen Situationen selbstbewusst zu präsentieren. Durch gezieltes Training können wir jedoch lernen, besser mit diesen Ängsten umzugehen und sie schrittweise zu reduzieren.\n\nDie Übungen in dieser App sind darauf ausgerichtet, dir praktische Werkzeuge an die Hand zu geben, mit denen du deine sozialen Ängste gezielt angehen kannst. Sie helfen dir dabei, deine Gedanken und Gefühle besser zu verstehen, deine Reaktionen zu kontrollieren und neue Verhaltensmuster zu etablieren. Mit der Zeit wirst du feststellen, dass du dich in sozialen Situationen sicherer und entspannter fühlst.\n\nEs ist wichtig, dranzubleiben und die Übungen regelmäßig durchzuführen. Wie beim Training im Sport benötigen wir für die Bewältigung von Ängsten Zeit und Engagement. Die Fortschritte werden in der Regel nur in kleinen Schritten erfolgen, aber jede erzielte Verbesserung ist ein wichtiger Schritt auf deinem Weg zu mehr Selbstvertrauen und Wohlbefinden.\n\nDenke daran, dass jede Übung und jede Herausforderung, die du meisterst, dich näher an dein Ziel bringt. Du investierst in deine eigene Entwicklung und wirst mit der Zeit die positiven Veränderungen spüren. Also, bleib dran und nutze diese App als deinen verlässlichen Begleiter auf dem Weg zu einem selbstbestimmten und erfüllten Leben."
+              }
+            ]
+          }
+        ]
+      },
+      "isActive": true
+    }
+  ]
+}
