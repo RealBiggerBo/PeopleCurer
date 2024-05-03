@@ -1,4 +1,5 @@
 using Microsoft.Maui.Controls.Shapes;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -9,10 +10,10 @@ public partial class LineChart : ContentView
 {
     public static readonly BindableProperty DataProperty =
         BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(LineChart),
-            propertyChanged: (bindable, oldVal, newVal) =>
+            propertyChanged: async(bindable, oldVal, newVal) =>
             {
                 LineChart ctrl = (LineChart)bindable;
-                ctrl.dataPath.Data = ctrl.GetDataGeometry(newVal);
+                ctrl.dataPath.Data = await Task.Run(() => ctrl.GetDataGeometry(newVal));
             });
 
     public static readonly BindableProperty YAxisTextFontSizeProperty =
@@ -80,6 +81,8 @@ public partial class LineChart : ContentView
 
     private void RedrawControl(float width, float height)
     {
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
         float yAxisLength = height - textSpace.Y;
         float xAxisLength = width - textSpace.X;
         axisLength = new Vector2(xAxisLength, yAxisLength);
@@ -159,7 +162,7 @@ public partial class LineChart : ContentView
     {
         s.Append('M');
         s.Append(startingPoint.X);
-        s.Append(' ');
+        s.Append(',');
         s.Append(startingPoint.Y);
         s.Append('V');
         s.Append(0);
@@ -195,7 +198,7 @@ public partial class LineChart : ContentView
     {
         s.Append('M');
         s.Append(startingPoint.X);
-        s.Append(' ');
+        s.Append(',');
         s.Append(startingPoint.Y);
         s.Append('H');
         s.Append(startingPoint.X + xAxisLength);
@@ -253,10 +256,33 @@ public partial class LineChart : ContentView
         return builder.ToString();
     }
 
-    private void StatisticsAbsoluteLayout_SizeChanged(object sender, EventArgs e)
+    private async void StatisticsAbsoluteLayout_SizeChanged(object sender, EventArgs e)
     {
         if (sender is AbsoluteLayout layout)
-            RedrawControl((float)layout.Width, (float)layout.Height);
+        {
+            await Task.Run(() => RedrawControl((float)layout.Width, (float)layout.Height));
+
+            //update labels
+            Label0_SizeChanged(sender, e);
+            Label10_SizeChanged(sender, e);
+            Label20_SizeChanged(sender, e);
+            Label30_SizeChanged(sender, e);
+            Label40_SizeChanged(sender, e);
+            Label50_SizeChanged(sender, e);
+            Label60_SizeChanged(sender, e);
+            Label70_SizeChanged(sender, e);
+            Label80_SizeChanged(sender, e);
+            Label90_SizeChanged(sender, e);
+            Label100_SizeChanged(sender, e);
+
+            LabelX1_SizeChanged(sender, e);
+            LabelX2_SizeChanged(sender, e);
+            LabelX3_SizeChanged(sender, e);
+            LabelX4_SizeChanged(sender, e);
+            LabelX5_SizeChanged(sender, e);
+            LabelX6_SizeChanged(sender, e);
+            LabelX7_SizeChanged(sender, e);
+        }
     }
 
     private void Label0_SizeChanged(object sender, EventArgs e)
