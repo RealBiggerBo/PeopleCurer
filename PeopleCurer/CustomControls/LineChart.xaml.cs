@@ -10,7 +10,7 @@ public partial class LineChart : ContentView
 {
     public static readonly BindableProperty DataProperty =
         BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(LineChart),
-            propertyChanged: async(bindable, oldVal, newVal) =>
+            propertyChanged: async (bindable, oldVal, newVal) =>
             {
                 LineChart ctrl = (LineChart)bindable;
                 ctrl.dataPath.Data = await Task.Run(() => ctrl.GetDataGeometry(newVal));
@@ -77,12 +77,12 @@ public partial class LineChart : ContentView
 	public LineChart()
 	{
 		InitializeComponent();
+
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 	}
 
     private void RedrawControl(float width, float height)
     {
-        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-
         float yAxisLength = height - textSpace.Y;
         float xAxisLength = width - textSpace.X;
         axisLength = new Vector2(xAxisLength, yAxisLength);
@@ -120,7 +120,28 @@ public partial class LineChart : ContentView
         if (Data.Count > 6)
             labelX7.Text = DateToString(Data.ElementAt(6).Key);
 
-        //Update UI
+
+        Label0_SizeChanged(null,EventArgs.Empty);
+        Label10_SizeChanged(null, EventArgs.Empty);
+        Label20_SizeChanged(null, EventArgs.Empty);
+        Label30_SizeChanged(null, EventArgs.Empty);
+        Label40_SizeChanged(null, EventArgs.Empty);
+        Label50_SizeChanged(null, EventArgs.Empty);
+        Label60_SizeChanged(null, EventArgs.Empty);
+        Label70_SizeChanged(null, EventArgs.Empty);
+        Label80_SizeChanged(null, EventArgs.Empty);
+        Label90_SizeChanged(null, EventArgs.Empty);
+        Label100_SizeChanged(null, EventArgs.Empty);
+
+        LabelX1_SizeChanged(null, EventArgs.Empty);
+        LabelX2_SizeChanged(null, EventArgs.Empty);
+        LabelX3_SizeChanged(null, EventArgs.Empty);
+        LabelX4_SizeChanged(null, EventArgs.Empty);
+        LabelX5_SizeChanged(null, EventArgs.Empty);
+        LabelX6_SizeChanged(null, EventArgs.Empty);
+        LabelX7_SizeChanged(null, EventArgs.Empty);
+
+        //UpdateCanGoToLesson UI
         base.Dispatcher.Dispatch(() => base.InvalidateMeasure());
     }
 
@@ -162,7 +183,7 @@ public partial class LineChart : ContentView
     {
         s.Append('M');
         s.Append(startingPoint.X);
-        s.Append(',');
+        s.Append(' ');
         s.Append(startingPoint.Y);
         s.Append('V');
         s.Append(0);
@@ -198,7 +219,7 @@ public partial class LineChart : ContentView
     {
         s.Append('M');
         s.Append(startingPoint.X);
-        s.Append(',');
+        s.Append(' ');
         s.Append(startingPoint.Y);
         s.Append('H');
         s.Append(startingPoint.X + xAxisLength);
@@ -258,30 +279,9 @@ public partial class LineChart : ContentView
 
     private async void StatisticsAbsoluteLayout_SizeChanged(object sender, EventArgs e)
     {
-        if (sender is AbsoluteLayout layout)
+        if (sender is AbsoluteLayout layout && layout.Width != 0 && layout.Height != 0)
         {
             await Task.Run(() => RedrawControl((float)layout.Width, (float)layout.Height));
-
-            //update labels
-            Label0_SizeChanged(sender, e);
-            Label10_SizeChanged(sender, e);
-            Label20_SizeChanged(sender, e);
-            Label30_SizeChanged(sender, e);
-            Label40_SizeChanged(sender, e);
-            Label50_SizeChanged(sender, e);
-            Label60_SizeChanged(sender, e);
-            Label70_SizeChanged(sender, e);
-            Label80_SizeChanged(sender, e);
-            Label90_SizeChanged(sender, e);
-            Label100_SizeChanged(sender, e);
-
-            LabelX1_SizeChanged(sender, e);
-            LabelX2_SizeChanged(sender, e);
-            LabelX3_SizeChanged(sender, e);
-            LabelX4_SizeChanged(sender, e);
-            LabelX5_SizeChanged(sender, e);
-            LabelX6_SizeChanged(sender, e);
-            LabelX7_SizeChanged(sender, e);
         }
     }
 

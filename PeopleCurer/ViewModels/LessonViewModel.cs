@@ -81,11 +81,12 @@ namespace PeopleCurer.ViewModels
 
             CurrentLessonPartIndex = 0;
 
-            GoToLessonPage = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(LessonPage),
+            GoToLessonPage = new DelegateCommand(async (obj) => await Shell.Current.GoToAsync(nameof(LessonPage),
                 new Dictionary<string, object>
                 {
                     ["Lesson"] = this
                 }));
+
             GoToNextLessonPart = new DelegateCommand(async (obj) => await GoToNextLessonPartPage());
         }
 

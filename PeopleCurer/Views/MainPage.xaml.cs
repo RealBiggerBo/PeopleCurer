@@ -24,7 +24,7 @@ namespace PeopleCurer.Views
             if (e.Value == true)
             {
                 CarouselView.ScrollTo(0);
-                //Update SymptomCheck -> Button
+                //UpdateCanGoToLesson SymptomCheck -> Button
                 ((MainPageViewModel)this.BindingContext).GoToSymptomCheckLesson.RaiseCanExecuteChanged();
             }
         }

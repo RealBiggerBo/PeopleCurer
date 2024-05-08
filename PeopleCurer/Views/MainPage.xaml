@@ -132,6 +132,14 @@
                                 </CollectionView>
                                 
                                 <Button Text="Meine Trainingserfolge" Command="{Binding TherapyPages[3].Features[0].TrainingSuccessLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                                <CollectionView ItemsSource="{Binding BehaviourExperiment.Situations, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="{x:Type vm:SituationViewModel}">
+                                            <Label Text="{Binding SituationName}"/>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
                             </StackLayout>
                         </StackLayout>
                     </ScrollView>

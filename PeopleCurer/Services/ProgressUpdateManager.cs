@@ -11,6 +11,8 @@ namespace PeopleCurer.Services
 {
     public static class ProgressUpdateManager
     {
+        public static EventHandler? OnSymptomCheckQuestionCompleted { get; set; }
+
         private static TherapyPageViewModel? coursesPage;
         private static TherapyPageViewModel? symptomCheckPage;
         private static TherapyPageViewModel? trainingPage;
@@ -88,6 +90,7 @@ namespace PeopleCurer.Services
                                     if (!course.Lessons[j + 1].IsActive) //check whether update (serialization) is necessary
                                     {
                                         course.Lessons[j + 1].IsActive = true;
+                                        UpdateCourseProgress(i + 1, j + 1);
                                         SerializationManager.SaveCourses(coursesPage.GetPage());
                                     }
                                     else if(needsSaving) //save nonetheless if there was an component that required saving
@@ -105,6 +108,7 @@ namespace PeopleCurer.Services
                                             if(!(coursesPage.Features[i + 1] as CourseViewModel)!.IsActive) //check whether update is necessary
                                             {
                                                 (coursesPage.Features[i + 1] as CourseViewModel)!.IsActive = true;
+                                                UpdateCourseProgress(i + 1, j + 1);
                                                 SerializationManager.SaveCourses(coursesPage.GetPage());
                                             }
                                             else if(needsSaving) //save nonetheless if there was an component that required saving
@@ -122,6 +126,17 @@ namespace PeopleCurer.Services
             if (needsSaving)
             {
                 UpdateStrengthsData();
+            }
+        }
+
+        private static void UpdateCourseProgress(int currentCourseNumber, int lastCompletedLessonNumber)
+        {
+            if (PreferenceManager.UpdateCourseProgress(currentCourseNumber, lastCompletedLessonNumber))
+            {
+                for (int i = 0; i< trainingPage?.Features.Length; i++)
+                {
+                    trainingPage.Features[i].VisitFeature?.RaiseCanExecuteChanged();
+                }
             }
         }
 

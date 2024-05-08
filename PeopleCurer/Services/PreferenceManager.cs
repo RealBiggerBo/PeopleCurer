@@ -10,6 +10,7 @@ namespace PeopleCurer.Services
     {
         private const string lastSymptomCheckDate = "lastSymptomCheckDate";
         private const string welcomePageCompletionStatus = "welcomePageCompletionStatus";
+        private const string courseProgress = "courseProgress";
 
         //last symptom check date
         public static void UpdateLastSymptomCheckDate()
@@ -42,6 +43,34 @@ namespace PeopleCurer.Services
         public static void RemoveWelcomePageCompletionStatus()
         {
             Preferences.Remove(welcomePageCompletionStatus);
+        }
+
+        //course progress
+        /// <summary>
+        /// Updates the preference related to CourseProgress
+        /// </summary>
+        /// <param name="currentCourseNumber">the number of the highest active course starting from 1</param>
+        /// <param name="lastCompletedLessonNumber">the number of the highest completed Lesson starting from 1</param>
+        /// <returns>true if references was updated. False otherwise</returns>
+        public static bool UpdateCourseProgress(int currentCourseNumber, int lastCompletedLessonNumber)
+        {
+            int newProgress = currentCourseNumber * 100 + lastCompletedLessonNumber;
+            int oldProgress = GetCourseProgress();
+
+            if(newProgress > oldProgress)
+            {
+                Preferences.Set(courseProgress, newProgress);
+                return true;
+            }
+            return false;
+        }
+        public static int GetCourseProgress()
+        {
+            return Preferences.Get(courseProgress, 000);
+        }
+        public static void RemoveCourseProgress()
+        {
+            Preferences.Remove(courseProgress);
         }
     }
 }

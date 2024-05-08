@@ -41,10 +41,13 @@ namespace PeopleCurer.Models
     {
         [JsonInclude]
         public List<Situation> situations;
+        [JsonIgnore]
+        public int requiredCourseProgress;
 
         public BehaviourExperiment(List<Situation> situations)
         {
             this.situations = situations;
+            this.requiredCourseProgress = 105;
         }
     }
 
@@ -52,10 +55,13 @@ namespace PeopleCurer.Models
     {
         [JsonInclude]
         public List<ThoughtTest> thoughtTests;
+        [JsonIgnore]
+        public int requiredCourseProgress;
 
         public ThoughtTestContainer(List<ThoughtTest> thoughtTests)
         {
             this.thoughtTests = thoughtTests;
+            this.requiredCourseProgress = 111;
         }
     }
 
@@ -63,10 +69,13 @@ namespace PeopleCurer.Models
     {
         [JsonInclude]
         public List<RelaxationProcedure> relaxationProcedures;
+        [JsonIgnore]
+        public int requiredCourseProgress;
 
         public RelaxationProcedureContainer(List<RelaxationProcedure> relaxationProcedures)
         {
             this.relaxationProcedures = relaxationProcedures;
+            this.requiredCourseProgress = 204;
         }
     }
 

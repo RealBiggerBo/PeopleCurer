@@ -33,7 +33,7 @@ namespace PeopleCurer.ViewModels
             get => course.isActive;
             set
             {
-                if(value != IsActive)
+                if(value != course.isActive)
                 {
                     course.isActive = value;
                     base.RaisePropertyChanged();
@@ -88,7 +88,8 @@ namespace PeopleCurer.ViewModels
             new Dictionary<string, object>
             {
                 ["BehaviourExperimentVM"] = this
-            }));
+            }),
+            (obj) => behaviourExperiment.requiredCourseProgress == -1 || behaviourExperiment.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
 
             AddSituation = new DelegateCommand((obj) =>
             {
@@ -150,7 +151,8 @@ namespace PeopleCurer.ViewModels
                     new Dictionary<string, object>
                     {
                         ["ThoughtTestContainerVM"] = this
-                    }));
+                    }),
+            (obj) => thoughtTestContainer.requiredCourseProgress == -1 || thoughtTestContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
 
             AddSituation = new DelegateCommand((obj) =>
             {
@@ -216,7 +218,8 @@ namespace PeopleCurer.ViewModels
                     new Dictionary<string, object>
                     {
                         ["RelaxationProcedureContainerVM"] = this
-                    }));
+                    }),
+            (obj) => relaxationProcedureContainer.requiredCourseProgress == -1 || relaxationProcedureContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
         }
     }
 

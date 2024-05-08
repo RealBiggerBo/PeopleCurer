@@ -24,13 +24,6 @@
                     "Was all die verschiedenen Situationen in denen du dich unsicher fühlst gemeinsam haben und",
                     "Was das Kontinuum der sozialen Angst ist"
                   ]
-                },
-                {
-                  "$type": "UserInputTextBlock",
-                  "id": "Welcome1"
-                },
-                {
-                  "$type": "FearCircleDiagram"
                 }
               ]
             },
@@ -191,6 +184,9 @@
                 {
                   "$type": "TextBlock",
                   "text": "Stell dir vor, du stehst vor einer großen Herausforderung. Vielleicht musst du gleich eine wichtige Präsentation halten oder dich einer sozialen Situation stellen, die dich schon im Voraus nervös macht. Du spürst, wie sich dein Herzschlag beschleunigt und deine Hände beginnen zu schwitzen. Die Gedanken rasen in deinem Kopf: ´Was, wenn ich versage?´ ´Was werden die anderen von mir denken?´ Willkommen im Teufelskreis der Angst. Lass uns diesen Schritt für Schritt durchgehen und schauen an welchen Stellen wir ausbrechen können.\nAlles beginnt mit einem Auslöser - sei es eine Situation, die uns herausfordert, oder ein Gedanke, der uns unbehaglich macht. Dieser Auslöser kann sich mitunter auch in körperlichen Reaktionen manifestieren, wie einem unruhigen Magen oder einem beengenden Kloß im Hals. Unabhängig davon, wie der Auslöser sich zeigt, nehmen wir diese Signale wahr. Doch hier liegt bereits das erste Hindernis: Unsere Wahrnehmung des Auslösers ist nicht immer objektiv, sondern oft stark verzerrt. Beispielsweise tendieren wir dazu, die Situation als viel zu bedrohlich einzustufen. Diese verzerrte Wahrnehmung der Situation führt zu Gedanken wie ´Oh Gott, die anderen werden sicher bemerken, dass ich rot werde´, ´Ich bin ein Versager´ oder ´Die anderen werden mich für dumm halten´. Diese Gedanken wiederum entfachen ein zentrales Gefühl, das in dieser App eine entscheidende Rolle spielt: die Angst.\nMit zunehmender Angst treten körperliche Veränderungen auf, da unser Körper sich auf eine potenzielle Bedrohung vorbereitet - er mobilisiert Energie für Kampf oder Flucht. Dadurch strömt mehr Blut durch unsere Muskeln, was zu vermehrtem Erröten und Schwitzen führt. Im Gegensatz zu einer realen Kampf- oder Fluchtsituation bleiben wir jedoch stehen, was dazu führt, dass die überschüssige Energie im Körper verbleibt und sich in Zittern, Anspannung und Nervosität äußert.\nDiese körperlichen Veränderungen nehmen wir verstärkt wahr, da wir nicht möchten, dass andere sie bemerken und uns für unsicher halten. Dies führt zu weiteren Gedanken darüber, wie unsere körperlichen Reaktionen von anderen wahrgenommen werden könnten, was wiederum zu vermehrter Angst führt. Dieser Teufelskreis verstärkt sich kontinuierlich und führt zu immer mehr Angst.\nDer Ausweg, der oft gewählt wird, ist die Vermeidung. Dies führt kurzfristig dazu das unser Angstniveau sinkt, beispielsweise sagen wir einen Vortrag ab oder melden uns krank. Langfristig verstärkt sich unsere Angst, da unser Körper lernt, dass diese Situation eine echte Bedrohung zu sein scheint. Indem wir vermeiden, wächst unsere Angst.\nWenn Vermeidung keine Lösung ist, was dann? Wie können wir den Teufelskreis durchbrechen, ohne dass sich die Angst weiter steigert? Diese App zielt darauf ab, jeden einzelnen Schritt dieses Kreislaufs zu betrachten: die Wahrnehmung, die Gedanken, das Gefühl der Angst und die körperlichen Reaktionen. An jedem dieser Punkte können wir einen Ausstieg finden, indem wir unsere Gedanken modifizieren, einen besseren Umgang mit unseren Gefühlen finden oder den körperlichen Veränderungen entgegenwirken. Es ist wichtig herauszufinden, welcher Ansatz für uns am besten funktioniert.\n\nErstelle anhand einer Situation dein persönliches Teufelskreismodell.\nNutze dafür eine Situation, die dir eine Erinnerung geblieben ist, in der du starke soziale Ängste gefühlt hast. Wie ging diese Situation los? Worauf hast du deine Aufmerksamkeit gelenkt? Und was ist danach noch alles passiert?"
+                },
+                {
+                  "$type": "FearCircleDiagram"
                 }
               ]
             }
@@ -429,6 +425,7 @@
       "lessons": [
         {
           "lessonName": "Kontrollleuchten des Lebens",
+          "isActive": true,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -633,6 +630,7 @@
       "lessons": [
         {
           "lessonName": "Kraft des Verhaltens",
+          "isActive": true,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -953,6 +951,7 @@
       "lessons": [
         {
           "lessonName": "Unser Körper in Alarmbereitschaft",
+          "isActive": true,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1231,6 +1230,10 @@
                 {
                   "$type": "TextBox",
                   "question": "Schauen wir uns dein Ziel an, das du dir zu Beginn gesetzt hast. Wie viel Prozent hast du davon bereits erreicht?"
+                },
+                {
+                  "$type": "UserInputTextBlock",
+                  "id": "Welcome1"
                 },
                 {
                   "$type": "TextBox",
