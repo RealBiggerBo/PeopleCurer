@@ -95,8 +95,8 @@
                             <Label Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             <StackLayout Spacing="10">
-                                <Button Text="Verhaltensexperimente" Command="{Binding BehaviourExperiment.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                                 <Button Text="Gedankentest" Command="{Binding ThoughtTestContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                <Button Text="Verhaltensexperimente" Command="{Binding BehaviourExperiment.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                                 <Button Text="Entspannungsverfahren" Command="{Binding RelaxationProcedureContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                                 <Button Text="Schlagfertigkeitstraining"/>
                             </StackLayout>

@@ -47,7 +47,7 @@ namespace PeopleCurer.Models
         public BehaviourExperiment(List<Situation> situations)
         {
             this.situations = situations;
-            this.requiredCourseProgress = 105;
+            this.requiredCourseProgress = 306;
         }
     }
 
@@ -75,7 +75,7 @@ namespace PeopleCurer.Models
         public RelaxationProcedureContainer(List<RelaxationProcedure> relaxationProcedures)
         {
             this.relaxationProcedures = relaxationProcedures;
-            this.requiredCourseProgress = 204;
+            this.requiredCourseProgress = 403;
         }
     }
 

@@ -9,8 +9,10 @@
         WidthRequest="{Binding Source={x:Reference this}, Path=WidthRequest}" 
         HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
         SizeChanged="StatisticsAbsoluteLayout_SizeChanged">
-        
-        <Path x:Name="axisPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}" StrokeThickness="2"/>
+
+        <Image x:Name="chartImage" WidthRequest="200" HeightRequest="200"/>
+
+        <!--<Path x:Name="axisPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}" StrokeThickness="2"/>
 
         <Path x:Name="gridPath" Stroke="Black" StrokeThickness="1.5" Opacity="0.3"/>
 
@@ -34,6 +36,6 @@
         <Label x:Name="labelX6" SizeChanged="LabelX6_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
         <Label x:Name="labelX7" SizeChanged="LabelX7_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
 
-        <Path x:Name="dataPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}"/>
+        <Path x:Name="dataPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}"/>-->
     </AbsoluteLayout>
 </ContentView>
