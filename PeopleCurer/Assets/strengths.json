@@ -32,32 +32,32 @@
                 "text": "Stärken sind Talente, Fähigkeiten und Eigenschaften, die uns besonders auszeichnen. Sie sind die Bausteine unserer Persönlichkeit, die uns individuell, authentisch und einzigartig machen.Die Einteilung in Stärken und Schwächen ist dabei allerdings etwas irreführend, viel mehr sind es Eigenschaften die mehr oder weniger vorteilhaft eingesetzt werden.\n\n Ein faszinierendes Beispiel hierfür ist der Pinguin. Seine aerodynamische, torpedoähnliche Form ermöglicht es ihm, blitzschnell durch das Wasser zu gleiten und schützt ihn gleichzeitig vor den eisigen Temperaturen. Tatsächlich ist ein Pinguin in aerodynamischer Hinsicht sogar um ein vielfaches effizienter als ein Porsche, was ihn zum Spitzenreiter in Sachen Aerodynamik macht. Doch versetzen wir den Pinguin in die Wüste, verliert seine Form an Bedeutung. Dort ist Wärme im Überfluss vorhanden, und Wasser ist ein kostbares Gut. Seine besonderen Eigenheiten sind hier nicht viel mehr als eine riesengroße Schwäche.\n Ähnlich verhält es sich mit unseren Eigenschaften und Fähigkeiten. Was in einem Kontext als Stärke gilt, kann in einem anderen als ´Schwäche´ wahrgenommen werden und umgekehrt. Ein beeindruckendes Beispiel dafür liefert die deutsche Managementtrainerin und Sachbuchautorin Vera F. Birkenbihl. Sie berichtete in einem Vortrag davon, dass sie von Bekannten oft als zu gesprächig empfunden wurde. In ihrem Hauptberuf als Vortragsrednerin und Trainerin jedoch stellt genau diese Eigenschaft einen entscheidenden Vorteil dar.\n\nJeder von uns hat einzigartige Eigenschaften und Talente, die ihn besonders machen. Oft sind sie uns nicht sofort bewusst oder werden sogar übersehen.\n\nDie folgenden Fragen sollen dir dabei helfen, deine besonderen Eigenschaften und Stärken zu erkennen:"
               },
               {
-                "$type": "TextBlock",
-                "text": "Was sind Tätigkeiten oder Aufgaben, bei denen ich mich besonders motiviert fühle und die mir leichtfallen?"
+                "$type": "TextBox",
+                "question": "Was sind Tätigkeiten oder Aufgaben, bei denen ich mich besonders motiviert fühle und die mir leichtfallen?"
               },
               {
-                "$type": "TextBlock",
-                "text": "Welche Komplimente bekomme ich häufig von anderen Menschen über meine Leistungen oder Fähigkeiten?"
+                "$type": "TextBox",
+                "question": "Welche Komplimente bekomme ich häufig von anderen Menschen über meine Leistungen oder Fähigkeiten?"
               },
               {
-                "$type": "TextBlock",
-                "text": "Welche Eigenschaften bewundern andere Menschen an mir?"
+                "$type": "TextBox",
+                "question": "Welche Eigenschaften bewundern andere Menschen an mir?"
               },
               {
-                "$type": "TextBlock",
-                "text": "In welchen Situationen fühle ich mich besonders selbstbewusst und kompetent?"
+                "$type": "TextBox",
+                "question": "In welchen Situationen fühle ich mich besonders selbstbewusst und kompetent?"
               },
               {
-                "$type": "TextBlock",
-                "text": "Welche Aktivitäten oder Hobbys übe ich gerne aus, und was sagt das über meine Stärken aus?"
+                "$type": "TextBox",
+                "question": "Welche Aktivitäten oder Hobbys übe ich gerne aus, und was sagt das über meine Stärken aus?"
               },
               {
-                "$type": "TextBlock",
-                "text": "Welche Rückmeldungen habe ich von Lehrern, Vorgesetzten oder Kollegen erhalten, die meine Stärken betonen?"
+                "$type": "TextBox",
+                "question": "Welche Rückmeldungen habe ich von Lehrern, Vorgesetzten oder Kollegen erhalten, die meine Stärken betonen?"
               },
               {
-                "$type": "TextBlock",
-                "text": "Welche vermeintlichen Schwächen können in anderen Situationen durchaus eine Stärke sein?"
+                "$type": "TextBox",
+                "question": "Welche vermeintlichen Schwächen können in anderen Situationen durchaus eine Stärke sein?"
               },
               {
                 "$type": "TextBlock",

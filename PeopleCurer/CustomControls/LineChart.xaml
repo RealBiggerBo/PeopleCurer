@@ -7,10 +7,9 @@
     <AbsoluteLayout 
         x:Name="statisticsAbsoluteLayout" 
         WidthRequest="{Binding Source={x:Reference this}, Path=WidthRequest}" 
-        HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}" 
-        SizeChanged="StatisticsAbsoluteLayout_SizeChanged">
+        HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}">
 
-        <Image x:Name="chartImage" WidthRequest="200" HeightRequest="200"/>
+        <Image x:Name="chartImage" WidthRequest="300" HeightRequest="300"/>
 
         <!--<Path x:Name="axisPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}" StrokeThickness="2"/>
 
