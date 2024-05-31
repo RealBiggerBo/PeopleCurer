@@ -15,8 +15,7 @@ public partial class LineChart : ContentView
             propertyChanged: (bindable, oldVal, newVal) =>
             {
                 LineChart ctrl = (LineChart)bindable;
-                ctrl.DrawChart();
-                //ctrl.dataPath.Data = await Task.Run(() => ctrl.GetDataGeometry(newVal));
+                ctrl.DrawChart(ctrl.PrepareData());
             });
 
     public static readonly BindableProperty YAxisTextFontSizeProperty =
@@ -70,66 +69,97 @@ public partial class LineChart : ContentView
         set => SetValue(DataColorProperty, value);
     }
 
-    Vector2 startingPoint;
-    Vector2 axisLength;
-    Vector2 barCounts = new Vector2(7, 10);
-    Vector2 barOffsets;
-    Vector2 barDimensions = new Vector2(6,6);
-    Vector2 textSpace = new Vector2(30, 30);
-
-    private int RenderWith = 300;
-    private int RenderHeight = 300;
+    private static int RenderWith = 300;
+    private static int RenderHeight = 300;
 
     private static int charWidth = 10;
     private static int charHeight = 15;
     private static int arrowSteps = 8;
 
-	public LineChart()
+    private static int barLength = 3;
+    private static int numXBars = 7;
+    private static int numYBars = 10;
+
+    private DisplayMode displayMode;
+    private enum DisplayMode
+    {
+        Week,
+        Month
+    }
+
+    public LineChart()
 	{
 		InitializeComponent();
 
+        displayMode = DisplayMode.Week;
+
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        DrawChart();
+        DrawChart(PrepareData());
 	}
 
-    public void DrawChart()
+    private Dictionary<DateOnly, int> PrepareData()
+    {
+        if(Data is null)
+        {
+            return new Dictionary<DateOnly,int>();
+        }
+
+        Dictionary<DateOnly, int> preparedData = new Dictionary<DateOnly, int>();
+
+        DateOnly i = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+        int lastValue = GetLastValue(i);
+        while (i < DateOnly.FromDateTime(DateTime.Today))
+        {
+            if (Data.TryGetValue(i, out int value))
+            {
+                preparedData.Add(i, value);
+            }
+            else
+            {
+                preparedData.Add(i, lastValue);
+            }
+
+            i = i.AddDays(1);
+        }
+
+        if(Data.TryGetValue(DateOnly.FromDateTime(DateTime.Today),out int todayValue))
+        {
+            preparedData.Add(i, todayValue);
+        }
+
+        return preparedData;
+    }
+
+    private int GetLastValue(DateOnly referenceDate)
+    {
+        if(Data.Count == 0)
+            return 50;
+
+        List<DateOnly> datesList = Data.Keys.ToList();
+        datesList.Sort(); //first item is earliest date
+        for (int i = 0; i < datesList.Count; i++)
+        {
+            if (datesList[datesList.Count - 1 - i] < referenceDate)
+            {
+                return Data[datesList[datesList.Count - 1 - i]];
+            }
+        }
+        return Data[datesList[0]];
+    }
+
+    public void DrawChart(Dictionary<DateOnly,int> data)
     {
         if (RenderWith == 0 || RenderHeight == 0)
             return;
 
         //create bitmap
-        byte[] buffer = GetData(RenderWith, RenderHeight, Data);
-
-        //update text
-        //while (stackLayout.Children.Count > 1)
-        //{
-        //    stackLayout.Children.RemoveAt(1);
-        //}
-
-        //for (int x = 0; x < Data.Count; x++)
-        //{
-        //    HorizontalStackLayout horizontalLayout = new HorizontalStackLayout();
-        //    horizontalLayout.VerticalOptions = LayoutOptions.Center;
-        //    horizontalLayout.Spacing = 5;
-
-        //    Rectangle rect = new Rectangle();
-        //    rect.BackgroundColor = Color.FromHsv((float)x / Data.Count, 1, 1);
-        //    rect.WidthRequest = 20;
-        //    rect.HeightRequest = 20;
-        //    horizontalLayout.Children.Add(rect);
-
-        //    Label zeroLabel = new Label();
-        //    zeroLabel.Text = Data[x].thoughtName;
-        //    horizontalLayout.Children.Add(zeroLabel);
-
-        //    stackLayout.Children.Add(horizontalLayout);
-        //}
+        byte[] buffer = GetImageData(RenderWith, RenderHeight, data);
 
         //show image
         chartImage.Source = ImageSource.FromStream(() => new MemoryStream(buffer));
     }
 
-    private byte[] GetData(int width, int height, Dictionary<DateOnly, int> data)
+    private byte[] GetImageData(int width, int height, Dictionary<DateOnly, int> entries)
     {
         //compute buffer length
         int paddingCountPerRow = width % 4;
@@ -201,13 +231,28 @@ public partial class LineChart : ContentView
         buffer[53] = 0x00;
 
         //pixel buffer
-        DrawChart(width, height, buffer.AsSpan<byte>());
-        DrawLine(width, height, buffer.AsSpan());
+        DrawBackground(width,height, buffer.AsSpan());
+        DrawChart(width, height, buffer.AsSpan(), entries);
+        DrawLine(width, height, buffer.AsSpan(), entries);
 
         return buffer;
     }
 
-    private void DrawChart(int width, int height, Span<byte> data)
+    private static void DrawBackground(int width, int height, Span<byte> data)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int index = GetIndexFromXY(x, y, width, height);
+                data[index] = 0xFF;
+                data[index + 1] = 0xFF;
+                data[index + 2] = 0xFF;
+            }
+        }
+    }
+
+    private void DrawChart(int width, int height, Span<byte> data, Dictionary<DateOnly, int> entries)
     {
         //xAxis
         for (int x = charWidth * 3; x < width; x++)
@@ -230,7 +275,7 @@ public partial class LineChart : ContentView
         for (int i = 0; i < arrowSteps; i++)
         {
             //xAxis
-            for (int y = charHeight - i; y < charHeight + i; y++)
+            for (int y = charHeight - i; y <= charHeight + i; y++)
             {
                 int index = GetIndexFromXY(width - i - 1, y, width, height);
                 data[index] = 0xFF;
@@ -238,9 +283,9 @@ public partial class LineChart : ContentView
                 data[index + 2] = 0x00;
             }
             //yAxis
-            for (int x = charWidth * 3 - i; x < charWidth * 3 + i; x++)
+            for (int x = charWidth * 3 - i; x <= charWidth * 3 + i; x++)
             {
-                int index = GetIndexFromXY(x, height - i -1, width, height);
+                int index = GetIndexFromXY(x, height - i - 1, width, height);
                 data[index] = 0xFF;
                 data[index + 1] = 0x00;
                 data[index + 2] = 0x00;
@@ -248,16 +293,12 @@ public partial class LineChart : ContentView
         }
 
         //bars
-        int barLength = 3;
-        int numXBars = 7;
-        int numYBars = 10;
-
         //xAxis
         for(int i = 0; i < numXBars; i++)
         {
-            int xCoord = (int)(charWidth * 3 + (i + 1) * (width - charWidth * 3 - arrowSteps) / (numXBars + 1f));
+            int xCoord = GetXFromDataValue(i, width, height);
 
-            for (int y = charHeight - barLength; y < charHeight + barLength; y++)
+            for (int y = charHeight - barLength; y <= charHeight + barLength; y++)
             {
                 int index = GetIndexFromXY(xCoord, y, width, height);
                 data[index] = 0xFF;
@@ -265,13 +306,12 @@ public partial class LineChart : ContentView
                 data[index + 2] = 0x00;
             }
 
-            if (Data is null)
-                break;
-            if (Data.Count - i - 1 >= 0)
+            if (entries is null)
+                continue;
+            if (i+ 1 < entries.Count)
             {
-
                 Label label = new Label();
-                label.Text = DateToString(Data.ElementAt(Data.Count - i - 1).Key);
+                label.Text = DateToString(entries.ElementAt(i + 1).Key);
                 label.FontSize = 10;
                 InitLabel(label,xCoord, height - charHeight + barLength, true);
 
@@ -281,9 +321,9 @@ public partial class LineChart : ContentView
         //yAxis
         for (int i = 0; i < numYBars; i++)
         {
-            int yCoord = (int)(charHeight + (i + 1) * (height - charHeight - arrowSteps) / (numYBars + 1f));
+            int yCoord = GetYFromDataValue((i + 1) * 10, width, height);
 
-            for (int x = charWidth * 3 - barLength; x < charWidth * 3 + barLength; x++)
+            for (int x = charWidth * 3 - barLength; x <= charWidth * 3 + barLength; x++)
             {
                 int index = GetIndexFromXY(x, yCoord, width, height);
                 data[index] = 0xFF;
@@ -319,21 +359,46 @@ public partial class LineChart : ContentView
         label.SizeChanged += SizeChanged;
     }
 
-    private void DrawLine(int width, int height, Span<byte> data)
+    private static void DrawLine(int width, int height, Span<byte> data, Dictionary<DateOnly,int> entries)
     {
-        if(Data is null)
+        if(entries is null)
             return;
-        for (int i = 0; i < Math.Min(7, Data.Count); i++)
+        for (int i = 0; i < Math.Min(8, entries.Count); i++)
         {
-            int xCoord = (int)(charWidth * 3 + (i + 1) * (width - charWidth * 3 - arrowSteps) / (8f));
-            int dataValue = Data.ElementAt(Math.Max(0,Data.Count - 8) + i).Value;
-            int yCoord = (int)(charHeight + (dataValue / 10f + 1) * (height - charHeight - arrowSteps) / (11f)); ;
+            int xCoord = GetXFromDataValue(i - 1, width, height);
+            int dataValue = entries.ElementAt(Math.Max(0, entries.Count - 8) + i).Value;
+            int yCoord = GetYFromDataValue(dataValue, width, height);
 
-            int index = GetIndexFromXY(xCoord, yCoord , width, height);
+            DrawDataPoint(xCoord, yCoord, width, height, data);
+        }
+    }
 
-            data[index] = 0xFF;
-            data[index++] = 0xFF;
-            data[index++] = 0xFF;
+    private static int GetYFromDataValue(int dataValue, int width, int height)
+    {
+        return (int)(charHeight + (dataValue / 10f) * (height - charHeight - arrowSteps) / (numYBars + 1f));
+    }
+
+    private static int GetXFromDataValue(int dataValue, int width, int height)
+    {
+        return (int)(charWidth * 3 + (dataValue + 1) * (width - charWidth * 3 - arrowSteps) / (numXBars + 1f));
+    }
+
+    private static void DrawDataPoint(int x, int y, int width, int height, Span<byte> data)
+    {
+        int radius = 5;
+        for (int dx = -radius; dx < radius; dx++)
+        {
+            for (int dy = -radius; dy < radius; dy++)
+            {
+                if (dx * dx + dy * dy > radius)
+                    continue;
+
+                int index = GetIndexFromXY(x + dx,y + dy, width, height);
+
+                data[index] = 0x00;
+                data[index++] = 0x00;
+                data[index++] = 0x00;
+            }
         }
     }
 
