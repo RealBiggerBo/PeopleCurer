@@ -159,14 +159,12 @@
                                         <VerticalStackLayout Spacing="10">
                                             <Label Text="{Binding Issue}" FontSize="Caption"/>
                                             <Label Text="{Binding Description}"/>
-
-                                            <cc:LineChart 
-                                                WidthRequest="300" 
-                                                HeightRequest="300" 
+                                            
+                                            <cc:LineChart
                                                 Data="{Binding Data}" 
                                                 XAxisTextFontSize="12" 
-                                                TextColor="CadetBlue"
-                                                AxisColor="BlueViolet"
+                                                TextColor="Black"
+                                                AxisColor="Blue"
                                                 DataColor="Peru"/>
                                         </VerticalStackLayout>
                                     </DataTemplate>

@@ -19,32 +19,32 @@ namespace PeopleCurer.Views
             base.OnAppearing();
         }
 
-        private void RadioButton_MainPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void RadioButton_MainPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (e.Value == true)
             {
-                CarouselView.ScrollTo(0);
+                await Task.Run(() => CarouselView.ScrollTo(0));
                 //UpdateCanGoToLesson SymptomCheck -> Button
                 ((MainPageViewModel)this.BindingContext).GoToSymptomCheckLesson.RaiseCanExecuteChanged();
             }
         }
 
-        private void RadioButton_TrainingPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void RadioButton_TrainingPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (e.Value == true)
-                CarouselView.ScrollTo(1);
+                await Task.Run(() => CarouselView.ScrollTo(1));
         }
 
-        private void RadioButton_StrengthsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void RadioButton_StrengthsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (e.Value == true)
-                CarouselView.ScrollTo(2);
+                await Task.Run(() => CarouselView.ScrollTo(2));
         }
 
-        private void RadioButton_StatisticsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void RadioButton_StatisticsPage_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
-            if(e.Value == true)
-                CarouselView.ScrollTo(3);
+            if (e.Value == true)
+                await Task.Run(() => CarouselView.ScrollTo(3));
         }
     }
 

@@ -1,10 +1,5 @@
-using Android.Views;
-using Microsoft.Maui.Controls.Shapes;
-using PeopleCurer.Models;
-using System.Globalization;
-using System.IO;
+using PeopleCurer.Services;
 using System.Numerics;
-using System.Text;
 
 namespace PeopleCurer.CustomControls;
 
@@ -12,26 +7,44 @@ public partial class LineChart : ContentView
 {
     public static readonly BindableProperty DataProperty =
         BindableProperty.Create(nameof(Data), typeof(Dictionary<DateOnly, int>), typeof(LineChart),
-            propertyChanged: (bindable, oldVal, newVal) =>
+            propertyChanged: async (bindable, oldVal, newVal) =>
             {
                 LineChart ctrl = (LineChart)bindable;
-                ctrl.DrawChart(ctrl.PrepareData());
+                await ctrl.DrawChart();
             });
 
     public static readonly BindableProperty YAxisTextFontSizeProperty =
         BindableProperty.Create(nameof(YAxisTextFontSize), typeof(double), typeof(LineChart), 15d);
 
     public static readonly BindableProperty XAxisTextFontSizeProperty =
-        BindableProperty.Create(nameof(XAxisTextFontSize), typeof(double), typeof(LineChart), 15d);
+        BindableProperty.Create(nameof(XAxisTextFontSize), typeof(double), typeof(LineChart), 10d);
 
     public static readonly BindableProperty TextColorProperty =
-        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(LineChart));
+        BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(LineChart), Color.FromRgb(0, 0, 0), 
+            BindingMode.OneTime,
+            propertyChanged: async (bindable, oldVal, newVal) =>
+            {
+                LineChart ctrl = (LineChart)bindable;
+                await ctrl.DrawChart();
+            });
 
     public static readonly BindableProperty AxisColorProperty =
-        BindableProperty.Create(nameof(AxisColor), typeof(Color), typeof(LineChart));
+        BindableProperty.Create(nameof(AxisColor), typeof(Color), typeof(LineChart), Color.FromRgb(1, 0, 1),
+            BindingMode.OneTime,
+            propertyChanged: async (bindable, oldVal, newVal) =>
+            {
+                LineChart ctrl = (LineChart)bindable;
+                await ctrl.DrawChart();
+            });
 
     public static readonly BindableProperty DataColorProperty =
-        BindableProperty.Create(nameof(DataColor), typeof(Color), typeof(LineChart));
+        BindableProperty.Create(nameof(DataColor), typeof(Color), typeof(LineChart), Color.FromRgb(1,0,1), 
+            BindingMode.OneTime,
+            propertyChanged: async (bindable, oldVal, newVal) =>
+            {
+                LineChart ctrl = (LineChart)bindable;
+                await ctrl.DrawChart();
+            });
 
     public Dictionary<DateOnly, int> Data
 	{
@@ -69,32 +82,37 @@ public partial class LineChart : ContentView
         set => SetValue(DataColorProperty, value);
     }
 
-    private static int RenderWith = 300;
-    private static int RenderHeight = 300;
+    private static readonly int RenderWidth = 300;
+    private static readonly int RenderHeight = 300;
 
-    private static int charWidth = 10;
-    private static int charHeight = 15;
-    private static int arrowSteps = 8;
+    private static readonly int charWidth = 10;
+    private static readonly int charHeight = 15;
+    private static readonly int arrowSteps = 8;
 
-    private static int barLength = 3;
-    private static int numXBars = 7;
-    private static int numYBars = 10;
+    private static readonly int barLength = 3;
+    private static readonly int numXBars_Week = 7;
+    private static readonly int numXBars_HalfYear = 6;
+    private static readonly int numYBars = 10;
 
-    private DisplayMode displayMode;
+    private readonly List<Label> displayedXLabels;
+    private readonly List<Label> displayedYLabels;
+
+    private DisplayMode graphDisplayMode = DisplayMode.Week;
+
     private enum DisplayMode
     {
         Week,
-        Month
+        HalfYear
     }
 
     public LineChart()
 	{
 		InitializeComponent();
 
-        displayMode = DisplayMode.Week;
+        displayedXLabels = new List<Label>();
+        displayedYLabels = new List<Label>();
 
-        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-        DrawChart(PrepareData());
+        ProgressUpdateManager.OnSymptomCheckQuestionCompleted += async (obj, e) => await DrawChart();
 	}
 
     private Dictionary<DateOnly, int> PrepareData()
@@ -106,33 +124,84 @@ public partial class LineChart : ContentView
 
         Dictionary<DateOnly, int> preparedData = new Dictionary<DateOnly, int>();
 
-        DateOnly i = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
-        int lastValue = GetLastValue(i);
-        while (i < DateOnly.FromDateTime(DateTime.Today))
+        switch (graphDisplayMode)
         {
-            if (Data.TryGetValue(i, out int value))
-            {
-                preparedData.Add(i, value);
-            }
-            else
-            {
-                preparedData.Add(i, lastValue);
-            }
+            case DisplayMode.Week:
+                {
+                    DateOnly i = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+                    int lastValue = GetLastValue(i);
+                    while (i < DateOnly.FromDateTime(DateTime.Today))
+                    {
+                        if (Data.TryGetValue(i, out int value))
+                        {
+                            preparedData.Add(i, value);
+                        }
+                        else
+                        {
+                            preparedData.Add(i, lastValue);
+                        }
 
-            i = i.AddDays(1);
+                        i = i.AddDays(1);
+                    }
+
+                    if (Data.TryGetValue(DateOnly.FromDateTime(DateTime.Today), out int todayValue))
+                    {
+                        preparedData.Add(i, todayValue);
+                    }
+                }
+                break;
+            case DisplayMode.HalfYear:
+                {
+                    DateOnly i = DateOnly.FromDateTime(DateTime.Today.AddMonths(-6));
+                    DateOnly monthKey = i.AddMonths(1).AddDays(-1 * i.Day); //last day of previous month
+                    i = i.AddDays(-1 * i.Day + 1);
+                    int lastValue = GetLastValue(i);
+                    int totalSum = 0;
+                    int averagedValues = 0;
+                    while(true)
+                    {
+                        if(i > monthKey || i > DateOnly.FromDateTime(DateTime.Today))
+                        {
+                            if(averagedValues > 0)
+                            {
+                                preparedData.Add(monthKey, totalSum / averagedValues);
+                                lastValue = totalSum / averagedValues;
+                            }
+                            else
+                            {
+                                //no values in that month
+                                preparedData.Add(monthKey, lastValue);
+                            }
+                            totalSum = 0;
+                            averagedValues = 0;
+
+                            //get last day of next month
+                            monthKey = monthKey.AddMonths(2);
+                            monthKey = monthKey.AddDays(-1 * monthKey.Day);
+                            ////
+
+
+                            if (preparedData.Count >= 7)
+                                break;
+                        }
+
+                        if(Data.TryGetValue(i, out int value))
+                        {
+                            totalSum += value;
+                            averagedValues++;
+                        }
+
+                        i = i.AddDays(1);
+                    }
+                }
+                break;
         }
-
-        if(Data.TryGetValue(DateOnly.FromDateTime(DateTime.Today),out int todayValue))
-        {
-            preparedData.Add(i, todayValue);
-        }
-
         return preparedData;
     }
 
     private int GetLastValue(DateOnly referenceDate)
     {
-        if(Data.Count == 0)
+        if (Data.Count == 0)
             return 50;
 
         List<DateOnly> datesList = Data.Keys.ToList();
@@ -147,13 +216,18 @@ public partial class LineChart : ContentView
         return Data[datesList[0]];
     }
 
-    public void DrawChart(Dictionary<DateOnly,int> data)
+    private async Task DrawChart()
     {
-        if (RenderWith == 0 || RenderHeight == 0)
+        if (RenderWidth == 0 || RenderHeight == 0)
             return;
 
+        Dictionary<DateOnly, int> preparedData = await Task.Run(PrepareData);
+
         //create bitmap
-        byte[] buffer = GetImageData(RenderWith, RenderHeight, data);
+        byte[] buffer = await Task.Run(() => GetImageData(RenderWidth, RenderHeight, preparedData));
+
+        DisplayXLabels(RenderWidth, RenderHeight, preparedData);
+        DisplayYLabels(RenderWidth, RenderHeight);
 
         //show image
         chartImage.Source = ImageSource.FromStream(() => new MemoryStream(buffer));
@@ -232,7 +306,7 @@ public partial class LineChart : ContentView
 
         //pixel buffer
         DrawBackground(width,height, buffer.AsSpan());
-        DrawChart(width, height, buffer.AsSpan(), entries);
+        DrawChartAxis(width, height, buffer.AsSpan(), entries);
         DrawLine(width, height, buffer.AsSpan(), entries);
 
         return buffer;
@@ -252,23 +326,19 @@ public partial class LineChart : ContentView
         }
     }
 
-    private void DrawChart(int width, int height, Span<byte> data, Dictionary<DateOnly, int> entries)
+    private void DrawChartAxis(int width, int height, Span<byte> data, Dictionary<DateOnly, int> entries)
     {
         //xAxis
         for (int x = charWidth * 3; x < width; x++)
         {
             int index = GetIndexFromXY(x, charHeight, width, height);
-            data[index] = 0xFF;
-            data[index + 1] = 0x00;
-            data[index + 2] = 0x00;
+            AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
         }
         //yAxis
         for (int y = charHeight; y < height; y++)
         {
             int index = GetIndexFromXY(charWidth * 3,y, width, height);
-            data[index] = 0xFF;
-            data[index + 1] = 0x00;
-            data[index + 2] = 0x00;
+            AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
         }
 
         //arrows
@@ -278,22 +348,18 @@ public partial class LineChart : ContentView
             for (int y = charHeight - i; y <= charHeight + i; y++)
             {
                 int index = GetIndexFromXY(width - i - 1, y, width, height);
-                data[index] = 0xFF;
-                data[index + 1] = 0x00;
-                data[index + 2] = 0x00;
+                AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
             }
             //yAxis
             for (int x = charWidth * 3 - i; x <= charWidth * 3 + i; x++)
             {
                 int index = GetIndexFromXY(x, height - i - 1, width, height);
-                data[index] = 0xFF;
-                data[index + 1] = 0x00;
-                data[index + 2] = 0x00;
+                AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
             }
         }
 
-        //bars
-        //xAxis
+        //xAxis bars
+        int numXBars = graphDisplayMode == DisplayMode.Week ? numXBars_Week : numXBars_HalfYear;
         for(int i = 0; i < numXBars; i++)
         {
             int xCoord = GetXFromDataValue(i, width, height);
@@ -301,24 +367,10 @@ public partial class LineChart : ContentView
             for (int y = charHeight - barLength; y <= charHeight + barLength; y++)
             {
                 int index = GetIndexFromXY(xCoord, y, width, height);
-                data[index] = 0xFF;
-                data[index + 1] = 0x00;
-                data[index + 2] = 0x00;
-            }
-
-            if (entries is null)
-                continue;
-            if (i+ 1 < entries.Count)
-            {
-                Label label = new Label();
-                label.Text = DateToString(entries.ElementAt(i + 1).Key);
-                label.FontSize = 10;
-                InitLabel(label,xCoord, height - charHeight + barLength, true);
-
-                statisticsAbsoluteLayout.Children.Add(label);
+                AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
             }
         }
-        //yAxis
+        //yAxis bars
         for (int i = 0; i < numYBars; i++)
         {
             int yCoord = GetYFromDataValue((i + 1) * 10, width, height);
@@ -326,24 +378,60 @@ public partial class LineChart : ContentView
             for (int x = charWidth * 3 - barLength; x <= charWidth * 3 + barLength; x++)
             {
                 int index = GetIndexFromXY(x, yCoord, width, height);
-                data[index] = 0xFF;
-                data[index + 1] = 0x00;
-                data[index + 2] = 0x00;
+                AxisColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
             }
+        }        
+    }
+
+    private void DisplayXLabels(int width, int height, Dictionary<DateOnly, int> entries)
+    {
+        for (int i = 0; i < displayedXLabels.Count; i++)
+        {
+            statisticsAbsoluteLayout.Children.Remove(displayedXLabels[i]);
+        }
+        displayedXLabels.Clear();
+
+        int numXBars = graphDisplayMode == DisplayMode.Week ? numXBars_Week : numXBars_HalfYear;
+        for (int x = 0; x < Math.Min(numXBars, entries.Count - 1); x++)
+        {
+            int xCoord = GetXFromDataValue(x, width, height);
 
             Label label = new Label();
-            label.Text = ((i + 1) * 10).ToString();
-            InitLabel(label, 0, height - yCoord, false);
+            label.Text = DateToString(entries.ElementAt(x + 1).Key, graphDisplayMode);
+            label.TextColor = TextColor;
+            label.FontSize = XAxisTextFontSize;
+            InitLabel(label, xCoord ,height - charHeight + barLength, true);
 
+            displayedXLabels.Add(label);
             statisticsAbsoluteLayout.Children.Add(label);
         }
+    }
 
-        //add zero label
-        Label zeroLabel = new Label();
-        zeroLabel.Text = "0";
-        InitLabel(zeroLabel, 0, height - charHeight, false);
+    private void DisplayYLabels(int width, int height)
+    {
+        if (displayedYLabels.Count != 11)
+        {
+            for (int i = 0; i < displayedYLabels.Count; i++)
+            {
+                statisticsAbsoluteLayout.Children.Remove(displayedYLabels[i]);
+            }
+            displayedYLabels.Clear();
 
-        statisticsAbsoluteLayout.Children.Add(zeroLabel);
+            for (int y = 0; y < 11; y++)
+            {
+                int yCoord = GetYFromDataValue(y*10, width, height);
+
+                Label label = new Label();
+                label.Text = (y * 10).ToString();
+                label.TextColor = TextColor;
+                label.FontSize = YAxisTextFontSize;
+                InitLabel(label, 0, height - yCoord, false);
+
+                displayedYLabels.Add(label);
+
+                statisticsAbsoluteLayout.Children.Add(label);
+            }
+        }
     }
 
     private void InitLabel(Label label, double xCoord, double yCoord, bool alignWithXCoord)
@@ -359,10 +447,12 @@ public partial class LineChart : ContentView
         label.SizeChanged += SizeChanged;
     }
 
-    private static void DrawLine(int width, int height, Span<byte> data, Dictionary<DateOnly,int> entries)
+    private void DrawLine(int width, int height, Span<byte> data, Dictionary<DateOnly,int> entries)
     {
         if(entries is null)
             return;
+        int lastXCoord = 0;
+        int lastYCoord = 0;
         for (int i = 0; i < Math.Min(8, entries.Count); i++)
         {
             int xCoord = GetXFromDataValue(i - 1, width, height);
@@ -370,6 +460,31 @@ public partial class LineChart : ContentView
             int yCoord = GetYFromDataValue(dataValue, width, height);
 
             DrawDataPoint(xCoord, yCoord, width, height, data);
+
+            if(i > 0)
+            {
+                ConnectDataPoints(width, height, xCoord, yCoord, lastXCoord, lastYCoord, data);
+            }
+
+            lastXCoord = xCoord;
+            lastYCoord = yCoord;
+        }
+    }
+
+    private void ConnectDataPoints(int width, int height, int xCoord, int yCoord, int lastXCoord, int lastYCoord, Span<byte> data)
+    {
+        Vector2 vec = Vector2.Normalize(new Vector2(xCoord - lastXCoord, yCoord - lastYCoord));
+        float x = lastXCoord;
+        float y = lastYCoord;
+
+        while (x < xCoord)
+        {
+            x += vec.X;
+            y += vec.Y;
+
+            int index = GetIndexFromXY((int)x, (int)y, width, height);
+
+            DataColor.ToRgb(out data[index + 2], out data[index + 1], out data[index + 0]);
         }
     }
 
@@ -378,8 +493,9 @@ public partial class LineChart : ContentView
         return (int)(charHeight + (dataValue / 10f) * (height - charHeight - arrowSteps) / (numYBars + 1f));
     }
 
-    private static int GetXFromDataValue(int dataValue, int width, int height)
+    private int GetXFromDataValue(int dataValue, int width, int height)
     {
+        int numXBars = graphDisplayMode == DisplayMode.Week ? numXBars_Week : numXBars_HalfYear;
         return (int)(charWidth * 3 + (dataValue + 1) * (width - charWidth * 3 - arrowSteps) / (numXBars + 1f));
     }
 
@@ -417,8 +533,33 @@ public partial class LineChart : ContentView
         d = (byte)((integer & 0xff000000) >> 24);
     }
 
-    private static string DateToString(DateOnly date)
+    private static string DateToString(DateOnly date, DisplayMode curDisplayMode)
     {
-        return date.Day + "." + date.Month;
+        return curDisplayMode == DisplayMode.Week ? date.Day + "." + date.Month : date.ToString("MMM");
+    }
+
+    private async Task UpdateGraphDisplayMode(DisplayMode newMode)
+    {
+        if(newMode != graphDisplayMode)
+        {
+            graphDisplayMode = newMode;
+            DisplayModeLabel.Text = graphDisplayMode == DisplayMode.Week ? "Woche" : "Halbjahr";
+            await DrawChart();
+        }
+    }
+
+    private async void RB_Week_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if(e.Value == true)
+        {
+            await UpdateGraphDisplayMode(DisplayMode.Week);
+        }
+    }
+    private async void RB_HalfYear_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            await UpdateGraphDisplayMode(DisplayMode.HalfYear);
+        }
     }
 }

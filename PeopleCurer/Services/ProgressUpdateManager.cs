@@ -144,6 +144,7 @@ namespace PeopleCurer.Services
         {
             if (symptomCheckPage is null)
                 return;
+            OnSymptomCheckQuestionCompleted?.Invoke(null,EventArgs.Empty);
             SerializationManager.SaveSymptomCheckData(symptomCheckPage.GetPage());
         }
         public static void UpdateTrainingData()

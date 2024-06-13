@@ -4,37 +4,25 @@
              x:Class="PeopleCurer.CustomControls.LineChart"
              x:Name="this">
 
-    <AbsoluteLayout 
-        x:Name="statisticsAbsoluteLayout" 
-        WidthRequest="{Binding Source={x:Reference this}, Path=WidthRequest}" 
-        HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}">
+    <VerticalStackLayout Margin="12">
+        <HorizontalStackLayout
+            WidthRequest="{Binding Source={x:Reference statisticsAbsoluteLayout}, Path=Width}"
+            HeightRequest="30"
+            FlowDirection="RightToLeft">
+            <RadioButton Grid.Column="1" IsChecked="True" CheckedChanged="RB_Week_CheckedChanged"/>
+            <RadioButton Grid.Column="2" CheckedChanged="RB_HalfYear_CheckedChanged"/>
+            <Label x:Name="DisplayModeLabel" Text="Woche" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
+        </HorizontalStackLayout>
+        <AbsoluteLayout 
+            x:Name="statisticsAbsoluteLayout" 
+            WidthRequest="{Binding Source={x:Reference this}, Path=WidthRequest}" 
+            HeightRequest="{Binding Source={x:Reference this}, Path=HeightRequest}"
+            HorizontalOptions="Center">
 
-        <Image x:Name="chartImage" WidthRequest="300" HeightRequest="300"/>
-
-        <!--<Path x:Name="axisPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}" StrokeThickness="2"/>
-
-        <Path x:Name="gridPath" Stroke="Black" StrokeThickness="1.5" Opacity="0.3"/>
-
-        <Label x:Name="label0" Text="0" SizeChanged="Label0_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label10" Text="10" SizeChanged="Label10_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label20" Text="20" SizeChanged="Label20_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label30" Text="30" SizeChanged="Label30_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label40" Text="40" SizeChanged="Label40_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label50" Text="50" SizeChanged="Label50_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label60" Text="60" SizeChanged="Label60_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label70" Text="70" SizeChanged="Label70_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label80" Text="80" SizeChanged="Label80_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label90" Text="90" SizeChanged="Label90_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="label100" Text="100" SizeChanged="Label100_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=YAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-
-        <Label x:Name="labelX1" SizeChanged="LabelX1_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX2" SizeChanged="LabelX2_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX3" SizeChanged="LabelX3_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX4" SizeChanged="LabelX4_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX5" SizeChanged="LabelX5_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX6" SizeChanged="LabelX6_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-        <Label x:Name="labelX7" SizeChanged="LabelX7_SizeChanged" FontSize="{Binding Source={x:Reference this}, Path=XAxisTextFontSize}" TextColor="{Binding Source={x:Reference this}, Path=TextColor}"/>
-
-        <Path x:Name="dataPath" Stroke="{Binding Source={x:Reference this},Path=AxisColor}"/>-->
-    </AbsoluteLayout>
+            <Image
+                x:Name="chartImage" 
+                WidthRequest="300" 
+                HeightRequest="300"/>
+        </AbsoluteLayout>
+    </VerticalStackLayout>
 </ContentView>
