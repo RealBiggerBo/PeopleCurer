@@ -133,6 +133,9 @@
 	  <MauiXaml Update="Views\RelaxationProcedurePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\RewardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\SituationCompletedPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

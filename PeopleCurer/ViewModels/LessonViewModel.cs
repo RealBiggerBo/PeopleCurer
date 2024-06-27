@@ -116,6 +116,8 @@ namespace PeopleCurer.ViewModels
         {
             if (CurrentLessonPartIndex + 1 >= LessonParts.Length)
             {
+                bool earnsReward = false;
+
                 //Check whether in SymptomCheck
                 if (CurrentLessonPart is SymptomCheckQuestionViewModel)
                 {
@@ -154,7 +156,11 @@ namespace PeopleCurer.ViewModels
                     CurrentLessonPartIndex = 0;//resets view back to lessonPart 0
                                                //Go back to page before
                 }
-                await Shell.Current.GoToAsync("..");
+
+                //TODO: -add save values to every module
+                //      -add reference to next lesson?
+                await Shell.Current.GoToAsync($".\\//.//{nameof(RewardPage)}?RewardValue={100}");
+                //await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={100}");
             }
             else
             {

@@ -23,6 +23,7 @@ namespace PeopleCurer
             Routing.RegisterRoute(nameof(ThoughtTestCompletedPage), typeof(ThoughtTestCompletedPage));
             Routing.RegisterRoute(nameof(RelaxationProcedureContainerPage), typeof(RelaxationProcedureContainerPage));
             Routing.RegisterRoute(nameof(RelaxationProcedurePage), typeof(RelaxationProcedurePage));
+            Routing.RegisterRoute(nameof(RewardPage), typeof(RewardPage));
         }
     }
 }
