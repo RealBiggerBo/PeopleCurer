@@ -33,6 +33,19 @@ namespace PeopleCurer.ViewModels
             }
         }
 
+        public bool IsCompleted
+        {
+            get => lesson.isCompleted;
+            set
+            {
+                if(value != lesson.isCompleted) 
+                { 
+                    lesson.isCompleted = value;
+                    base.RaisePropertyChanged();
+                }
+            }
+        }
+
         public DelegateCommand GoToLessonPage { get; }
         public DelegateCommand GoToNextLessonPart { get; }
         public event EventHandler<IntEventArgs>? NextLessonPartEvent;
@@ -116,8 +129,6 @@ namespace PeopleCurer.ViewModels
         {
             if (CurrentLessonPartIndex + 1 >= LessonParts.Length)
             {
-                bool earnsReward = false;
-
                 //Check whether in SymptomCheck
                 if (CurrentLessonPart is SymptomCheckQuestionViewModel)
                 {
@@ -151,6 +162,19 @@ namespace PeopleCurer.ViewModels
                 }
                 else
                 {
+                    if (!IsCompleted)
+                    {
+                        IsCompleted = true;
+
+                        await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={lesson.lessonReward}");
+                    }
+                    else
+                    {
+                        IsCompleted = false;
+
+                        await Shell.Current.GoToAsync("..");
+                    }
+
                     ProgressUpdateManager.UpdateProgress(this);
 
                     CurrentLessonPartIndex = 0;//resets view back to lessonPart 0
@@ -159,8 +183,6 @@ namespace PeopleCurer.ViewModels
 
                 //TODO: -add save values to every module
                 //      -add reference to next lesson?
-                await Shell.Current.GoToAsync($".\\//.//{nameof(RewardPage)}?RewardValue={100}");
-                //await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={100}");
             }
             else
             {

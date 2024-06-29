@@ -72,8 +72,6 @@ namespace PeopleCurer.Services
             //Check if next relaxationProcedureVM needs to be set active
             if (finishedLesson.IsActive)
             {
-                finishedLesson.IsActive = true;
-
                 //check whether next behaviourExperimentVM or course has to be set active
                 for (int i = 0; i < coursesPage.Features.Length; i++)
                 {
@@ -83,7 +81,7 @@ namespace PeopleCurer.Services
                         {
                             if (course.Lessons[j] == finishedLesson)
                             {
-                                //check if finishedLessin is last behaviourExperimentVM
+                                //check if finishedLesson is last behaviourExperimentVM
                                 if(j+1 < course.Lessons.Length)
                                 {
                                     //not last behaviourExperimentVM => enable next Situation

@@ -21,10 +21,11 @@ namespace PeopleCurer.ViewModels
         public RelaxationProcedureContainerViewModel? RelaxationProcedureContainer { get; }
 
         public DelegateCommand GoToSymptomCheckLesson { get; }
-        //public DelegateCommand GoToBehaivourExperimentPage { get; }
-        //public DelegateCommand GoToThoughtTestPage { get; }
-        //public DelegateCommand GoToRelaxPage { get; }
-        //public DelegateCommand GoToResponseTraining { get; }
+
+        public float LevelProgress
+        {
+            get => RewardManager.GetCurrentLevelProgress();
+        }
 
         public MainPageViewModel()
         {
@@ -90,6 +91,14 @@ namespace PeopleCurer.ViewModels
                 ProgressUpdateManager.SetStrengthsPage(vm);
                 TherapyPages.Add(vm);
             }
+
+            RewardManager.OnRewardXPChanged += UpdateLevelProgress;
+            //UpdateLevelProgress(null, EventArgs.Empty);
+        }
+
+        private void UpdateLevelProgress(object? s, EventArgs e)
+        {
+            base.RaisePropertyChanged(nameof(LevelProgress));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PeopleCurer.MVVMHelpers;
+using PeopleCurer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
 {
-    sealed class RewardViewModel : NotifyableBaseObject
+    sealed class RewardPageViewModel : NotifyableBaseObject
     {
         private int rewardValue;
         public int RewardValue
@@ -18,6 +19,7 @@ namespace PeopleCurer.ViewModels
                 if(rewardValue != value)
                 {
                     rewardValue = value;
+                    RewardManager.AddRewardXP(rewardValue);
                     base.RaisePropertyChanged();
                 }
             }
@@ -25,7 +27,7 @@ namespace PeopleCurer.ViewModels
 
         public DelegateCommand GoBackCMD { get; }
 
-        public RewardViewModel()
+        public RewardPageViewModel()
         {
             GoBackCMD = new DelegateCommand(async (_) => await Shell.Current.GoToAsync(".."));
         }

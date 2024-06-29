@@ -19,11 +19,9 @@
             <ts:CarouselViewTemplateSelector.MainPageTemplate>
                 <DataTemplate>
                     <VerticalStackLayout Spacing="30">
-                        <ProgressBar Progress="0.5" ProgressColor="Green"/>
-                        
-                        <Label HorizontalOptions="Center" Text="Schön, das du da bist!" FontSize="Title" FontAttributes="Bold"/>
+                        <ProgressBar ProgressColor="Green" Progress="{Binding LevelProgress, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" />
 
-                        <!--<cc:PieChart/>-->
+                        <Label HorizontalOptions="Center" Text="Schön, das du da bist!" FontSize="Title" FontAttributes="Bold"/>
 
                         <Grid VerticalOptions="Center" HorizontalOptions="Center">
                             <Grid.RowDefinitions>

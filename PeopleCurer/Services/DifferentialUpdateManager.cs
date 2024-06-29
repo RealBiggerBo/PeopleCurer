@@ -212,7 +212,7 @@ namespace PeopleCurer.Services
 
         private static Lesson MergeLesson(Lesson unmodified, Lesson modified)
         {
-            return new Lesson(unmodified.lessonName, MergeLessonParts(unmodified.lessonParts, modified.lessonParts));
+            return new Lesson(unmodified.lessonName, unmodified.lessonReward, MergeLessonParts(unmodified.lessonParts, modified.lessonParts));
         }
 
         private static Lesson[] MergeLessons(Lesson[] unmodified, Lesson[] modified)
@@ -229,9 +229,12 @@ namespace PeopleCurer.Services
                         if (modified[j].isActive)
                         {
                             merged[i] = new Lesson(
-                                unmodified[i].lessonName, MergeLessonParts(unmodified[i].lessonParts, modified[j].lessonParts))
+                                unmodified[i].lessonName,
+                                unmodified[i].lessonReward,
+                                MergeLessonParts(unmodified[i].lessonParts, modified[j].lessonParts))
                             {
-                                isActive = unmodified[i].isActive || modified[j].isActive
+                                isActive = unmodified[i].isActive || modified[j].isActive,
+                                isCompleted = modified[j].isCompleted,
                             };
                         }
                         else

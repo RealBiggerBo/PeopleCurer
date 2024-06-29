@@ -10,6 +10,7 @@
         {
           "lessonName": "Das Kontinuum",
           "isActive": true,
+          "lessonReward":  100,
           "lessonParts": [
             {
               "$type": "InfoPage",

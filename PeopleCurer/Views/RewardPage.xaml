@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              x:Class="PeopleCurer.Views.RewardPage"
-             x:DataType="vm:RewardViewModel">
+             x:DataType="vm:RewardPageViewModel">
+
     <ContentPage.BindingContext>
-        <vm:RewardViewModel/>
+        <vm:RewardPageViewModel/>
     </ContentPage.BindingContext>
     
     <VerticalStackLayout>

@@ -8,41 +8,45 @@ namespace PeopleCurer.Services
 {
     public static class PreferenceManager
     {
-        private const string lastSymptomCheckDate = "lastSymptomCheckDate";
-        private const string welcomePageCompletionStatus = "welcomePageCompletionStatus";
-        private const string courseProgress = "courseProgress";
+        private const string lastSymptomCheckDate_Key = "lastSymptomCheckDate";
+        private const string welcomePageCompletionStatus_Key = "welcomePageCompletionStatus";
+        private const string courseProgress_Key = "courseProgress";
+        private const string collectedRewardXP_Key = "collectedRewardXP";
 
         //last symptom check date
         public static void UpdateLastSymptomCheckDate()
         {
-            Preferences.Set(lastSymptomCheckDate, DateOnly.FromDateTime(DateTime.UtcNow).ToString());
+            Preferences.Set(lastSymptomCheckDate_Key, DateOnly.FromDateTime(DateTime.UtcNow).ToString());
         }
         public static DateOnly GetLastSymptomCheckDate()
         {
             DateOnly defaultVal = DateOnly.MinValue;
 
-            if (DateOnly.TryParse(Preferences.Get(lastSymptomCheckDate, defaultVal.ToString()), out DateOnly result))
-                return result;
+            if(DateTime.TryParse(defaultVal.ToLongDateString(), out DateTime result))
+            {
+                DateTime lastSymptomCheckDate = Preferences.Get(lastSymptomCheckDate_Key, result);
+                return DateOnly.FromDateTime(lastSymptomCheckDate);
+            }
             return DateOnly.MinValue;
 
         }
         public static void RemoveLastSymptomCheckDate()
         {
-            Preferences.Remove(lastSymptomCheckDate);
+            Preferences.Remove(lastSymptomCheckDate_Key);
         }
 
         //welcome page completion status
         public static void CompleteWelcomePage()
         {
-            Preferences.Set(welcomePageCompletionStatus, true);
+            Preferences.Set(welcomePageCompletionStatus_Key, true);
         }
         public static bool GetWelcomePageCompletionStatus()
         {
-            return Preferences.Get(welcomePageCompletionStatus, false);
+            return Preferences.Get(welcomePageCompletionStatus_Key, false);
         }
         public static void RemoveWelcomePageCompletionStatus()
         {
-            Preferences.Remove(welcomePageCompletionStatus);
+            Preferences.Remove(welcomePageCompletionStatus_Key);
         }
 
         //course progress
@@ -59,18 +63,34 @@ namespace PeopleCurer.Services
 
             if(newProgress > oldProgress)
             {
-                Preferences.Set(courseProgress, newProgress);
+                Preferences.Set(courseProgress_Key, newProgress);
                 return true;
             }
             return false;
         }
         public static int GetCourseProgress()
         {
-            return Preferences.Get(courseProgress, 000);
+            return Preferences.Get(courseProgress_Key, 000);
         }
         public static void RemoveCourseProgress()
         {
-            Preferences.Remove(courseProgress);
+            Preferences.Remove(courseProgress_Key);
+        }
+
+        //reward system
+        public static void AddRewardXP(int gainedXP)
+        {
+            int newXP = GetRewardXP() + gainedXP;
+
+            Preferences.Set(collectedRewardXP_Key, newXP);
+        }
+        public static int GetRewardXP()
+        {
+            return Preferences.Get(collectedRewardXP_Key, 0);
+        }
+        public static void RemoveRewardXP()
+        {
+            Preferences.Remove(collectedRewardXP_Key);
         }
     }
 }

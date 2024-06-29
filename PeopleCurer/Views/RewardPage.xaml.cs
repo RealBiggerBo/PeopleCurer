@@ -8,14 +8,12 @@ public partial class RewardPage : ContentPage
 {
 	public int RewardValue
     {
-        get => ((RewardViewModel)this.BindingContext).RewardValue;
+        get => ((RewardPageViewModel)this.BindingContext).RewardValue;
         set
         {
-            if (value != ((RewardViewModel)this.BindingContext).RewardValue)
+            if (value != ((RewardPageViewModel)this.BindingContext).RewardValue)
             {
-                ((RewardViewModel)this.BindingContext).RewardValue = value;
-
-                OnPropertyChanged();
+                ((RewardPageViewModel)this.BindingContext).RewardValue = value;
             }
         }
     }
