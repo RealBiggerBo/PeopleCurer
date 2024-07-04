@@ -15,6 +15,7 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
         <Label Text="{Binding RewardValue}"/>
+        <ProgressBar x:Name="xpBar"/>
         <Button Text="Weiter" Command="{Binding GoBackCMD}"/>
     </VerticalStackLayout>
 </ContentPage>

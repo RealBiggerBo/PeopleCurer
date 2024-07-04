@@ -212,7 +212,12 @@ namespace PeopleCurer.Services
 
         private static Lesson MergeLesson(Lesson unmodified, Lesson modified)
         {
-            return new Lesson(unmodified.lessonName, unmodified.lessonReward, MergeLessonParts(unmodified.lessonParts, modified.lessonParts));
+            return new Lesson(unmodified.lessonName, unmodified.lessonReward, MergeLessonParts(unmodified.lessonParts, modified.lessonParts))
+            {
+                isActive = unmodified.isActive || modified.isActive,
+                isCompleted = modified.isCompleted,
+                saveFrequency = unmodified.saveFrequency,
+            };
         }
 
         private static Lesson[] MergeLessons(Lesson[] unmodified, Lesson[] modified)

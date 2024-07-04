@@ -7,6 +7,7 @@
       "strengthsLesson": {
         "isActive": true,
         "lessonReward": 200,
+        "saveFrequency": "always",
         "lessonName": "Meine Stärken",
         "lessonParts": [
           {
@@ -79,6 +80,7 @@
       "successMomentsLesson": {
         "lessonName": "Meine Erfolgsmomente",
         "lessonReward": 200,
+        "saveFrequency": "always",
         "isActive": true,
         "lessonParts": [
           {
