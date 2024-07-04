@@ -84,6 +84,7 @@
 	  </MauiAsset>
 	  <MauiAsset Include="Assets\courses.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <Generator></Generator>
 	  </MauiAsset>
 	</ItemGroup>
 

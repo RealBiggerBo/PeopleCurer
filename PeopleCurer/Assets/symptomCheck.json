@@ -10,6 +10,7 @@
         {
           "lessonName": "Symptomcheck",
           "isActive": true,
+          "lessonReward": 50,
           "lessonParts": [
             {
               "$type": "SymptomCheckQuestion",

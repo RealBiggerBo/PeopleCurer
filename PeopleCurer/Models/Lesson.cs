@@ -19,6 +19,9 @@ namespace PeopleCurer.Models
         public int lessonReward;
         [JsonInclude]
         public bool isCompleted;
+        [JsonInclude]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public SaveFrequency saveFrequency;
 
         public Lesson(string lessonName, int lessonReward, params LessonPart[] lessonParts)
         {
@@ -31,6 +34,15 @@ namespace PeopleCurer.Models
             this.lessonReward = lessonReward;
 
             this.isCompleted = false;
+
+            this.saveFrequency = SaveFrequency.OnCompletion;
         }
+    }
+
+    public enum SaveFrequency
+    {
+        Never,
+        OnCompletion,
+        Always
     }
 }

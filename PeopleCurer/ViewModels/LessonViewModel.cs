@@ -132,6 +132,8 @@ namespace PeopleCurer.ViewModels
                 //Check whether in SymptomCheck
                 if (CurrentLessonPart is SymptomCheckQuestionViewModel)
                 {
+                    await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={lesson.lessonReward}");
+
                     for (int i = 0; i < LessonParts.Length; i++)
                     {
                         if (LessonParts[i] is SymptomCheckQuestionViewModel symptomCheckQuestionVM)
@@ -166,19 +168,33 @@ namespace PeopleCurer.ViewModels
                     {
                         IsCompleted = true;
 
-                        await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={lesson.lessonReward}");
+                        if(lesson.lessonReward > 0)
+                        {
+                            await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={lesson.lessonReward}");
+                        }
+                        else
+                        {
+                            await Shell.Current.GoToAsync("..");
+                        }
+
+                        if(lesson.saveFrequency == SaveFrequency.OnCompletion)
+                        {
+                            ProgressUpdateManager.UpdateProgress(this);
+                        }
                     }
                     else
                     {
-                        IsCompleted = false;
-
                         await Shell.Current.GoToAsync("..");
                     }
-
-                    ProgressUpdateManager.UpdateProgress(this);
+                        
 
                     CurrentLessonPartIndex = 0;//resets view back to lessonPart 0
                                                //Go back to page before
+                }
+
+                if(lesson.saveFrequency == SaveFrequency.Always)
+                {
+                    ProgressUpdateManager.UpdateProgress(this);
                 }
 
                 //TODO: -add save values to every module

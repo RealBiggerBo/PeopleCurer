@@ -20,16 +20,16 @@ namespace PeopleCurer.Services
             OnRewardXPChanged?.Invoke(null, EventArgs.Empty);
         }
 
-        public static float GetCurrentLevelProgress()
+        public static int GetCurrentLevel()
         {
             int curXP = PreferenceManager.GetRewardXP();
 
             int curLevel;
-            if(curXP < 500)
+            if (curXP < 500)
             {
                 curLevel = 1;
             }
-            else if(curXP < 2000) 
+            else if (curXP < 2000)
             {
                 curLevel = 2;
             }
@@ -37,7 +37,7 @@ namespace PeopleCurer.Services
             {
                 curLevel = 3;
             }
-            else if(curXP < 20000)
+            else if (curXP < 20000)
             {
                 curLevel = 4;
             }
@@ -45,6 +45,15 @@ namespace PeopleCurer.Services
             {
                 curLevel = 5;
             }
+
+            return curLevel;
+        }
+
+        public static float GetCurrentLevelProgress()
+        {
+            int curXP = PreferenceManager.GetRewardXP();
+
+            int curLevel = GetCurrentLevel();
 
             return curLevel switch
             {

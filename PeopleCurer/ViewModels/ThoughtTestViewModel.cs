@@ -78,8 +78,9 @@ namespace PeopleCurer.ViewModels
         public DelegateCommand DeleteAlternateThought { get; }
         public DelegateCommand FinishThoughtTest { get; }
         public DelegateCommand CompletedThoughtTest { get; }
+        public DelegateCommand GoBackCMD { get; }
 
-        public EventHandler OnTestFinishEditEvent;
+        public EventHandler? OnTestFinishEditEvent;
 
         public ThoughtTestViewModel(ThoughtTest thoughtTest)
         {
@@ -168,13 +169,24 @@ namespace PeopleCurer.ViewModels
             });
             CompletedThoughtTest = new DelegateCommand((obj) =>
             {
-                this.IsFinished = true;
-                OnTestFinishEditEvent?.Invoke(this, EventArgs.Empty);
                 Shell.Current.GoToAsync("../" + nameof(ThoughtTestCompletedPage),
                     new Dictionary<string, object>
                     {
                         ["ThoughtTestVM"] = this
                     });
+            });
+            GoBackCMD = new DelegateCommand(async (obj) =>
+            {
+                if (!IsFinished)
+                {
+                    this.IsFinished = true;
+                    OnTestFinishEditEvent?.Invoke(this, EventArgs.Empty);
+                    await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={500}");
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync("..");
+                }
             });
         }
     }

@@ -93,6 +93,7 @@ namespace PeopleCurer.ViewModels
         public DelegateCommand SaveSituation { get; }
         public DelegateCommand FinishSituation { get; }
         public DelegateCommand CompletedSituation { get; }
+        public DelegateCommand GoBackCMD { get; }
 
         //public EventHandler OnSituationFinishEditEvent;
 
@@ -173,8 +174,7 @@ namespace PeopleCurer.ViewModels
             });
             SaveSituation = new DelegateCommand((obj) =>
             {
-                if(!(obj is string s && s == "False"))
-                    ProgressUpdateManager.UpdateTrainingData();
+                ProgressUpdateManager.UpdateTrainingData();
                 Shell.Current.GoToAsync("..");
             });
             FinishSituation = new DelegateCommand((obj) =>
@@ -187,13 +187,24 @@ namespace PeopleCurer.ViewModels
             });
             CompletedSituation = new DelegateCommand((obj) =>
             {
-                this.IsFinished = true;
-                ProgressUpdateManager.UpdateTrainingData();
                 Shell.Current.GoToAsync("../" + nameof(SituationCompletedPage),
                     new Dictionary<string, object>
                     {
                         ["Situation"] = this
                     });
+            });
+            GoBackCMD = new DelegateCommand(async (obj) =>
+            {
+                if (!this.IsFinished)
+                {
+                    this.IsFinished = true;
+                    ProgressUpdateManager.UpdateTrainingData();
+                    await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={1000}");
+                }
+                else
+                {
+                    await Shell.Current.GoToAsync("..");
+                }
             });
         }
     }

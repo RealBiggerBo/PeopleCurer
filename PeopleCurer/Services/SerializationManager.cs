@@ -62,6 +62,7 @@ namespace PeopleCurer.Services
         {
             string data = JsonSerializer.Serialize<TherapyPage>(coursesPage);
 
+
             if (!Directory.Exists(modifiedCoursesDataPath))
                 Directory.CreateDirectory(Path.GetDirectoryName(modifiedCoursesDataPath)!);
 
@@ -140,7 +141,6 @@ namespace PeopleCurer.Services
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
 

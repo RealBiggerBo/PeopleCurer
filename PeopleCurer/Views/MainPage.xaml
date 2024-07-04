@@ -19,7 +19,19 @@
             <ts:CarouselViewTemplateSelector.MainPageTemplate>
                 <DataTemplate>
                     <VerticalStackLayout Spacing="30">
-                        <ProgressBar ProgressColor="Green" Progress="{Binding LevelProgress, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Label Grid.Column="0"
+                                   Text="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   HorizontalTextAlignment="Center"/>
+                            <ProgressBar Grid.Column="1" 
+                                         ProgressColor="Green" 
+                                         Progress="{Binding LevelProgress, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                        </Grid>
 
                         <Label HorizontalOptions="Center" Text="Schön, das du da bist!" FontSize="Title" FontAttributes="Bold"/>
 

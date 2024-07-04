@@ -17,6 +17,8 @@
             <Label Text="{Binding Conclusion}"/>
 
             <cc:PieChart Data="{Binding ChartData}" RenderWith="400" RenderHeight="400"/>
+
+            <Button Command="{Binding GoBackCMD}" Text="Zurück"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

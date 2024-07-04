@@ -96,7 +96,7 @@
 
             <Editor Text="{Binding Conclusion}" IsReadOnly="True"/>
 
-            <Button Text="Abschließen" Command="{Binding SaveSituation}" CommandParameter="False"/>
+            <Button Text="Abschließen" Command="{Binding GoBackCMD}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

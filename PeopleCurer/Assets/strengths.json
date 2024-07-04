@@ -6,6 +6,7 @@
       "$type": "StrengthsCourse",
       "strengthsLesson": {
         "isActive": true,
+        "lessonReward": 200,
         "lessonName": "Meine Stärken",
         "lessonParts": [
           {
@@ -77,6 +78,7 @@
       },
       "successMomentsLesson": {
         "lessonName": "Meine Erfolgsmomente",
+        "lessonReward": 200,
         "isActive": true,
         "lessonParts": [
           {

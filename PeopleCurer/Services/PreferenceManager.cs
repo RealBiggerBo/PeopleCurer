@@ -22,13 +22,13 @@ namespace PeopleCurer.Services
         {
             DateOnly defaultVal = DateOnly.MinValue;
 
-            if(DateTime.TryParse(defaultVal.ToLongDateString(), out DateTime result))
+            string lastSymptomCheckDate = Preferences.Get(lastSymptomCheckDate_Key, defaultVal.ToLongDateString());
+            if (DateOnly.TryParse(lastSymptomCheckDate, out DateOnly result))
             {
-                DateTime lastSymptomCheckDate = Preferences.Get(lastSymptomCheckDate_Key, result);
-                return DateOnly.FromDateTime(lastSymptomCheckDate);
+                return result;
             }
-            return DateOnly.MinValue;
 
+            return defaultVal;
         }
         public static void RemoveLastSymptomCheckDate()
         {

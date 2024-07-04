@@ -22,6 +22,10 @@ namespace PeopleCurer.ViewModels
 
         public DelegateCommand GoToSymptomCheckLesson { get; }
 
+        public int Level
+        {
+            get => RewardManager.GetCurrentLevel();
+        }
         public float LevelProgress
         {
             get => RewardManager.GetCurrentLevelProgress();
@@ -99,6 +103,7 @@ namespace PeopleCurer.ViewModels
         private void UpdateLevelProgress(object? s, EventArgs e)
         {
             base.RaisePropertyChanged(nameof(LevelProgress));
+            base.RaisePropertyChanged(nameof(Level));
         }
     }
 }

@@ -235,6 +235,7 @@ namespace PeopleCurer.Services
                             {
                                 isActive = unmodified[i].isActive || modified[j].isActive,
                                 isCompleted = modified[j].isCompleted,
+                                saveFrequency = unmodified[j].saveFrequency,
                             };
                         }
                         else

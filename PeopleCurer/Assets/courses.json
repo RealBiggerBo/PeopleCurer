@@ -10,7 +10,7 @@
         {
           "lessonName": "Das Kontinuum",
           "isActive": true,
-          "lessonReward":  100,
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -41,6 +41,8 @@
         },
         {
           "lessonName": "Die 4 Ebenen der Angst",
+          "saveFrequency": "Always",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -103,6 +105,7 @@
         },
         {
           "lessonName": "Schatten des Überlebens",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -133,6 +136,7 @@
         },
         {
           "lessonName": "Wurzeln der Angst",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -162,6 +166,8 @@
         },
         {
           "lessonName": "Der Teufelskreis",
+          "saveFrequency": "Always",
+          "lessonReward": 400,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -195,6 +201,7 @@
         },
         {
           "lessonName": "Wer hat Lord Smithe getötet",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -225,6 +232,7 @@
         },
         {
           "lessonName": "Welches Bild landet im Fotoalbum?",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -255,6 +263,7 @@
         },
         {
           "lessonName": "Wie uns Gedanken in die Irre führen",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -285,6 +294,7 @@
         },
         {
           "lessonName": "Die Wolken am Himmel des Geistes",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -315,6 +325,7 @@
         },
         {
           "lessonName": "Der angekettete Elefant",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -345,6 +356,7 @@
         },
         {
           "lessonName": "Mentaler Detektiv",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -375,6 +387,7 @@
         },
         {
           "lessonName": "Fehler machen menschlich",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -404,6 +417,7 @@
         },
         {
           "lessonName": "Zusammenfassung",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -426,6 +440,7 @@
       "lessons": [
         {
           "lessonName": "Kontrollleuchten des Lebens",
+          "lessonReward": 200,
           "isActive": true,
           "lessonParts": [
             {
@@ -457,6 +472,7 @@
         },
         {
           "lessonName": "Zitronenübung",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -486,6 +502,7 @@
         },
         {
           "lessonName": "Gefühlsmanagement I",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -516,6 +533,7 @@
         },
         {
           "lessonName": "Gefühlsmanagement II",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -547,6 +565,8 @@
         },
         {
           "lessonName": "Bodyscan",
+          "lessonReward": 200,
+          "saveFrequency": "Always",
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -581,6 +601,7 @@
         },
         {
           "lessonName": "Selbst-Bewusstsein",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -610,6 +631,7 @@
         },
         {
           "lessonName": "Zusammenfassung",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -631,6 +653,7 @@
       "lessons": [
         {
           "lessonName": "Kraft des Verhaltens",
+          "lessonReward": 100,
           "isActive": true,
           "lessonParts": [
             {
@@ -662,6 +685,7 @@
         },
         {
           "lessonName": "Vermeidungsverhalten",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -692,6 +716,7 @@
         },
         {
           "lessonName": "Sicherheitsverhalten",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -722,6 +747,7 @@
         },
         {
           "lessonName": "Angst überwinden",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -752,6 +778,8 @@
         },
         {
           "lessonName": "Deine Angstberge",
+          "saveFrequency": "Always",
+          "lessonReward": 400,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -826,6 +854,8 @@
         },
         {
           "lessonName": "Verhaltensexperimente",
+          "saveFrequency": "Always",
+          "lessonReward": 400,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -871,6 +901,7 @@
         },
         {
           "lessonName": "Rückschläge",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -901,6 +932,7 @@
         },
         {
           "lessonName": "Wer hat gefragt?",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -931,6 +963,7 @@
         },
         {
           "lessonName": "Zusammenfassung",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -952,6 +985,7 @@
       "lessons": [
         {
           "lessonName": "Unser Körper in Alarmbereitschaft",
+          "lessonReward": 100,
           "isActive": true,
           "lessonParts": [
             {
@@ -983,6 +1017,7 @@
         },
         {
           "lessonName": "Schlüssel zur Gelassenheit",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1013,6 +1048,7 @@
         },
         {
           "lessonName": "Entspannung pur mit PMR",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1042,6 +1078,7 @@
         },
         {
           "lessonName": "Ruhe finden mit AT",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1071,6 +1108,7 @@
         },
         {
           "lessonName": "Entspannung durch Atemkraft",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1101,6 +1139,7 @@
         },
         {
           "lessonName": "Universalheilmittel",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1131,6 +1170,7 @@
         },
         {
           "lessonName": "Besseres Wohlbefinden durch Ernährung",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1161,6 +1201,7 @@
         },
         {
           "lessonName": "Erholsamer Schlaf",
+          "lessonReward": 100,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1191,6 +1232,7 @@
         },
         {
           "lessonName": "Lebe deine schönsten Momente",
+          "lessonReward": 200,
           "lessonParts": [
             {
               "$type": "InfoPage",
@@ -1220,6 +1262,8 @@
         },
         {
           "lessonName": "Zusammenfassung",
+          "saveFrequency": "Always",  
+          "lessonReward": 400,
           "lessonParts": [
             {
               "$type": "InfoPage",
