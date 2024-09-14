@@ -24,5 +24,28 @@ public partial class ThoughtTestContainerPage : ContentPage
     public ThoughtTestContainerPage()
 	{
 		InitializeComponent();
-	}
+    }
+
+    private async void ImageButton_Clicked(object sender, EventArgs e)
+    {
+        const string back = "Zurück";
+        const string summary = "Zusammenfassung";
+        const string delete = "Löschen";
+
+        if (sender is ImageButton button && button.BindingContext is ThoughtTestLessonViewModel testVM)
+        {
+            string result = await DisplayActionSheet(testVM.ThoughtTestName, back, null, summary, delete);
+            switch (result)
+            {
+                case summary:
+                    testVM.GoToLessonPage.Execute(null);
+                    break;
+                case delete:
+                    thoughtTestContainerVM?.DeleteThoughtTest.Execute(testVM);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }

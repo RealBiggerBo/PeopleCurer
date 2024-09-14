@@ -56,7 +56,7 @@ public partial class PieChart : ContentView
 		byte[] buffer = GetData(RenderWith, RenderHeight, Data);
 
 		//update text
-		while (stackLayout.Children.Count > 1) 
+		while (stackLayout.Children.Count > 1)
 		{
 			stackLayout.Children.RemoveAt(1);
 		}
@@ -79,7 +79,7 @@ public partial class PieChart : ContentView
 
 			stackLayout.Children.Add(horizontalLayout);
 		}
-		
+
 		//show image
 		chartImage.Source = ImageSource.FromStream(() => new MemoryStream(buffer));
 	}

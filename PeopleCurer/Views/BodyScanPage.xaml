@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PeopleCurer.Views.BodyScanPage"
+             Shell.NavBarIsVisible="False">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <Label Text="BodyScan"
+               Style="{StaticResource Headline}"/>
+        <Label Grid.Row="1" 
+               Text="Bei dieser Achtsamkeitsübung gehen wir deinen Körper bewusst von Fuß bis Kopf durch. Dabei lenkst du deine Aufmerksamkeit nacheinander auf verschiedene Körperbereiche und nimmst wahr, wie sich diese anfühlen - ohne sie zu bewerten."/>
+
+        <Label Grid.Row="2"
+               Text="Audio"/>
+
+        <Label Grid.Row="3"
+               Text="Der Bodyscan hilft dir, mehr in Kontakt mit deinem Körper zu kommen, Verspannungen oder Stress zu erkennen und fördert insgesamt Entspannung und Achtsamkeit. Suche dir einen ruhigen Ort und bequemen Ort, an dem du ungestört bist. Schalte dein Telefon stumm und sorge dafür, dass du für die nächsten Minuten nicht gestört wirst.&#10;&#10;Viel Spaß!"/>
+
+        <Button Grid.Row="4"
+                WidthRequest="130"
+                Text="Abschließen" Background="{StaticResource DarkRed}"
+                Clicked="Button_Clicked"/>
+    </Grid>
+</ContentPage>

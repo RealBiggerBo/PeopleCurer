@@ -16,6 +16,7 @@ public partial class CoursePage : ContentPage
 			{
 				BindingContext = value;
 				course = value;
+
 				OnPropertyChanged();
 			}
 		}

@@ -4,22 +4,22 @@
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              xmlns:ts="clr-namespace:PeopleCurer.CustomDataTemplateSelectors"
              xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
+             xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
              x:Class="PeopleCurer.Views.LessonPage"
-             x:DataType="{x:Type vm:LessonViewModel}">
-
-    <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
+             x:DataType="{x:Type vm:LessonViewModel}"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Resources>
         <ts:TextPartVMTemplateSelector x:Key="TextPartTemplateSelector">
             <ts:TextPartVMTemplateSelector.TextBlockTemplate>
                 <DataTemplate x:DataType="{x:Type vm:TextBlockViewModel}">
                     <Label FormattedText="{Binding Text}"/>
-                    <!--<WebView Source="{Binding Text}"/>-->
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.TextBlockTemplate>
             <ts:TextPartVMTemplateSelector.EnumerationTemplate>
                 <DataTemplate x:DataType="{x:Type vm:EnumerationViewModel}">
-                    <CollectionView ItemsSource="{Binding Texts}">
+                    <CollectionView ItemsSource="{Binding Texts}" VerticalScrollBarVisibility="Never">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="{x:Type x:String}">
                                 <Grid>
@@ -30,7 +30,7 @@
 
                                     <Ellipse Grid.Column="0" Margin="5" VerticalOptions="Start" Fill="Black" WidthRequest="10" HeightRequest="10"/>
 
-                                    <Label Grid.Column="1" Text="{Binding}" TextColor="Red"/>
+                                    <Label Grid.Column="1" Text="{Binding}" TextColor="{StaticResource PrimaryDarkText}"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -47,7 +47,7 @@
             </ts:TextPartVMTemplateSelector.TextBoxTemplate>
             <ts:TextPartVMTemplateSelector.UserInputTextBoxTemplate>
                 <DataTemplate x:DataType="{x:Type vm:UserInputTextBlockViewModel}">
-                    <Label TextColor="Green" Text="{Binding Text}"></Label>
+                    <Label TextColor="{StaticResource PrimaryDarkText}" Text="{Binding Text}"/>
                 </DataTemplate>
             </ts:TextPartVMTemplateSelector.UserInputTextBoxTemplate>
             <ts:TextPartVMTemplateSelector.FearCircleTemplate>
@@ -137,27 +137,24 @@
         <ts:LessonPartVMTemplateSelector x:Key="LessonTemplateSelector">
             <ts:LessonPartVMTemplateSelector.InfoPageTemplate>
                 <DataTemplate x:DataType="{x:Type vm:InfoPageViewModel}">
-                    <ScrollView>
-                        <CollectionView 
-                            ItemsSource="{Binding TextParts}"
-                            ItemTemplate="{StaticResource TextPartTemplateSelector}">
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
-                            </CollectionView.ItemsLayout>
-                        </CollectionView>
-                    </ScrollView>
+                    <CollectionView ItemsSource="{Binding TextParts}"
+                                    ItemTemplate="{StaticResource TextPartTemplateSelector}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="20"/>
+                        </CollectionView.ItemsLayout>
+                    </CollectionView>
                 </DataTemplate>
             </ts:LessonPartVMTemplateSelector.InfoPageTemplate>
             <ts:LessonPartVMTemplateSelector.QuestionTemplate>
                 <DataTemplate x:DataType="{x:Type vm:QuestionViewModel}">
                     <ScrollView>
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Issue}" FontSize="50"/>
+                        <VerticalStackLayout Spacing="20">
+                            <Label Text="{Binding QuestionText}" Style="{StaticResource SubHeadline}"/>
 
-                            <CollectionView ItemsSource="{Binding Answers}" >
+                            <CollectionView ItemsSource="{Binding Answers}" VerticalScrollBarVisibility="Never">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="{x:Type vm:AnswerViewModel}">
-                                        <RadioButton Content="{Binding AnswerText}" IsChecked="{Binding IsChosen}"/>
+                                        <RadioButton Content="{Binding AnswerText}" IsChecked="{Binding IsChosen}" Margin="5"/>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
@@ -167,18 +164,49 @@
             </ts:LessonPartVMTemplateSelector.QuestionTemplate>
             <ts:LessonPartVMTemplateSelector.EvaluationTemplate>
                 <DataTemplate x:DataType="{x:Type vm:EvaluationViewModel}">
-                    <ScrollView>
-                        <VerticalStackLayout>
-                            <Label Text="{Binding EvaluationResult}" FontSize="50"/>
-                        </VerticalStackLayout>
-                    </ScrollView>
+                    <CollectionView ItemsSource="{Binding QuestionsToEvaluate}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type vm:QuestionViewModel}">
+                                <VerticalStackLayout Spacing="20">
+                                    <Label Text="{Binding QuestionText}" Style="{StaticResource SubHeadline}"/>
+
+                                    <CollectionView ItemsSource="{Binding Answers}" VerticalScrollBarVisibility="Never">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="{x:Type vm:AnswerViewModel}">
+                                                <RadioButton Content="{Binding AnswerText}" IsChecked="{Binding IsChosen}" Margin="5" IsEnabled="False">
+                                                    <RadioButton.Triggers>
+                                                        <MultiTrigger TargetType="RadioButton">
+                                                            <MultiTrigger.Conditions>
+                                                                <BindingCondition Binding="{Binding IsChosen}" Value="True"/>
+                                                                <BindingCondition Binding="{Binding IsCorrect}" Value="True"/>
+                                                            </MultiTrigger.Conditions>
+
+                                                            <Setter Property="TextColor" Value="{StaticResource DarkGreen}"/>
+                                                        </MultiTrigger>
+                                                        <MultiTrigger TargetType="RadioButton">
+                                                            <MultiTrigger.Conditions>
+                                                                <BindingCondition Binding="{Binding IsChosen}" Value="True"/>
+                                                                <BindingCondition Binding="{Binding IsCorrect}" Value="False"/>
+                                                            </MultiTrigger.Conditions>
+
+                                                            <Setter Property="TextColor" Value="{StaticResource DarkRed}"/>
+                                                        </MultiTrigger>
+                                                    </RadioButton.Triggers>
+                                                </RadioButton>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </DataTemplate>
             </ts:LessonPartVMTemplateSelector.EvaluationTemplate>
             <ts:LessonPartVMTemplateSelector.SymptomCheckQuestionTemplate>
                 <DataTemplate x:DataType="{x:Type vm:SymptomCheckQuestionViewModel}">
                     <ScrollView Padding="10">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Issue}" FontSize="50"/>
+                        <VerticalStackLayout Spacing="20">
+                            <Label Text="{Binding Issue}" Style="{StaticResource SubHeadline}"/>
 
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -186,37 +214,492 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width=".1*"/>
-                                    <ColumnDefinition Width=".8*"/>
-                                    <ColumnDefinition Width=".1*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="8*"/>
+                                    <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding LowText}"/>
-                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding AnswerValue}"  Minimum="0" Maximum="100"/>
-                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding HighText}"/>
+                                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" LineBreakMode="WordWrap" HorizontalTextAlignment="Center"/>
+                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding AnswerValue}"  Minimum="0" Maximum="100" ThumbColor="{StaticResource DarkYellow}"/>
+                                <Label Grid.Row="0" Grid.Column="3" Text="100&#10;extrem" LineBreakMode="WordWrap" HorizontalTextAlignment="Center"/>
 
-                                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding AnswerValue}" Keyboard="Numeric"/>
+                                <Entry Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding AnswerValue}" Keyboard="Numeric"
+                                       HorizontalTextAlignment="Center"
+                                       WidthRequest="80"/>
                             </Grid>
-                            <HorizontalStackLayout>
-                            </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </ScrollView>
                 </DataTemplate>
             </ts:LessonPartVMTemplateSelector.SymptomCheckQuestionTemplate>
+            <ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart1Template>
+                <DataTemplate x:DataType="{x:Type vm:ThoughtTestLessonPart1ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Vergebe einen Namen für den Gedankentest." Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding ThoughtTestLessonVM.ThoughtTestName}"/>
+
+                            <Label Text="Beschreibe eine Situation, die dich sehr belastet hat. Versuche so objektive wie möglich zu sein. Was hätte eine Kamera aufgezeichnet?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding ThoughtTestLessonVM.SituationDescription}"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart1Template>
+            <ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart2Template>
+                <DataTemplate x:DataType="{x:Type vm:ThoughtTestLessonPart2ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Beschreibe einen Gedanken, der dir in dieser Situation durch den Kopf ging." 
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding ThoughtTestLessonVM.MainThought.ThoughtName}"/>
+
+                            <Label Text="Wie wahrscheinlich ist diese Erklärung?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="0&#10;Sehr unwahrscheinlich" HorizontalTextAlignment="Center"/>
+
+                                <Slider Grid.Column="1" Value="{Binding ThoughtTestLessonVM.MainThought.ThoughtProbability}"
+                                        Minimum="0" Maximum="100"/>
+
+                                <Label Grid.Column="2" Text="100&#10;Sehr wahrscheinlich" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Editor Text="{Binding ThoughtTestLessonVM.MainThought.ThoughtProbability}" HorizontalOptions="Center" WidthRequest="40"/>
+
+                            <Label Text="Beschreibe die Gefühle, die mit diesem Gedanken einhergingen"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <CollectionView ItemsSource="{Binding ThoughtTestLessonVM.Emotions}" VerticalScrollBarVisibility="Never" Margin="5">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:EmotionViewModel}">
+                                        <Grid HeightRequest="50">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Editor Text="{Binding EmotionName}" Placeholder="Eingabe..."/>
+
+                                            <ImageButton Grid.Column="1"
+                                                         Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ThoughtTestLessonPart2ViewModel}},Path=DeleteEmotion}"
+                                                         CommandParameter="{Binding}">
+                                                <ImageButton.Source>
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Minus}" Color="{StaticResource Black}"/>
+                                                </ImageButton.Source>
+                                            </ImageButton>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <ImageButton Command="{Binding AddEmotion}">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Add}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart2Template>
+            <ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart3Template>
+                <DataTemplate x:DataType="{x:Type vm:ThoughtTestLessonPart3ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Prüfe nun wie ein Detektiv, ob dieser Gedanke wirklich wahr ist. Entwickle alternative Erklärungen, welche du in die Textfelder einträgst. Versuche mehr als 3 Erklärungen zu finden." 
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <CollectionView ItemsSource="{Binding ThoughtTestLessonVM.AlternateThoughts}" 
+                                            VerticalScrollBarVisibility="Never"
+                                            Margin="5">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:ThoughtViewModel}">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label Text="Eine mögliche Erklärung wäre..."
+                                                   Style="{StaticResource SubHeadline}"/>
+
+                                            <Editor Text="{Binding ThoughtName}"/>
+
+                                            <Label Text="Für wie wahrscheinlich hälst du diese Erklärung?"
+                                                   Style="{StaticResource SubHeadline}"/>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="4*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Text="0&#10;Sehr unwahrscheinlich" HorizontalTextAlignment="Center"/>
+
+                                                <Slider Grid.Column="1" Value="{Binding ThoughtProbability}" Maximum="100" Minimum="0"/>
+
+                                                <Label Grid.Column="2" Text="100&#10;Sehr wahrscheinlich" HorizontalTextAlignment="Center"/>
+                                            </Grid>
+
+                                            <Editor Text="{Binding ThoughtProbability}" HorizontalOptions="Center" WidthRequest="40"/>
+
+                                            <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ThoughtTestLessonPart3ViewModel}}, Path=DeleteAlternateThought}"
+                                                         CommandParameter="{Binding}">
+                                                <ImageButton.Source>
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Minus}" Color="{StaticResource Black}"/>
+                                                </ImageButton.Source>
+                                            </ImageButton>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <ImageButton Command="{Binding AddAlternateThought}">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Add}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart3Template>
+            <ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart4Template>
+                <DataTemplate x:DataType="{x:Type vm:ThoughtTestLessonPart4ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <cc:PieChart Data="{Binding ThoughtTestLessonVM.ChartData}"
+                                     RenderHeight="400" RenderWith="400"/>
+
+                            <Label Text="Wie du siehst gibt es mehrere Erklärungen für diese Situation. Sich nur auf den einen negativen zu beschränken ist daher nicht besonders realitätsnah." 
+                                   Style="{StaticResource SubHeadline}"
+                                   HorizontalTextAlignment="Center"/>
+
+                            <Label Text="Wie fühlst du dich, wenn du all die möglichen Erklärungen betrachtest?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding ThoughtTestLessonVM.Conclusion}"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.ThoughtTestLessonPart4Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartCreate1Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartCreate1ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="20">
+                            <Label Text="In welcher Situation willst du deine Befürchtungen testen?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding SituationLessonVM.SituationName}"/>
+
+                            <Label Text="Wann findet die Situation statt?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding SituationLessonVM.SituationTime}"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartCreate1Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartCreate2Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartCreate2ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Welche Befürchtungen hast du, wenn du an die Situation denkst?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <CollectionView VerticalScrollBarVisibility="Never"
+                                            ItemsSource="{Binding SituationLessonVM.SituationFears}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                                        <VerticalStackLayout>
+                                            <Editor Text="{Binding FearName}"/>
+
+                                            <Label Text="Wie sicher bist du dir, das deine Befürchtung eintritt?"/>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="4*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+
+                                                <Slider Grid.Column="1" Value="{Binding FearProbability}" Maximum="100" Minimum="0"/>
+
+                                                <Label Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                                            </Grid>
+
+                                            <Editor Text="{Binding FearProbability}" HorizontalOptions="Center" WidthRequest="40"/>
+
+                                            <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SituationLessonPartCreate2ViewModel}}, Path=DeleteSituationFear}"
+                                                         CommandParameter="{Binding}">
+                                                <ImageButton.Source>
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Minus}" Color="{StaticResource Black}"/>
+                                                </ImageButton.Source>
+                                            </ImageButton>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <ImageButton Command="{Binding AddSituationFear}">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Add}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartCreate2Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartCreate3Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartCreate3ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="20">
+                            <Label Text="Welches Sicherheitsverhalten möchtest du unterlassen?" 
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Entry Text="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourName}"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartCreate3Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartFinish1Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartFinish1ViewModel}">
+                    <CollectionView ItemsSource="{Binding SituationLessonVM.SituationFears}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                                <VerticalStackLayout>
+                                    <Editor Text="{Binding FearName}"
+                                            IsReadOnly="True"/>
+
+                                    <Label Text="Wie sehr ist deine Befürchtung eingetreten?"/>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="3*"/>
+                                            <ColumnDefinition Width="4*"/>
+                                            <ColumnDefinition Width="3*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+
+                                        <Slider Grid.Column="1" Value="{Binding ActualFearStrength}" Maximum="100" Minimum="0"/>
+
+                                        <Label Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                                    </Grid>
+
+                                    <Editor Text="{Binding ActualFearStrength}" HorizontalOptions="Center" WidthRequest="40"/>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartFinish1Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartFinish2Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartFinish2ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="20">
+                            <Label Text="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourName}" 
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Label Text="Wie sehr hast du dein Sicherheitsverhalten eingesetzt?" 
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+
+                                <Slider Grid.Column="1" Value="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourAmount}" Maximum="100" Minimum="0"/>
+
+                                <Label Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Editor Text="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourAmount}" HorizontalOptions="Center" WidthRequest="40"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartFinish2Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartFinish3Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartFinish3ViewModel}">
+                    <ScrollView>
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Wie stark war deine Angst?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+
+                                <Slider Grid.Column="1" Value="{Binding SituationLessonVM.OverallFear}" Maximum="100" Minimum="0"/>
+
+                                <Label Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Editor Text="{Binding SituationLessonVM.OverallFear}" HorizontalOptions="Center" WidthRequest="40"/>
+
+                            <Label Text="Was sind deine Schlussfolgerungen aus diesem Experiment?"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding SituationLessonVM.Conclusion}"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartFinish3Template>
+            <ts:LessonPartVMTemplateSelector.SituationLessonPartFinish4Template>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonPartFinish4ViewModel}">
+                    <ScrollView Margin="10">
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="{Binding SituationLessonVM.SituationName}"
+                                   Style="{StaticResource Headline}"/>
+
+                            <Label Text="{Binding SituationLessonVM.SituationTime}"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Label Text="Diese Befürchtungen hattest du:"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <CollectionView ItemsSource="{Binding SituationLessonVM.SituationFears}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
+                                        <StackLayout Margin="10">
+                                            <Label Text="{Binding FearName}"
+                                                   Style="{StaticResource SubHeadline}"/>
+                                            <Label Text="Erwartung" HorizontalTextAlignment="Center"/>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="4*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding FearProbability}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+
+                                                <Label Grid.Row="1" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                                <Slider Grid.Row="1" Grid.Column="1" Value="{Binding ActualFearStrength}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                                <Label Grid.Row="1" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                                            </Grid>
+                                            <Label Text="eingetreten" HorizontalTextAlignment="Center"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <Label Text="Eingesetztes Sicherheitsverhalten:"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Label Text="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourName}"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SituationLessonVM.SafetyBehaviour.SafetyBehaviourAmount}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Label Text="Stärke der Angst:"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SituationLessonVM.OverallFear}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                            </Grid>
+
+                            <Label Text="Deine Schlussfolgerung aus dem Experiment:"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Editor Text="{Binding SituationLessonVM.Conclusion}" IsReadOnly="True"/>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:LessonPartVMTemplateSelector.SituationLessonPartFinish4Template>
         </ts:LessonPartVMTemplateSelector>
     </ContentPage.Resources>
     
-    <Grid>
+    <Grid Margin="20" ColumnSpacing="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0"  Text="{Binding LessonName}" VerticalOptions="Center" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <CarouselView x:Name="CarouselView" Grid.Row="1" Margin="10" ItemsSource="{Binding LessonParts}" ItemTemplate="{StaticResource LessonTemplateSelector}" IsSwipeEnabled="False"/>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+               Text="{Binding LessonName}" Style="{StaticResource Headline}"/>
 
-        <Button Grid.Row="2" Text="Next" IsEnabled="{Binding CurrentLessonPart.CanGoToNextLessonPart}" Command="{Binding GoToNextLessonPart}"/>
+        <CarouselView x:Name="CarouselView"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Margin="10"
+                      ItemsSource="{Binding LessonParts}"
+                      ItemTemplate="{StaticResource LessonTemplateSelector}"
+                      IsSwipeEnabled="False"
+                      IndicatorView="indicatorView"/>
+
+        <IndicatorView x:Name="indicatorView"
+                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                       HorizontalOptions="Center"/>
+
+        <Button Grid.Row="3" Grid.Column="0" Text="Zurück" 
+                Background="{StaticResource Gray}" 
+                TextColor="{StaticResource PrimaryDarkText}"
+                Command="{Binding GoToPreviousLessonPart}"/>
+
+        <Button x:Name="nextButton"
+                Grid.Row="3" Grid.Column="1" Text="Weiter" 
+                Background="{Binding ColorTheme, Converter={StaticResource colorThemeToColorVC}, ConverterParameter=dark}"
+                Command="{Binding GoToNextLessonPart}">
+            <Button.Triggers>
+                <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{StaticResource Gray}"/>
+                </Trigger>
+            </Button.Triggers>
+        </Button>
     </Grid>
 </ContentPage>

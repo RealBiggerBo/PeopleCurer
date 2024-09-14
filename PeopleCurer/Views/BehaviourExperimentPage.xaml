@@ -2,33 +2,73 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm ="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
              x:Class="PeopleCurer.Views.BehaviourExperimentPage"
-             x:DataType="{x:Type vm:BehaviourExperimentViewModel}">
+             x:DataType="{x:Type vm:BehaviourExperimentContainerViewModel}"
+             Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <StackLayout VerticalOptions="FillAndExpand">
+    <Grid Margin="10" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <StackLayout VerticalOptions="FillAndExpand">
-                <Button Text="Neue Situation" Command="{Binding AddSituation}"/>
+        <Label Text="Verhaltensexperiment" Style="{StaticResource Headline}" VerticalOptions="Center"/>
 
-                <CollectionView ItemsSource="{Binding Situations}" ItemSizingStrategy="MeasureFirstItem" VerticalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="{x:Type vm:SituationViewModel}">
-                            <Border>
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding SituationName}"/>
-                                    <Button Text="Bearbeiten/Einsehen" Command="{Binding GoToSituationPage}"/>
-                                    <Button 
-                                        Text="Löschen" 
-                                        Command="{Binding DeleteSituation, Source={RelativeSource AncestorType={x:Type vm:BehaviourExperimentViewModel}}}"
-                                        CommandParameter="{Binding}"/>
-                                    <Button Text="Abschließen" Command="{Binding FinishSituation}"/>
-                                </VerticalStackLayout>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        <Label Grid.Row="1" Margin="10"
+           Text="Die Verhaltensexperimente sind die Königsdisziplin, wenn es darum geht soziale Ängste abzubauen. Sei neugierig und probiere dich aus."/>
+
+        <Border Grid.Row="2" Background="{StaticResource MidGreen}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+
+            <Grid HeightRequest="50" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Neue Situation erstellen"
+                   Style="{StaticResource SubHeadline}"/>
+
+                <ImageButton Grid.Column="1" Command="{Binding AddSituation}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </Grid>
+        </Border>
+
+        <CollectionView Grid.Row="3"
+                    ItemsSource="{Binding Situations}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type vm:SituationLessonViewModel}">
+                    <Border Background="{StaticResource MidGreen}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+
+                        <Grid HeightRequest="50" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding SituationName}"
+                               Style="{StaticResource SubHeadline}"/>
+
+                            <ImageButton Grid.Column="1" Command="{Binding GoToLessonPage}">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Bulb}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

@@ -37,7 +37,14 @@ namespace PeopleCurer.Services
 
             using (Stream fs = FileSystem.OpenAppPackageFileAsync(relativeUnmodifiedCoursesDataPath).Result)
             {
-                coursesPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                try
+                {
+                    coursesPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
 
             return coursesPage is not null;
@@ -54,7 +61,14 @@ namespace PeopleCurer.Services
             }
             string data = File.ReadAllText(modifiedCoursesDataPath);
 
-            coursesPage = JsonSerializer.Deserialize<TherapyPage>(data);
+            try
+            {
+                coursesPage = JsonSerializer.Deserialize<TherapyPage>(data);
+            }
+            catch (Exception ex)
+            {
+                coursesPage = null;
+            }
 
             return coursesPage is not null;
         }
@@ -86,7 +100,15 @@ namespace PeopleCurer.Services
 
             using (Stream fs = FileSystem.OpenAppPackageFileAsync(relativeUnmodifiedTrainingPageDataPath).Result)
             {
-                trainingPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                try
+                {
+                    trainingPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
             }
 
             return trainingPage is not null;
@@ -103,7 +125,14 @@ namespace PeopleCurer.Services
             }
             string data = File.ReadAllText(modifiedTrainingPageDataPath);
 
-            trainingPage = JsonSerializer.Deserialize<TherapyPage>(data);
+            try
+            {
+                trainingPage = JsonSerializer.Deserialize<TherapyPage>(data); 
+            }
+            catch (Exception ex)
+            {
+                trainingPage = null;
+            }
 
             return trainingPage is not null;
         }
@@ -178,8 +207,9 @@ namespace PeopleCurer.Services
                 Directory.Delete(Path.GetDirectoryName(modifiedStrengthsPageDataPath)!);
         }
 
-        //BehaviourExperiment
-        //public static bool LoadBehaviourExperimentData(out BehaviourExperiment? behaviourExperiment)
+        #region BehaviourExperiment
+        //BehaviourExperimentContainer
+        //public static bool LoadBehaviourExperimentData(out BehaviourExperimentContainer? behaviourExperiment)
         //{
         //    if (!File.Exists(absoluteBehaviourExperimentDataPath))
         //    {
@@ -189,13 +219,13 @@ namespace PeopleCurer.Services
 
         //    string data = File.ReadAllText(absoluteBehaviourExperimentDataPath);
 
-        //    behaviourExperiment = JsonSerializer.Deserialize<BehaviourExperiment>(data);
+        //    behaviourExperiment = JsonSerializer.Deserialize<BehaviourExperimentContainer>(data);
 
         //    return behaviourExperiment is not null;
         //}
-        //public static void SaveBehaviourExperimenttData(in BehaviourExperiment behaviourExperiment)
+        //public static void SaveBehaviourExperimenttData(in BehaviourExperimentContainer behaviourExperiment)
         //{
-        //    string data = JsonSerializer.Serialize<BehaviourExperiment>(behaviourExperiment);
+        //    string data = JsonSerializer.Serialize<BehaviourExperimentContainer>(behaviourExperiment);
 
         //    if (!Directory.Exists(absoluteBehaviourExperimentDataPath))
         //        Directory.CreateDirectory(Path.GetDirectoryName(absoluteBehaviourExperimentDataPath)!);
@@ -207,43 +237,44 @@ namespace PeopleCurer.Services
         //    File.Delete(absoluteBehaviourExperimentDataPath);
         //    if (Directory.GetFileSystemEntries(Path.GetDirectoryName(absoluteBehaviourExperimentDataPath)!).Length >= 0)
         //        Directory.Delete(Path.GetDirectoryName(absoluteBehaviourExperimentDataPath)!);
-        //}
+        //} 
+        #endregion
 
         //SymptomCheck
-        public static bool LoadUnmodifiedSymptomCheckData(out TherapyPage? symptomCheckPage)
+        public static bool LoadUnmodifiedSymptomCheckData(out NormalLesson? symptomCheckLesson)
         {
             if (!FileSystem.AppPackageFileExistsAsync(relativeUnmodifiedSymptomCheckDataPath).Result)
             {
-                symptomCheckPage = null;
+                symptomCheckLesson = null;
                 return false;
             }
 
             using (Stream fs = FileSystem.OpenAppPackageFileAsync(relativeUnmodifiedSymptomCheckDataPath).Result)
             {
-                symptomCheckPage = JsonSerializer.Deserialize<TherapyPage>(fs);
+                symptomCheckLesson = JsonSerializer.Deserialize<NormalLesson>(fs);
             }
 
-            return symptomCheckPage is not null;
+            return symptomCheckLesson is not null;
         }
-        public static bool LoadSymptomCheckData(out TherapyPage? symptomCheckPage, bool tryDifferentialUpdate)
+        public static bool LoadSymptomCheckData(out NormalLesson? symptomCheckLesson, bool tryDifferentialUpdate)
         {
             if (tryDifferentialUpdate)
                 DifferentialUpdateManager.UpdateModifiedSymptomCheckVersion();
 
             if (!File.Exists(modifiedSymptomCheckDataPath))
             {
-                symptomCheckPage = null;
+                symptomCheckLesson = null;
                 return false;
             }
             string data = File.ReadAllText(modifiedSymptomCheckDataPath);
 
-            symptomCheckPage = JsonSerializer.Deserialize<TherapyPage>(data);
+            symptomCheckLesson = JsonSerializer.Deserialize<NormalLesson>(data);
 
-            return symptomCheckPage is not null;
+            return symptomCheckLesson is not null;
         }
-        public static void SaveSymptomCheckData(in TherapyPage symptomCheckPage)
+        public static void SaveSymptomCheckData(in NormalLesson symptomCheckLesson)
         {
-            string data = JsonSerializer.Serialize<TherapyPage>(symptomCheckPage);
+            string data = JsonSerializer.Serialize<NormalLesson>(symptomCheckLesson);
 
             if (!Directory.Exists(modifiedSymptomCheckDataPath))
                 Directory.CreateDirectory(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!);
@@ -253,7 +284,7 @@ namespace PeopleCurer.Services
         public static void RemoveSymptomCheckResults()
         {
             File.Delete(modifiedSymptomCheckDataPath);
-            if (!Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!).Any())
+            if (Directory.GetFileSystemEntries(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!).Length == 0)
                 Directory.Delete(Path.GetDirectoryName(modifiedSymptomCheckDataPath)!);
         }
 
@@ -286,6 +317,34 @@ namespace PeopleCurer.Services
             File.Delete(absoluteUserInputDataPath);
             if (Directory.GetFileSystemEntries(Path.GetDirectoryName(absoluteUserInputDataPath)!).Any())
                 Directory.Delete(Path.GetDirectoryName(absoluteUserInputDataPath)!);
+        }
+
+        public static Stream[] GetStreams()
+        {
+            List<Stream> streams = [];
+
+            //if (File.Exists(modifiedCoursesDataPath))
+            //{
+            //    streams.Add(File.OpenRead(modifiedCoursesDataPath));
+            //}
+            //if (File.Exists(modifiedTrainingPageDataPath))
+            //{
+            //    streams.Add(File.OpenRead(modifiedTrainingPageDataPath));
+            //}
+            //if (File.Exists(modifiedStrengthsPageDataPath))
+            //{
+            //    streams.Add(File.OpenRead(modifiedStrengthsPageDataPath));
+            //}
+            if (File.Exists(modifiedSymptomCheckDataPath))
+            {
+                streams.Add(File.OpenRead(modifiedSymptomCheckDataPath));
+            }
+            //if (File.Exists(absoluteUserInputDataPath))
+            //{
+            //    streams.Add(File.OpenRead(absoluteUserInputDataPath));
+            //}
+
+            return [.. streams];
         }
     }
 }

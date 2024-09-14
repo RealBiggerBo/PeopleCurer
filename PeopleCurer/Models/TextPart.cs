@@ -56,15 +56,10 @@ namespace PeopleCurer.Models
         }
     }
 
-    public sealed class UserInputTextBlock : TextPart
+    public sealed class UserInputTextBlock(string id) : TextPart
     {
         [JsonInclude]
-        public readonly string id;
-
-        public UserInputTextBlock(string id)
-        {
-            this.id = id;
-        }
+        public readonly string id = id;
     }
 
     public sealed class FearCircleDiagram : TextPart

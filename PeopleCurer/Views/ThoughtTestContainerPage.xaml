@@ -2,32 +2,73 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
              x:Class="PeopleCurer.Views.ThoughtTestContainerPage"
-             x:DataType="{x:Type vm:ThoughtTestContainerViewModel}">
-    
-    <ScrollView>
-        <StackLayout VerticalOptions="FillAndExpand">
+             x:DataType="{x:Type vm:ThoughtTestContainerViewModel}"
+             Shell.NavBarIsVisible="False">
 
-            <StackLayout VerticalOptions="FillAndExpand">
-                <Button Text="Neuer Gedankentest" Command="{Binding AddSituation}"/>
+    <Grid Margin="10" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-                <CollectionView ItemsSource="{Binding ThoughtTests}" ItemSizingStrategy="MeasureFirstItem" VerticalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="{x:Type vm:ThoughtTestViewModel}">
-                            <Border>
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding SituationName}"/>
-                                    <Button Text="Einsehen" Command="{Binding GoToThoughtTestPage}"/>
-                                    <Button 
-                                    Text="Löschen" 
-                                    Command="{Binding DeleteSituation, Source={RelativeSource AncestorType={x:Type vm:ThoughtTestContainerViewModel}}}"
-                                    CommandParameter="{Binding}"/>
-                                </VerticalStackLayout>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        <Label Text="Gedankentest" Style="{StaticResource Headline}" VerticalOptions="Center"/>
+
+        <Label Grid.Row="1" Margin="10"
+               Text="Hier nehmen wir unsere Gedanken genau unter die Lupe und überprüfen was wirklich wahr ist."/>
+
+        <Border Grid.Row="2" Background="{StaticResource MidBlue}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+
+            <Grid HeightRequest="50" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Neuen Test erstellen"
+                       Style="{StaticResource SubHeadline}"/>
+
+                <ImageButton Grid.Column="1" Command="{Binding AddThoughtTest}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </Grid>
+        </Border>
+
+        <CollectionView Grid.Row="3"
+                        ItemsSource="{Binding ThoughtTests}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type vm:ThoughtTestLessonViewModel}">
+                    <Border Background="{StaticResource MidBlue}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+
+                        <Grid HeightRequest="50" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="{Binding ThoughtTestName}"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <ImageButton Grid.Column="1" Clicked="ImageButton_Clicked">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Bulb}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

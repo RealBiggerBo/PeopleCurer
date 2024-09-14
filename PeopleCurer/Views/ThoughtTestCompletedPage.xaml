@@ -4,21 +4,24 @@
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
              x:Class="PeopleCurer.Views.ThoughtTestCompletedPage"
-             x:DataType="{x:Type vm:ThoughtTestViewModel}">
+             x:DataType="{x:Type vm:ThoughtTestLessonViewModel}"
+             Shell.NavBarIsVisible="False">
 
     <ScrollView>
-        <VerticalStackLayout>
-            <Label Text="{Binding SituationName}"/>
+        <VerticalStackLayout Spacing="10">
+            <Label Text="{Binding ThoughtTestName}"
+                   Style="{StaticResource Headline}"/>
 
-            <Label Text="Deine eigentliche Erfahrung, emotionen und die alternative erklärungen"/>
+            <Label Text="{Binding SituationDescription}"
+                   Style="{StaticResource SubHeadline}"/>
 
-            <Label Text="Dein Urteil:"/>
+            <Label Text="Dein Urteil:" Style="{StaticResource SubHeadline}"/>
 
-            <Label Text="{Binding Conclusion}"/>
+            <Label Text="{Binding Conclusion}" Style="{StaticResource SubHeadline}" Margin="10"/>
 
             <cc:PieChart Data="{Binding ChartData}" RenderWith="400" RenderHeight="400"/>
 
-            <Button Command="{Binding GoBackCMD}" Text="Zurück"/>
+            <Button Clicked="Button_Clicked" Text="Zurück" Background="{StaticResource DarkBlue}" Margin="20"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

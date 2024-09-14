@@ -66,7 +66,7 @@ namespace PeopleCurer.Services
         {
             if (!SerializationManager.LoadUserInputData(out userInputData))
             {
-                userInputData = new Dictionary<string, string>();
+                userInputData = [];
             }
         }
     }

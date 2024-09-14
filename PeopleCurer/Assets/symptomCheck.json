@@ -1,45 +1,32 @@
 {
-  "name": "SymptomCheck",
-  "description": "Check Your Symptoms",
-  "features": [
+  "lessonName": "Blitz-Check",
+  "isActive": true,
+  "colorTheme": "Yellow",
+  "lessonReward": 50,
+  "lessonParts": [
     {
-      "$type": "Course",
-      "courseName": "Täglicher Symptomcheck",
-      "description": "-----",
-      "lessons": [
-        {
-          "lessonName": "Symptomcheck",
-          "isActive": true,
-          "lessonReward": 50,
-          "lessonParts": [
-            {
-              "$type": "SymptomCheckQuestion",
-              "issue": "Wie stark war heute deine Angst?",
-              "description": "Die Angstskala veranschaulicht die Entwicklung deiner erlebten Angst in letzter Zeit. Besonders in den ersten Wochen kann es sein, dass die Angst ansteigt. Das ist völlig normal, da du beginnst, dich näher mit ihr auseinanderzusetzen.",
-              "lowText": "gar nicht",
-              "highText": "extrem",
-              "answerValue": 50
-            },
-            {
-              "$type": "SymptomCheckQuestion",
-              "issue": "Wie oft hast du dich heute sozialen Situationen ausgesetzt?",
-              "description": "Diese Skala bezeichnen wir als Mut-Skala. Sie ist von besonderer Bedeutung, da sie dir zeigt, wie oft du deiner Angst entgegentrittst. Wenn du regelmäßig die Übungen in dieser App durchführst, wirst du sehen, wie die Kurve langsam ansteigt.",
-              "lowText": "gar nicht",
-              "highText": "extrem",
-              "answerValue": 50
-            },
-            {
-              "$type": "SymptomCheckQuestion",
-              "issue": "Wie häufig hast du heute darüber nachgedacht, wie schlimm anstehende soziale Situationen werden könnten?",
-              "description": "Hier kannst du sehen, wie sich die Häufigkeit deiner Befürchtungen über die Zeit entwickelt.",
-              "lowText": "gar nicht",
-              "highText": "extrem",
-              "answerValue": 50
-            }
-          ]
-        }
-      ],
-      "isActive": true
+      "$type": "SymptomCheckQuestion",
+      "issue": "Wie stark war heute deine Angst?",
+      "description": "Die Angstskala veranschaulicht die Entwicklung deiner erlebten Angst in letzter Zeit. Besonders in den ersten Wochen kann es sein, dass die Angst ansteigt. Das ist völlig normal, da du beginnst, dich näher mit ihr auseinanderzusetzen.",
+      "lowText": "gar nicht",
+      "highText": "extrem",
+      "answerValue": 50
+    },
+    {
+      "$type": "SymptomCheckQuestion",
+      "issue": "Wie oft hast du dich heute sozialen Situationen ausgesetzt?",
+      "description": "Diese Skala bezeichnen wir als Mut-Skala. Sie ist von besonderer Bedeutung, da sie dir zeigt, wie oft du deiner Angst entgegentrittst. Wenn du regelmäßig die Übungen in dieser App durchführst, wirst du sehen, wie die Kurve langsam ansteigt.",
+      "lowText": "gar nicht",
+      "highText": "extrem",
+      "answerValue": 50
+    },
+    {
+      "$type": "SymptomCheckQuestion",
+      "issue": "Wie häufig hast du heute darüber nachgedacht, wie schlimm anstehende soziale Situationen werden könnten?",
+      "description": "Hier kannst du sehen, wie sich die Häufigkeit deiner Befürchtungen über die Zeit entwickelt.",
+      "lowText": "gar nicht",
+      "highText": "extrem",
+      "answerValue": 50
     }
   ]
 }

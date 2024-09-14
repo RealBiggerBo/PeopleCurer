@@ -17,72 +17,38 @@ namespace PeopleCurer.Models
         public LessonPart() { }
     }
 
-    public sealed class InfoPage : LessonPart
+    public sealed class InfoPage(params TextPart[] textParts) : LessonPart
     {
         [JsonInclude]
-        public readonly TextPart[] textParts;
-
-        public InfoPage(params TextPart[] textParts) 
-        {
-            this.textParts = textParts;
-        }
+        public readonly TextPart[] textParts = textParts;
     }
 
-    public sealed class Question : LessonPart
+    public sealed class Question(string questionText, params Answer[] answers) : LessonPart
     {
         [JsonInclude]
-        public readonly string issue;
+        public readonly string questionText = questionText;
         [JsonInclude]
-        public readonly Answer[] answers;
-
-        public Question(string issue, params Answer[] answers) 
-        {
-            this.issue = issue;
-
-            this.answers = answers;
-        }
+        public readonly Answer[] answers = answers;
     }
 
-    public sealed class Evaluation : LessonPart
+    public sealed class Evaluation() : LessonPart;
+
+    public sealed class SymptomCheckQuestion(string issue, string description, string lowText, string highText, int answerValue, Dictionary<DateOnly, int> data) : LessonPart
     {
         [JsonInclude]
-        public readonly Dictionary<int, string> evaluationResults;
-
-        public Evaluation(Dictionary<int, string> evaluationResults)
-        {
-            this.evaluationResults = evaluationResults;
-        }
-    }
-
-    public sealed class SymptomCheckQuestion : LessonPart
-    {
+        public readonly string issue = issue;
         [JsonInclude]
-        public readonly string issue;
-        [JsonInclude]
-        public readonly string description;
+        public readonly string description = description;
 
         [JsonInclude]
-        public readonly string lowText;
+        public readonly string lowText = lowText;
         [JsonInclude]
-        public readonly string highText;
-
-        [JsonInclude]
-        public int answerValue;
+        public readonly string highText = highText;
 
         [JsonInclude]
-        public Dictionary<DateOnly, int> data;
+        public int answerValue = answerValue;
 
-        public SymptomCheckQuestion(string issue, string description, string lowText, string highText, int answerValue, Dictionary<DateOnly, int> data)
-        {
-            this.issue = issue;
-            this.description = description;
-
-            this.lowText = lowText;
-            this.highText = highText;
-
-            this.answerValue = answerValue;
-
-            this.data = data;
-        }
+        [JsonInclude]
+        public Dictionary<DateOnly, int> data = data;
     }
 }

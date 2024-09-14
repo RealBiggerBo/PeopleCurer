@@ -7,72 +7,48 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
-    public sealed class Situation
+    //public sealed class Situation(string situationName, string situationTime, List<SituationFear> situationFears, SafetyBehaviour situationSafetyBehaviour, int overallFear, string conclusion, bool isCompleted)
+    //{
+    //    [JsonInclude]
+    //    public string situationName = situationName;
+
+    //    [JsonInclude]
+    //    public string situationTime = situationTime;
+
+    //    [JsonInclude]
+    //    public List<SituationFear> situationFears = situationFears;
+
+    //    [JsonInclude]
+    //    public SafetyBehaviour situationSafetyBehaviour = situationSafetyBehaviour;
+
+    //    [JsonInclude]
+    //    public int overallFear = overallFear;
+
+    //    [JsonInclude]
+    //    public string conclusion = conclusion;
+
+    //    [JsonInclude]
+    //    public bool isCompleted = isCompleted;
+    //}
+
+    public sealed class SituationFear(string fearName, int fearProbability, int actualFearStrength)
     {
         [JsonInclude]
-        public string situationName;
+        public string fearName = fearName;
 
         [JsonInclude]
-        public string situationTime;
+        public int fearProbability = fearProbability;
 
         [JsonInclude]
-        public List<SituationFear> situationFears;
-
-        [JsonInclude]
-        public List<SafetyBehaviour> situationSafetyBehaviours;
-
-        [JsonInclude]
-        public int overallFear;
-
-        [JsonInclude]
-        public string conclusion;
-
-        [JsonInclude]
-        public bool isFinished;
-
-        public Situation(string situationName, string situationTime, List<SituationFear> situationFears, List<SafetyBehaviour> situationSafetyBehaviours, int overallFear, string conclusion, bool isFinished)
-        {
-            this.situationName = situationName;
-            this.situationTime = situationTime;
-            this.situationFears = situationFears;
-            this.situationSafetyBehaviours = situationSafetyBehaviours;
-            this.overallFear = overallFear;
-            this.conclusion = conclusion;
-            this.isFinished = isFinished;
-        }
+        public int actualFearStrength = actualFearStrength;
     }
 
-    public sealed class SituationFear
+    public sealed class SafetyBehaviour(string safetyBehaviourName, int safetyBehaviourAmount)
     {
         [JsonInclude]
-        public string fearName;
+        public string safetyBehaviourName = safetyBehaviourName;
 
         [JsonInclude]
-        public int fearProbability;
-
-        [JsonInclude]
-        public int actualFearStrength;
-
-        public SituationFear(string fearName, int fearProbability, int actualFearStrength)
-        {
-            this.fearName = fearName;
-            this.fearProbability = fearProbability;
-            this.actualFearStrength = actualFearStrength;
-        }
-    }
-
-    public sealed class SafetyBehaviour
-    {
-        [JsonInclude]
-        public string safetyBehaviourName;
-
-        [JsonInclude]
-        public int safetyBehaviourAmount;
-
-        public SafetyBehaviour(string safetyBehaviourName, int safetyBehaviourAmount)
-        {
-            this.safetyBehaviourName = safetyBehaviourName;
-            this.safetyBehaviourAmount = safetyBehaviourAmount;
-        }
+        public int safetyBehaviourAmount = safetyBehaviourAmount;
     }
 }

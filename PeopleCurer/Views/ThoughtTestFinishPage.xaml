@@ -3,20 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
-             x:Class="PeopleCurer.Views.ThoughtTestFinishPage"
-             x:DataType="{x:Type vm:ThoughtTestViewModel}">
+             x:Class="PeopleCurer.Views.ThoughtTestFinishPage">
 
     <ScrollView>
         <VerticalStackLayout>
             <cc:PieChart Data="{Binding ChartData}" RenderWith="400" RenderHeight="400"/>
 
-            <Label Text="Wie du siehst, gibt es mehere Erklärungen für diese Situation. Sich nur auf den einen negativen Gedanken zu beschränken ist daher nicht besonders realitätsnah."/>
+            <Label Text="Wie du siehst, gibt es mehere Erklärungen für diese Situation. Sich nur auf den einen negativen Gedanken zu beschränken ist daher nicht besonders realitätsnah."
+                   />
 
             <Label Text="Wie fühlst du dich nun, wenn du die alternativen Gedanken betrachtest?"/>
 
-            <Editor Text="{Binding Conclusion}"/>
+            <Label Text="{Binding Conclusion}"/>
 
-            <Button Text="Abschließen" Command="{Binding CompletedThoughtTest}"/>
+            <Button Text="Abschließen" Command="{Binding CompletedThoughtTest}" Background="{StaticResource DarkBlue}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

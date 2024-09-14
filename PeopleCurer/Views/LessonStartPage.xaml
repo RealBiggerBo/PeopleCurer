@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.LessonStartPage"
+             x:DataType="{x:Type vm:LessonViewModel}"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.6,1" Radius="0.6">
+            <GradientStop Color="{Binding ColorTheme, Converter={StaticResource colorThemeToColorVC}, ConverterParameter=light}" Offset="1"/>
+            <GradientStop Color="{StaticResource White}" Offset="0"/>
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <Grid Margin="40">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="1" Text="{Binding LessonName}"
+               Style="{StaticResource Headline}"/>
+
+        <Label Grid.Row="2" Text="{Binding LessonDescription}" HorizontalTextAlignment="Center"/>
+
+        <Button Grid.Row="3" 
+                Clicked="Button_Clicked" 
+                WidthRequest="120"
+                Text="Los Geht's!"
+                Background="{Binding ColorTheme, Converter={StaticResource Key=colorThemeToColorVC}, ConverterParameter=dark}"/>
+    </Grid>
+</ContentPage>

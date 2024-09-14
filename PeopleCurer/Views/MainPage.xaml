@@ -5,6 +5,7 @@
                 xmlns:ts="clr-namespace:PeopleCurer.CustomDataTemplateSelectors"
                 xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
                 xmlns:cc="clr-namespace:PeopleCurer.CustomControls"
+                xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
                 x:Class="PeopleCurer.Views.MainPage"
                 x:DataType="{x:Type vm:MainPageViewModel}">
 
@@ -15,10 +16,426 @@
             <x:Int32>2</x:Int32>
             <x:Int32>3</x:Int32>
         </x:Array>
+        <vc:IntLessThanConverter x:Key="IntLessThanVC"/>
         <ts:CarouselViewTemplateSelector x:Key="CarouselViewTemplateSelector">
+            <ts:CarouselViewTemplateSelector.TrainingPageTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <StackLayout Spacing="15" Margin="10">
+                            <Label Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   Style="{StaticResource Headline}"/>
+                            
+                            <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   Margin="10"/>
+
+                            <Border Background="{StaticResource MidBlue}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ThoughtTestContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid Margin="5" HeightRequest="70" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding ThoughtTestContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+
+                                    <Image Grid.Column="0">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Grid.Column="1" Text="Gedankentest" Style="{StaticResource SubHeadline}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ThoughtTestContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Text" Value="???"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Image Grid.Column="2">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding ThoughtTestContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Source">
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidRed}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BodyScanContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid Margin="5" HeightRequest="70" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding BodyScanContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+
+                                    <Image Grid.Column="0">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Grid.Column="1" Text="Bodyscan" Style="{StaticResource SubHeadline}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding BodyScanContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Text" Value="???"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Image Grid.Column="2">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding BodyScanContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Source">
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidGreen}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BehaviourExperimentContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid Margin="5" HeightRequest="70" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding BehaviourExperimentContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+
+                                    <Image Grid.Column="0">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Grid.Column="1" Text="Verhaltensexperiment" Style="{StaticResource SubHeadline}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding BehaviourExperimentContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Text" Value="???"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Image Grid.Column="2">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding BehaviourExperimentContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Source">
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidGreen}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ResponseTrainingContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid Margin="5" HeightRequest="70" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding ResponseTrainingContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+
+                                    <Image Grid.Column="0">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Grid.Column="1" Text="Schlagfertigkeit" Style="{StaticResource SubHeadline}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding ResponseTrainingContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Text" Value="???"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Image Grid.Column="2">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding ResponseTrainingContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Source">
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidPurple}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RelaxationProcedureContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                                </Border.GestureRecognizers>
+
+                                <Grid Margin="5" HeightRequest="70" ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="50"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding RelaxationProcedureContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                            <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
+
+                                    <Image Grid.Column="0">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label Grid.Column="1" Text="Entspannung" Style="{StaticResource SubHeadline}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding RelaxationProcedureContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Text" Value="???"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <Image Grid.Column="2">
+                                        <Image.Source>
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                        </Image.Source>
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding ResponseTrainingContainer.CanBeVisited, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" Value="False">
+                                                <Setter Property="Source">
+                                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                </Grid>
+                            </Border>
+                        </StackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.TrainingPageTemplate>
             <ts:CarouselViewTemplateSelector.MainPageTemplate>
                 <DataTemplate>
-                    <VerticalStackLayout Spacing="30">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" VerticalOptions="Start">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="9*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0"
+                                   Text="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"/>
+                            <ProgressBar Grid.Column="1"
+                                         HeightRequest="20"
+                                         ProgressColor="{StaticResource DarkBlue}" 
+                                         Progress="{Binding LevelProgress, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                        </Grid>
+
+                        <Label Grid.Row="1" 
+                               Text="Dein Programmablauf" 
+                               Style="{StaticResource Headline}"
+                               VerticalOptions="Start"/>
+
+                        <Grid Grid.Row="2" Margin="20" RowSpacing="5" ColumnSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                    Background="{StaticResource MidBlue}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    Text="{Binding Module1.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module1.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    LineBreakMode="WordWrap">
+                                <Button.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                        <Setter Property="Text" Value="Schließe zuerst Modul 0 ab"/>
+                                        <Setter Property="ImageSource">
+                                            <Setter.Value>
+                                                <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource PrimaryDarkText}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                    </Trigger>
+                                </Button.Triggers>
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ThoughtBubble}" Color="{StaticResource PrimaryDarkText}"/>
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" 
+                                    Background="{StaticResource MidGreen}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    Text="{Binding Module3.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module3.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    LineBreakMode="WordWrap">
+                                <Button.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                        <Setter Property="Text" Value="Schließe zuerst Modul 2 ab"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                        <Setter Property="FontSize" Value="10"/>
+                                        <Setter Property="ImageSource">
+                                            <Setter.Value>
+                                                <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource PrimaryDarkText}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Button.Triggers>
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Stair}" Color="{StaticResource PrimaryDarkText}"/>
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Row="1" Grid.Column="1" 
+                                    Background="{StaticResource MidRed}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    Text="{Binding Module2.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module2.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    LineBreakMode="WordWrap">
+                                <Button.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                        <Setter Property="Text" Value="Schließe zuerst Modul 1 ab"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                        <Setter Property="FontSize" Value="10"/>
+                                        <Setter Property="ImageSource">
+                                            <Setter.Value>
+                                                <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource PrimaryDarkText}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Button.Triggers>
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Smileys}" Color="{StaticResource PrimaryDarkText}"/>
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Row="2" Grid.Column="1" 
+                                    Background="{StaticResource MidPurple}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    Text="{Binding Module4.CourseName, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    Command="{Binding Module4.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    LineBreakMode="WordWrap">
+                                <Button.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                        <Setter Property="Text" Value="Schließe zuerst Modul 3 ab"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                        <Setter Property="FontSize" Value="10"/>
+                                        <Setter Property="ImageSource">
+                                            <Setter.Value>
+                                                <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource PrimaryDarkText}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Button.Triggers>
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Human}" Color="{StaticResource PrimaryDarkText}"/>
+                                </Button.ImageSource>
+                            </Button>
+                            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                    Text="Blitz-Check" TextColor="{StaticResource PrimaryDarkText}"
+                                    Background="{StaticResource MidYellow}"
+                                    Command="{Binding SymptomCheckLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    LineBreakMode="WordWrap">
+                                <Button.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                                        <Setter Property="Text" Value="Mache morgen wieder einen Blitz-Check"/>
+                                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+                                        <Setter Property="FontSize" Value="10"/>
+                                        <Setter Property="ImageSource">
+                                            <Setter.Value>
+                                                <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource PrimaryDarkText}"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Button.Triggers>
+                                <Button.ImageSource>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Bolt}" Color="{StaticResource PrimaryDarkText}"/>
+                                </Button.ImageSource>
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                    <!--<VerticalStackLayout Spacing="30">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -45,7 +462,7 @@
                                 <ColumnDefinition Width="150"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Row="0" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="Red">
+                            <Border Grid.Row="0" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="{StaticResource ButtonBackgroundCol}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="150,0,0,0"></RoundRectangle>
                                 </Border.StrokeShape>
@@ -57,7 +474,7 @@
                                     IsEnabled="{Binding Module4.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
-                            <Border Grid.Row="0" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
+                            <Border Grid.Row="0" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="{StaticResource ButtonBackgroundCol}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="0,150,0,0"></RoundRectangle>
                                 </Border.StrokeShape>
@@ -69,7 +486,7 @@
                                     IsEnabled="{Binding Module1.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
-                            <Border Grid.Row="1" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="Red">
+                            <Border Grid.Row="1" Grid.Column="0" Stroke="Gray" StrokeThickness="5" Background="{StaticResource ButtonBackgroundCol}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="0,0,150,0"></RoundRectangle>
                                 </Border.StrokeShape>
@@ -81,7 +498,7 @@
                                     IsEnabled="{Binding Module3.IsActive, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
                             </Border>
 
-                            <Border Grid.Row="1" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="Red">
+                            <Border Grid.Row="1" Grid.Column="1" Stroke="Gray" StrokeThickness="5" Background="{StaticResource ButtonBackgroundCol}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="0,0,0,150"></RoundRectangle>
                                 </Border.StrokeShape>
@@ -95,95 +512,211 @@
                         </Grid>
 
                         <Button Grid.Row="3" HeightRequest="50" WidthRequest="250" Text="Symptomcheck" FontSize="Large" Command="{Binding GoToSymptomCheckLesson, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                    </VerticalStackLayout>
+                    </VerticalStackLayout>-->
                 </DataTemplate>
             </ts:CarouselViewTemplateSelector.MainPageTemplate>
-            <ts:CarouselViewTemplateSelector.TrainingPageTemplate>
-                <DataTemplate>
-                    <ScrollView>
-                        <StackLayout Spacing="15">
-                            <Label Text="{Binding TherapyPages[2].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                            <Label Text="{Binding TherapyPages[2].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                            <StackLayout Spacing="10">
-                                <Button Text="Gedankentest" Command="{Binding ThoughtTestContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                                <Button Text="Verhaltensexperimente" Command="{Binding BehaviourExperiment.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                                <Button Text="Entspannungsverfahren" Command="{Binding RelaxationProcedureContainer.VisitFeature, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                                <Button Text="Schlagfertigkeitstraining"/>
-                            </StackLayout>
-                        </StackLayout>
-                    </ScrollView>
-                </DataTemplate>
-            </ts:CarouselViewTemplateSelector.TrainingPageTemplate>
-            <ts:CarouselViewTemplateSelector.StrengthsPageTemplate>
-                <DataTemplate>
-                    <ScrollView>
-                        <StackLayout>
-                            <Label Text="{Binding TherapyPages[3].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                            <Label Text="{Binding TherapyPages[3].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-                            <StackLayout>
-                                <Button Text="Meine Stärken" Command="{Binding TherapyPages[3].Features[0].StrengthsLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-
-                                <CollectionView ItemsSource="{Binding TherapyPages[3].Features[0].StrengthsLesson.LessonParts[1].TextParts[9].Texts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
-                                            <Label Text="{Binding Text}"/>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-
-                                <Button Text="Meine Erfolgsmomente" Command="{Binding TherapyPages[3].Features[0].SuccessMomentsLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-
-                                <CollectionView ItemsSource="{Binding TherapyPages[3].Features[0].SuccessMomentsLesson.LessonParts[1].TextParts[2].Texts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="{x:Type vm:TextBoxViewModel}">
-                                            <Label Text="{Binding Text}"/>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                                
-                                <Button Text="Meine Trainingserfolge" Command="{Binding TherapyPages[3].Features[0].TrainingSuccessLesson.GoToLessonPage, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
-
-                                <CollectionView ItemsSource="{Binding BehaviourExperiment.Situations, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="{x:Type vm:SituationViewModel}">
-                                            <Label Text="{Binding SituationName}"/>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                            </StackLayout>
-                        </StackLayout>
-                    </ScrollView>
-                </DataTemplate>
-            </ts:CarouselViewTemplateSelector.StrengthsPageTemplate>
             <ts:CarouselViewTemplateSelector.StatisticsPageTemplate>
                 <DataTemplate>
                     <ScrollView>
-                        <VerticalStackLayout Spacing="30">
-                            <Label HorizontalOptions="Center" Text="{Binding TherapyPages[1].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" FontSize="Title" FontAttributes="Bold"/>
+                        <VerticalStackLayout Spacing="30" Margin="10">
+                            <Label Text="{Binding TherapyPages[1].Name, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}" 
+                                   Style="{StaticResource Headline}"/>
 
-                            <Label Text="{Binding TherapyPages[1].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                            <Label Text="{Binding TherapyPages[1].Description, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   Margin="10"/>
 
-                            <CollectionView ItemsSource="{Binding TherapyPages[1].Features[0].Lessons[0].LessonParts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                            <CollectionView ItemsSource="{Binding SymptomCheckLesson.LessonParts, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="{x:Type vm:SymptomCheckQuestionViewModel}">
-                                        <VerticalStackLayout Spacing="10">
-                                            <Label Text="{Binding Issue}" FontSize="Caption"/>
-                                            <Label Text="{Binding Description}"/>
+                                        <VerticalStackLayout Spacing="10" Margin="5">
+                                            <Label Text="{Binding Issue}" Style="{StaticResource SubHeadline}"/>
+                                            <Label Text="{Binding Description}" Margin="10"/>
                                             
                                             <cc:LineChart
                                                 Data="{Binding Data}" 
                                                 XAxisTextFontSize="12" 
-                                                TextColor="Black"
-                                                AxisColor="Blue"
-                                                DataColor="Peru"/>
+                                                TextColor="{StaticResource PrimaryDarkText}"
+                                                AxisColor="{StaticResource PrimaryDarkText}"
+                                                DataColor="{StaticResource DarkYellow}"/>
                                         </VerticalStackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
+
+                            <Button Text="Daten übertragen" 
+                                    BackgroundColor="{StaticResource DarkYellow}" Command="{Binding SendDataCmd, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                    WidthRequest="200"/>
                         </VerticalStackLayout>
                     </ScrollView>
                 </DataTemplate>
             </ts:CarouselViewTemplateSelector.StatisticsPageTemplate>
+            <ts:CarouselViewTemplateSelector.SettingsPageTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <StackLayout Margin="10" Spacing="10">
+                            <ProgressBar ProgressColor="{StaticResource DarkBlue}"
+                                         Progress="{Binding LevelProgress, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                            <Label Text="{Binding LevelProgressString, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"
+                                   Style="{StaticResource SubHeadline}"
+                                   HorizontalTextAlignment="Center"
+                                   HorizontalOptions="Center"/>
+
+                            <Border Background="{StaticResource MidBlue}"
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}},Converter={StaticResource IntLessThanVC}, ConverterParameter={x:Int32 1}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+
+                                <Grid ColumnSpacing="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Lvl. 1"
+                                           Style="{StaticResource SubHeadline}"/>
+
+                                    <Label Grid.Column="1" Text="Einsteiger"
+                                           Style="{StaticResource SubHeadline}"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidBlue}"
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}},Converter={StaticResource IntLessThanVC}, ConverterParameter={x:Int32 2}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+
+                                <Grid ColumnSpacing="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Lvl. 2"
+                                           Style="{StaticResource SubHeadline}"/>
+
+                                    <Label Grid.Column="1" Text="Pionier"
+                                           Style="{StaticResource SubHeadline}"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidBlue}"
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}},Converter={StaticResource IntLessThanVC}, ConverterParameter={x:Int32 3}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+
+                                <Grid ColumnSpacing="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Lvl. 3"
+                                           Style="{StaticResource SubHeadline}"/>
+
+                                    <Label Grid.Column="1" Text="Fortgeschrittener"
+                                           Style="{StaticResource SubHeadline}"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidBlue}"
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}},Converter={StaticResource IntLessThanVC}, ConverterParameter={x:Int32 4}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+
+                                <Grid ColumnSpacing="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Lvl. 4"
+                                           Style="{StaticResource SubHeadline}"/>
+
+                                    <Label Grid.Column="1" Text="Experte"
+                                           Style="{StaticResource SubHeadline}"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource MidBlue}"
+                                    Padding="8">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8"/>
+                                </Border.StrokeShape>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Level, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}},Converter={StaticResource IntLessThanVC}, ConverterParameter={x:Int32 5}}"
+                                                 Value="True">
+                                        <Setter Property="Background" Value="{StaticResource Gray}"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+
+                                <Grid ColumnSpacing="20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Lvl. 5"
+                                           Style="{StaticResource SubHeadline}"/>
+
+                                    <Label Grid.Column="1" Text="Meister"
+                                           Style="{StaticResource SubHeadline}"/>
+                                </Grid>
+                            </Border>
+
+                            <Label Text="Mein Ziel:"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <Label Text="{Binding UserInputGoal, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+
+                            <ImageButton Command="{Binding EditUserInputGoal, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Pen}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+
+                            <Button Text="Impressum"
+                                    WidthRequest="150"
+                                    Background="{StaticResource MidBlue}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    Command="{Binding OpenImprint, Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}}"/>
+                        </StackLayout>
+                    </ScrollView>
+                </DataTemplate>
+            </ts:CarouselViewTemplateSelector.SettingsPageTemplate>
         </ts:CarouselViewTemplateSelector>
     </ContentPage.Resources>
 
@@ -191,20 +724,118 @@
         <vm:MainPageViewModel/>
     </ContentPage.BindingContext>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-        </Grid.RowDefinitions>
+    <cc:FAB VerticalOptions="Fill">
+        <cc:FAB.FABContent>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
 
-        <CarouselView x:Name="CarouselView" Grid.Row="0" ItemsSource="{StaticResource CarouselPageArray}" ItemTemplate="{StaticResource CarouselViewTemplateSelector}" IsSwipeEnabled="False"/>
+                <CarouselView x:Name="CarouselView" 
+                              Position="1"
+                              Grid.Row="0" 
+                              PositionChanged="CarouselView_PositionChanged"
+                              ItemsSource="{StaticResource CarouselPageArray}"
+                              ItemTemplate="{StaticResource CarouselViewTemplateSelector}"
+                              IsSwipeEnabled="False"/>
 
-        <FlexLayout Grid.Row="1"  AlignContent="SpaceBetween" BackgroundColor="Green" JustifyContent="SpaceEvenly">
-            <RadioButton GroupName="ViewSelection" IsChecked="True" CheckedChanged="RadioButton_MainPage_CheckedChanged"/>
-            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_TrainingPage_CheckedChanged"/>
-            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_StrengthsPage_CheckedChanged"/>
-            <RadioButton GroupName="ViewSelection" CheckedChanged="RadioButton_StatisticsPage_CheckedChanged"/>
-        </FlexLayout>
-    </Grid>
+                <Grid Grid.Row="1" BackgroundColor="{StaticResource White}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <RadioButton Grid.Column="0" GroupName="ViewSelection" 
+                         CheckedChanged="RadioButton_TrainingPage_CheckedChanged"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         VerticalOptions="End">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="IconsRegular"
+                                                         Glyph="{Static fh:IconFont.Dumbbell}"
+                                                         Color="{StaticResource Black}"/>
+                                    </Image.Source>
+                                </Image>
+                                <!--<Path Aspect="Uniform"
+                              Fill="Black" 
+                              Data="M 110.500 124.879 C 101.347 129.078, 97.055 136.493, 97.022 148.169 L 97 155.839 93.407 154.847 C 91.381 154.287, 81.022 153.995, 69.657 154.177 C 51.132 154.474, 49.166 154.679, 45.376 156.706 C 40.711 159.201, 36.342 163.960, 34.348 168.718 C 33.365 171.064, 33 177.500, 33 192.468 L 33 213 19.135 213 C 6.622 213, 5.013 213.202, 2.635 215.073 L 0 217.145 0 256 L 0 294.855 2.635 296.927 C 5.013 298.798, 6.622 299, 19.135 299 L 33 299 33 319.532 C 33 334.500, 33.365 340.936, 34.348 343.282 C 36.342 348.040, 40.711 352.799, 45.376 355.294 C 49.166 357.321, 51.132 357.526, 69.657 357.823 C 81.022 358.005, 91.381 357.713, 93.407 357.153 L 97 356.161 97.022 363.831 C 97.055 375.507, 101.347 382.922, 110.500 387.121 C 114.047 388.749, 117.385 388.956, 140 388.956 C 168.091 388.956, 170.213 388.574, 176.393 382.393 C 182.858 375.928, 182.954 375.245, 182.978 335.250 L 183 299 256 299 L 329 299 329.022 335.250 C 329.046 375.245, 329.142 375.928, 335.607 382.393 C 341.787 388.574, 343.909 388.956, 372 388.956 C 394.615 388.956, 397.953 388.749, 401.500 387.121 C 410.653 382.922, 414.945 375.507, 414.978 363.831 L 415 356.161 418.593 357.153 C 420.619 357.713, 430.978 358.005, 442.343 357.823 C 460.868 357.526, 462.834 357.321, 466.624 355.294 C 471.289 352.799, 475.658 348.040, 477.652 343.282 C 478.635 340.936, 479 334.500, 479 319.532 L 479 299 492.923 299 C 506.443 299, 506.936 298.925, 509.923 296.411 L 513 293.822 513 254.744 C 513 233.252, 512.715 215.952, 512.366 216.301 C 512.017 216.649, 510.607 216.049, 509.231 214.967 C 507.017 213.226, 505.139 213, 492.865 213 L 479 213 479 192.468 C 479 177.500, 478.635 171.064, 477.652 168.718 C 475.658 163.960, 471.289 159.201, 466.624 156.706 C 462.834 154.679, 460.868 154.474, 442.343 154.177 C 430.978 153.995, 420.619 154.287, 418.593 154.847 L 415 155.839 414.978 148.169 C 414.945 136.493, 410.653 129.078, 401.500 124.879 C 397.953 123.251, 394.615 123.044, 372 123.044 C 343.909 123.044, 341.787 123.426, 335.607 129.607 C 329.142 136.072, 329.046 136.755, 329.022 176.750 L 329 213 256 213 L 183 213 182.978 176.750 C 182.954 136.755, 182.858 136.072, 176.393 129.607 C 170.213 123.426, 168.091 123.044, 140 123.044 C 117.385 123.044, 114.047 123.251, 110.500 124.879 M 116.384 138.434 C 114.370 139.311, 112.868 140.941, 112.134 143.044 C 110.520 147.676, 110.521 364.327, 112.135 368.958 C 114.004 374.319, 117.126 375, 139.819 375 C 152.075 375, 160.951 374.565, 162.958 373.865 C 169.283 371.660, 169 377.186, 169 256 C 169 134.814, 169.283 140.340, 162.958 138.135 C 158.093 136.439, 120.412 136.681, 116.384 138.434 M 348.384 138.434 C 346.370 139.311, 344.868 140.941, 344.134 143.044 C 342.520 147.676, 342.521 364.327, 344.135 368.958 C 346.004 374.319, 349.126 375, 371.819 375 C 384.075 375, 392.951 374.565, 394.958 373.865 C 401.283 371.660, 401 377.186, 401 256 C 401 134.814, 401.283 140.340, 394.958 138.135 C 390.093 136.439, 352.412 136.681, 348.384 138.434 M 50.306 171.414 L 47.500 173.827 47.500 256 L 47.500 338.173 50.306 340.587 C 53.058 342.954, 53.475 343, 72 343 C 90.525 343, 90.942 342.954, 93.694 340.587 L 96.500 338.173 96.500 256 L 96.500 173.827 93.694 171.413 C 90.942 169.046, 90.525 169, 72 169 C 53.475 169, 53.058 169.046, 50.306 171.414 M 418.306 171.413 L 415.500 173.827 415.500 256 L 415.500 338.173 418.306 340.587 C 421.058 342.954, 421.475 343, 440 343 C 458.525 343, 458.942 342.954, 461.694 340.587 L 464.500 338.173 464.500 256 L 464.500 173.827 461.694 171.414 C 458.942 169.046, 458.525 169, 440 169 C 421.475 169, 421.058 169.046, 418.306 171.413 M 0.455 256 C 0.455 277.725, 0.587 286.613, 0.749 275.750 C 0.910 264.887, 0.910 247.112, 0.749 236.250 C 0.587 225.387, 0.455 234.275, 0.455 256 M 14 256 L 14 284 23.500 284 L 33 284 33 256 L 33 228 23.500 228 L 14 228 14 256 M 183 256 L 183 284 256 284 L 329 284 329 256 L 329 228 256 228 L 183 228 183 256 M 479 256 L 479 284 488.500 284 L 498 284 498 256 L 498 228 488.500 228 L 479 228 479 256">
+                                </Path>-->
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                    <RadioButton x:Name="RadioButton_MainPage" Grid.Column="1" GroupName="ViewSelection"
+                         CheckedChanged="RadioButton_MainPage_CheckedChanged"
+                         IsChecked="True"
+                         WidthRequest="50"
+                         HeightRequest="50"
+                         VerticalOptions="End">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="IconsRegular"
+                                                         Glyph="{Static fh:IconFont.Book}"
+                                                         Color="{StaticResource Black}"/>
+                                    </Image.Source>
+                                </Image>
+                                <!--<Path Aspect="Uniform"
+                              Fill="Black"
+                              Data="M 122 1.571 C 103.907 6.306, 87.029 19.870, 79.158 36 C 71.368 51.965, 71.945 33.632, 72.238 255.572 L 72.500 454.500 75.153 462.278 C 82.667 484.312, 99.688 501.333, 121.722 508.847 L 129.500 511.500 280 511.500 C 427.492 511.500, 430.551 511.461, 433.057 509.557 C 437.508 506.174, 439.348 502.847, 439.803 497.363 C 440.165 493.001, 439.792 491.321, 437.654 487.673 C 432.768 479.336, 445.872 480.001, 286.349 479.992 C 193.635 479.988, 142.296 479.627, 138.138 478.953 C 116.600 475.458, 101.678 455.107, 105.095 433.888 C 107.475 419.115, 117.871 407.304, 133.491 401.629 C 135.592 400.866, 180.863 400.379, 283.500 400.018 L 430.500 399.500 433.627 397.270 C 440.548 392.332, 440.043 408.682, 439.758 198.833 L 439.500 9.500 437.090 6.288 C 432.020 -0.469, 443.848 -0.007, 277.849 0.066 C 150.387 0.122, 126.663 0.351, 122 1.571 M 130.972 33.359 C 117.289 36.306, 107.701 46.349, 105.091 60.465 C 103.831 67.283, 103.496 379.390, 104.750 378.833 C 105.162 378.650, 108.425 377.040, 112 375.256 C 119.744 371.391, 132.436 368, 139.160 368 L 144 368 144 200 L 144 32 140.250 32.084 C 138.188 32.130, 134.013 32.704, 130.972 33.359 M 176 200 L 176 368 292 368 L 408 368 408 200 L 408 32 292 32 L 176 32 176 200 M 136.218 425.663 C 130.726 428.370, 128.500 432.505, 128.500 440 C 128.500 447.463, 130.197 450.555, 136.154 453.942 L 139.808 456.020 285.154 455.760 L 430.500 455.500 433.712 453.090 C 440.300 448.147, 441.924 438.959, 437.534 431.468 C 432.786 423.365, 445.826 423.997, 283.849 424.023 C 152.925 424.043, 139.195 424.196, 136.218 425.663">
+                                </Path>-->
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                    <RadioButton Grid.Column="2" GroupName="ViewSelection"
+                         CheckedChanged="RadioButton_StatisticsPage_CheckedChanged"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         VerticalOptions="End">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="IconsRegular"
+                                                         Glyph="{Static fh:IconFont.Chart}"
+                                                         Color="{StaticResource Black}"/>
+                                    </Image.Source>
+                                </Image>
+                                <!--<Path Aspect="Uniform"
+                              Fill="Black" 
+                              Data="M 452.500 12.432 C 427.750 19.152, 406.456 24.995, 405.181 25.415 C 402.262 26.376, 399.009 31.609, 399.004 35.350 C 399.001 37.480, 400.507 39.751, 404.970 44.350 L 410.940 50.500 357.724 103.750 L 304.507 157 257.363 109.863 L 210.219 62.727 205.992 62.727 L 201.764 62.727 100.882 163.624 L 0 264.521 -0 268.956 C -0 273.391, 0.002 273.393, 20.711 294.188 C 42.402 315.969, 45.186 317.999, 50.606 315.984 C 52.286 315.360, 85.487 282.942, 129.749 238.708 L 205.998 162.506 253.003 209.503 L 300.008 256.500 304.518 256.500 L 309.028 256.500 338.514 226.965 C 365.111 200.325, 368 197.111, 368 194.166 C 368 189.570, 365.615 185.498, 362.064 184.026 C 355.564 181.334, 354.112 182.371, 328.498 208.002 L 304.512 232.004 258.006 185.548 C 232.428 159.997, 210.352 138.667, 208.949 138.147 C 207.547 137.627, 205.257 137.419, 203.861 137.686 C 202.159 138.012, 176.175 163.322, 124.914 214.586 C 82.889 256.614, 48.046 291, 47.485 291 C 46.925 291, 41.528 286.046, 35.492 279.992 L 24.518 268.984 115.252 178.249 L 205.986 87.515 252.743 134.196 C 283.167 164.570, 300.435 181.104, 302.178 181.528 C 303.651 181.887, 305.901 181.872, 307.178 181.495 C 308.455 181.117, 337.738 152.615, 372.251 118.156 C 422.251 68.235, 435.122 54.864, 435.593 52.357 C 436.216 49.034, 435.027 45.904, 431.790 42.345 C 429.910 40.278, 429.905 40.166, 431.664 39.639 C 441.218 36.778, 486.368 25.034, 486.667 25.333 C 486.965 25.632, 475.230 70.752, 472.365 80.323 C 471.851 82.039, 471.709 82.047, 469.950 80.455 C 468.922 79.525, 466.007 78.530, 463.471 78.244 L 458.862 77.724 431.935 104.584 C 403.160 133.286, 402.292 134.463, 405.026 141.064 C 406.496 144.611, 410.569 147, 415.149 147 C 418.048 147, 420.800 144.607, 440.660 124.818 L 462.922 102.636 468.401 107.818 C 474.331 113.427, 476.923 114.125, 482.020 111.490 C 483.626 110.659, 485.408 109.106, 485.979 108.039 C 487.852 104.540, 512 12.963, 512 9.361 C 512 4.040, 507.522 -0.034, 501.827 0.106 C 499.447 0.165, 477.250 5.711, 452.500 12.432 M 378.923 157.923 C 376.631 160.216, 376 161.742, 376 165 C 376 174.111, 386.635 178.518, 393.077 172.077 C 399.518 165.635, 395.111 155, 386 155 C 382.742 155, 381.216 155.631, 378.923 157.923">
+                                </Path>-->
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                    <RadioButton Grid.Column="3" GroupName="ViewSelection" 
+                         CheckedChanged="RadioButton_SettingsPage_CheckedChanged"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         VerticalOptions="End">
+                        <RadioButton.ControlTemplate>
+                            <ControlTemplate>
+                                <Image>
+                                    <Image.Source>
+                                        <FontImageSource FontFamily="IconsRegular"
+                                                         Glyph="{Static fh:IconFont.Gear}"
+                                                         Color="{StaticResource Black}"/>
+                                    </Image.Source>
+                                </Image>
+                                <!--<Path Aspect="Uniform"
+                              Fill="Black" 
+                              Data="M 124.629 1.750 C 124.351 2.712, 122.718 10.700, 121 19.500 C 119.282 28.300, 117.638 36.321, 117.347 37.325 C 116.849 39.044, 113.148 41.029, 104.931 43.986 L 101.362 45.271 84.835 34.224 L 68.308 23.176 45.748 45.838 L 23.189 68.500 33.667 84 C 39.430 92.525, 44.372 100.028, 44.650 100.673 C 45.537 102.735, 39.688 116.192, 37.513 117.092 C 36.406 117.551, 28.300 119.320, 19.500 121.025 C 10.700 122.729, 2.713 124.351, 1.750 124.629 C 0.130 125.097, 0 127.515, 0 157.067 C 0 174.630, 0.149 189, 0.331 189 C 0.797 189, 35.041 195.863, 37.639 196.477 C 38.922 196.780, 40.055 198.081, 40.467 199.725 C 40.846 201.233, 42.686 205.781, 44.558 209.831 L 47.960 217.195 54.730 213.464 C 58.453 211.411, 61.876 209.394, 62.335 208.981 C 62.794 208.568, 62.369 206.716, 61.389 204.865 C 60.409 203.014, 58.009 197.012, 56.054 191.527 L 52.500 181.553 34.750 178.061 L 17 174.570 17 156.928 L 17 139.287 33.250 136.086 C 42.188 134.325, 50.216 132.678, 51.090 132.425 C 52.039 132.152, 53.803 128.644, 55.462 123.733 C 56.991 119.205, 59.763 112.474, 61.621 108.775 C 63.480 105.076, 65 101.577, 65 100.999 C 65 100.420, 60.886 93.800, 55.858 86.287 C 50.829 78.774, 46.537 71.924, 46.319 71.064 C 45.750 68.821, 69.316 45.523, 71.360 46.308 C 72.209 46.634, 78.989 50.973, 86.426 55.950 C 93.862 60.928, 100.420 65, 100.999 65 C 101.577 65, 105.076 63.480, 108.775 61.621 C 112.474 59.763, 119.189 56.996, 123.699 55.473 L 131.898 52.704 132.881 48.102 C 133.422 45.571, 135.097 37.538, 136.603 30.250 L 139.341 17 156.955 17 L 174.570 17 178.057 34.725 L 181.545 52.450 190.575 55.611 C 195.542 57.350, 202.381 60.173, 205.774 61.886 C 209.167 63.599, 212.408 65, 212.977 65 C 213.546 65, 220.556 60.640, 228.554 55.311 L 243.097 45.622 257.811 60.311 C 265.903 68.390, 272.956 75, 273.483 75 C 274.011 75, 277.048 72.422, 280.232 69.270 L 286.022 63.540 265.858 43.358 L 245.694 23.176 229.369 34.088 C 220.390 40.089, 212.593 45, 212.042 45 C 211.189 45, 198.230 40.076, 197.121 39.330 C 196.913 39.190, 195.451 32.646, 193.872 24.788 C 192.293 16.930, 190.520 8.138, 189.930 5.250 L 188.858 0 156.996 0 C 127.511 0, 125.097 0.131, 124.629 1.750 M 157 74.371 L 157 82.742 164.133 83.444 C 199.113 86.891, 226.705 114.720, 230.527 150.407 L 231.233 157 239.761 157 L 248.289 157 247.735 149.674 C 245.160 115.633, 221.875 84.420, 189.784 71.992 C 181.053 68.610, 168.967 66, 162.042 66 L 157 66 157 74.371 M 258.500 100.552 C 255.200 102.435, 252.085 104.119, 251.578 104.295 C 251.070 104.471, 252.260 108.414, 254.221 113.057 C 256.182 117.701, 258.539 123.841, 259.458 126.703 C 260.419 129.693, 261.846 132.114, 262.815 132.395 C 263.742 132.664, 271.813 134.325, 280.750 136.086 L 297 139.287 297 156.928 L 297 174.570 279.307 178.051 L 261.615 181.532 257.849 191.509 C 255.778 196.996, 252.730 204.110, 251.075 207.318 L 248.068 213.149 258.142 228.212 L 268.216 243.275 255.745 255.745 L 243.275 268.216 228.242 258.162 L 213.209 248.108 205.878 251.765 C 201.846 253.777, 194.723 256.794, 190.049 258.472 L 181.550 261.521 178.060 279.261 L 174.570 297 156.928 297 L 139.287 297 136.086 280.750 C 134.325 271.813, 132.671 263.764, 132.411 262.865 C 132.119 261.855, 128.428 260.003, 122.768 258.027 C 117.724 256.265, 110.666 253.347, 107.083 251.540 L 100.569 248.256 85.652 258.233 L 70.734 268.210 56.105 253.605 C 48.059 245.572, 41.017 239, 40.457 239 C 39.896 239, 36.868 241.596, 33.728 244.769 L 28.020 250.538 47.769 270.269 C 58.631 281.121, 67.862 290, 68.281 290 C 68.701 290, 76.371 285.102, 85.326 279.116 L 101.608 268.233 109.054 271.301 C 113.149 272.989, 116.670 274.495, 116.879 274.647 C 117.087 274.799, 118.549 281.354, 120.128 289.212 C 121.707 297.070, 123.480 305.863, 124.070 308.750 L 125.142 314 157 314 L 188.858 314 189.930 308.750 C 190.520 305.863, 192.293 297.070, 193.872 289.212 C 195.451 281.354, 196.913 274.816, 197.121 274.683 C 197.330 274.551, 200.727 273.046, 204.672 271.338 L 211.843 268.234 228.172 279.116 C 237.152 285.101, 244.954 289.998, 245.509 289.999 C 246.815 290, 290 246.799, 289.999 245.492 C 289.998 244.946, 285.101 237.152, 279.116 228.172 L 268.234 211.843 271.338 204.672 C 273.046 200.727, 274.551 197.330, 274.683 197.121 C 274.816 196.913, 281.354 195.451, 289.212 193.872 C 297.070 192.293, 305.863 190.520, 308.750 189.930 L 314 188.858 314 156.948 L 314 125.038 311.750 124.505 C 310.512 124.211, 301.663 122.403, 292.084 120.486 C 282.505 118.570, 274.591 116.889, 274.497 116.751 C 274.402 116.613, 273.615 114.700, 272.747 112.500 C 269.812 105.063, 265.857 97, 265.177 97.065 C 264.805 97.101, 261.800 98.670, 258.500 100.552 M 142.645 100.584 C 122.853 105.375, 105.238 123.162, 100.537 143.103 C 98.754 150.668, 98.566 161.806, 100.097 169.201 C 101.625 176.583, 107.129 187.747, 112.475 194.311 C 118.283 201.440, 130.130 209.353, 139.325 212.244 C 149.334 215.391, 164.611 215.409, 174.542 212.285 C 191.801 206.854, 206.854 191.801, 212.285 174.542 C 215.409 164.611, 215.391 149.334, 212.244 139.325 C 209.340 130.088, 201.443 118.294, 194.172 112.332 C 187.662 106.995, 176.902 101.730, 169.201 100.113 C 162.111 98.624, 149.842 98.842, 142.645 100.584 M 147.500 117.411 C 127.023 122.493, 113.081 143.204, 116.773 163.056 C 122.955 196.299, 162.034 209.083, 185.558 185.558 C 208.015 163.102, 197.493 125.615, 166.465 117.533 C 159.558 115.734, 154.392 115.701, 147.500 117.411 M 66 162.042 C 66 168.967, 68.610 181.053, 71.992 189.784 C 84.420 221.875, 115.633 245.160, 149.674 247.735 L 157 248.289 157 239.761 L 157 231.233 150.407 230.527 C 114.720 226.705, 86.891 199.113, 83.444 164.133 L 82.742 157 74.371 157 L 66 157 66 162.042">
+                                </Path>-->
+                            </ControlTemplate>
+                        </RadioButton.ControlTemplate>
+                    </RadioButton>
+                </Grid>
+            </Grid>
+        </cc:FAB.FABContent>
+    </cc:FAB>
 
 </ContentPage>

@@ -4,99 +4,97 @@
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
              x:Class="PeopleCurer.Views.SituationCompletedPage"
-             x:DataType="{x:Type vm:SituationViewModel}">
+             Shell.NavBarIsVisible="False">
 
-    <ScrollView>
-        <VerticalStackLayout Spacing="5">
-            <Label Text="{Binding SituationName}"/>
+    <ScrollView Margin="10">
+        <VerticalStackLayout Spacing="10">
+            <Label Text="{Binding SituationName}"
+                   Style="{StaticResource Headline}"/>
 
-            <Label Text="{Binding SituationTime}"/>
+            <Label Text="{Binding SituationTime}"
+                   Style="{StaticResource SubHeadline}"/>
 
-            <Label Text="Diese Befürchtungen hattest du:"/>
+            <Label Text="Diese Befürchtungen hattest du:"
+                   Style="{StaticResource SubHeadline}"/>
 
             <CollectionView ItemsSource="{Binding SituationFears}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type vm:SituationFearViewModel}">
-                        <Border Margin="0,10">
-                            <StackLayout>
-                                <Label Text="{Binding FearName}"/>
-                                <Label Text="Erwartung"/>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width=".1*"/>
-                                        <ColumnDefinition Width=".8*"/>
-                                        <ColumnDefinition Width=".1*"/>
-                                    </Grid.ColumnDefinitions>
+                        <StackLayout Margin="10">
+                            <Label Text="{Binding FearName}"
+                                       Style="{StaticResource SubHeadline}"/>
+                            <Label Text="Erwartung" HorizontalTextAlignment="Center"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
-                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding FearProbability}"  Minimum="0" Maximum="100" IsEnabled="False"/>
-                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+                                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding FearProbability}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
 
-                                    <Label Grid.Row="1" Grid.Column="0" Text="0 gar nicht"/>
-                                    <Slider Grid.Row="1" Grid.Column="1" Value="{Binding ActualFearStrength}"  Minimum="0" Maximum="100" IsEnabled="False"/>
-                                    <Label Grid.Row="1" Grid.Column="2" Text="100 extrem"/>
-                                </Grid>
-                                <Label Text="eingetreten"/>
-                            </StackLayout>
-                        </Border>
+                                <Label Grid.Row="1" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                                <Slider Grid.Row="1" Grid.Column="1" Value="{Binding ActualFearStrength}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                                <Label Grid.Row="1" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+                            </Grid>
+                            <Label Text="eingetreten" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Label Text="Eingesetzte Sicherheitsverhalten:"/>
+            <Label Text="Eingesetztes Sicherheitsverhalten:"
+                   Style="{StaticResource SubHeadline}"/>
 
-            <CollectionView ItemsSource="{Binding SituationSafetyBehaviours}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type vm:SafetyBehaviourViewModel}">
-                        <Border Margin="0,10">
-                            <StackLayout>
-                                <Label Text="{Binding SafetyBehaviourName}"/>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width=".1*"/>
-                                        <ColumnDefinition Width=".8*"/>
-                                        <ColumnDefinition Width=".1*"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
-                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SafetyBehaviourAmount}"  Minimum="0" Maximum="100" IsEnabled="False"/>
-                                    <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
-                                </Grid>
-                            </StackLayout>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <Label Text="Stärke der Angst:"/>
+            <Label Text="{Binding SituationSafetyBehaviour.SafetyBehaviourName}"
+                   Style="{StaticResource SubHeadline}"/>
             
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width=".1*"/>
-                    <ColumnDefinition Width=".8*"/>
-                    <ColumnDefinition Width=".1*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Text="0 gar nicht"/>
-                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding OverallFear}"  Minimum="0" Maximum="100" IsEnabled="False"/>
-                <Label Grid.Row="0" Grid.Column="2" Text="100 extrem"/>
+                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding SituationSafetyBehaviour.SafetyBehaviourAmount}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
             </Grid>
 
-            <Label Text="Deine Schlussfolgerung aus dem Experiment:"/>
+            <Label Text="Stärke der Angst:"
+                   Style="{StaticResource SubHeadline}"/>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="0&#10;gar nicht" HorizontalTextAlignment="Center"/>
+                <Slider Grid.Row="0" Grid.Column="1" Value="{Binding OverallFear}"  Minimum="0" Maximum="100" IsEnabled="False"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="100&#10;extrem" HorizontalTextAlignment="Center"/>
+            </Grid>
+
+            <Label Text="Deine Schlussfolgerung aus dem Experiment:"
+                   Style="{StaticResource SubHeadline}"/>
 
             <Editor Text="{Binding Conclusion}" IsReadOnly="True"/>
 
-            <Button Text="Abschließen" Command="{Binding GoBackCMD}"/>
+            <Button Text="Abschließen" Clicked="Button_Clicked"
+                    Background="{StaticResource DarkGreen}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

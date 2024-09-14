@@ -3,19 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              x:Class="PeopleCurer.Views.RewardPage"
-             x:DataType="vm:RewardPageViewModel">
+             x:DataType="{x:Type vm:LessonViewModel}">
 
-    <ContentPage.BindingContext>
-        <vm:RewardPageViewModel/>
-    </ContentPage.BindingContext>
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Herzlichen Glückwunsch!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label Text="{Binding RewardValue}"/>
-        <ProgressBar x:Name="xpBar"/>
-        <Button Text="Weiter" Command="{Binding GoBackCMD}"/>
-    </VerticalStackLayout>
+    <Grid Margin="20,50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0"
+               Text="Super, du hast es geschafft!"
+               Style="{StaticResource Headline}"/>
+        
+        <ProgressBar x:Name="xpBar" Grid.Row="1" VerticalOptions="End"
+                     PropertyChanged="xpBar_PropertyChanged"/>
+        
+        <Label x:Name="progressLabel" Grid.Row="2" 
+               Text="Progress" 
+               VerticalOptions="Start" 
+               Style="{StaticResource SubHeadline}"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"/>
+        
+        <Button Grid.Row="3"
+                Margin="5"
+                Text="zur Übersicht" 
+                WidthRequest="180"
+                Background="{Binding ColorTheme, Converter={StaticResource colorThemeToColorVC}, ConverterParameter=dark}"
+                Clicked="Button_Clicked"/>
+    </Grid>
 </ContentPage>

@@ -13,6 +13,10 @@ namespace PeopleCurer
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Epilogue-Regular.ttf", "EpilogueRegular");
+                    fonts.AddFont("Epilogue-Semibold.ttf", "EpilogueSemibold");
+
+                    fonts.AddFont("Icons-Regular.ttf", "IconsRegular");
                 });
 
 #if DEBUG

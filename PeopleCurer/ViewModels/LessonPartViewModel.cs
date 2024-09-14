@@ -3,6 +3,7 @@ using PeopleCurer.Models;
 using PeopleCurer.MVVMHelpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace PeopleCurer.ViewModels
             get => canGoToNextLessonPart;
             set
             {
-                if(value !=  canGoToNextLessonPart)
+                if (value != canGoToNextLessonPart)
                 {
                     canGoToNextLessonPart = value;
                     base.RaisePropertyChanged();
@@ -25,7 +26,7 @@ namespace PeopleCurer.ViewModels
             }
         }
 
-        public virtual int GetAnswerValue()
+        public virtual int GetAAnswerValue()
         {
             return 0;
         }
@@ -58,15 +59,15 @@ namespace PeopleCurer.ViewModels
             {
                 return new EnumerationViewModel((Enumeration)textPart);
             }
-            else if(textPart.GetType() == typeof(TextBox))
+            else if (textPart.GetType() == typeof(TextBox))
             {
                 return new TextBoxViewModel((TextBox)textPart);
             }
-            else if(textPart.GetType() == typeof(UserInputTextBlock))
+            else if (textPart.GetType() == typeof(UserInputTextBlock))
             {
                 return new UserInputTextBlockViewModel((UserInputTextBlock)textPart);
             }
-            else if(textPart.GetType() == typeof(FearCircleDiagram))
+            else if (textPart.GetType() == typeof(FearCircleDiagram))
             {
                 return new FearCircleDiagramViewModel((FearCircleDiagram)textPart);
             }
@@ -83,11 +84,12 @@ namespace PeopleCurer.ViewModels
     {
         private readonly Question question;
 
-        public string Issue { get => question.issue; }
+        public string QuestionText { get => question.questionText; }
 
         public AnswerViewModel[] Answers { get; }
+        public EventHandler? SelectedAnswerChanged;
 
-        public QuestionViewModel(Question question) 
+        public QuestionViewModel(Question question)
         {
             this.question = question;
 
@@ -108,68 +110,40 @@ namespace PeopleCurer.ViewModels
         private void AnswersChanged(object? sender, AnswerEventArgs e)
         {
             bool val = false;
-            for (int i = 0;i < Answers.Length; i++)
+            for (int i = 0; i < Answers.Length; i++)
             {
                 val = val || Answers[i].IsChosen;
             }
             CanGoToNextLessonPart = val;
+
+            SelectedAnswerChanged?.Invoke(this, e);
         }
 
-        public override int GetAnswerValue()
+        public override int GetAAnswerValue()
         {
-            for (int i = 0; i<Answers.Length; i++) 
+            for (int i = 0; i < Answers.Length; i++)
             {
-                if (Answers[i].IsChosen) return Answers[i].AnswerValue;
+                if (Answers[i].IsChosen) return Answers[i].IsCorrect ? 1 : 0;
             }
             return 0;
         }
     }
 
-    public sealed class EvaluationViewModel : LessonPartViewModel
+    public sealed class EvaluationViewModel(Evaluation evaluation) : LessonPartViewModel
     {
-        private readonly Evaluation evaluation;
-        private const string errorMsg = "ERROR";
+        private readonly Evaluation evaluation = evaluation;
 
-        private string evaluationResult;
-        public string EvaluationResult 
-        { 
-            get => evaluationResult;
-            private set
-            { 
-                if(evaluationResult != value)
+        private ObservableCollection<QuestionViewModel> questionsToEvaluate = [];
+        public ObservableCollection<QuestionViewModel> QuestionsToEvaluate
+        {
+            get => questionsToEvaluate;
+            set
+            {
+                if (questionsToEvaluate != value)
                 {
-                    evaluationResult = value;
+                    questionsToEvaluate = value;
                     base.RaisePropertyChanged();
                 }
-            }
-        }
-
-        public EvaluationViewModel(Evaluation evaluation)
-        {
-            this.evaluation = evaluation;
-
-            EvaluationResult = errorMsg;
-        }
-
-        public void SetEvaluationSum(int sum)
-        {
-            int currentEval = int.MaxValue;
-            for (int i = 0; i < evaluation.evaluationResults.Count; i++) 
-            {
-                if(sum <= evaluation.evaluationResults.ElementAt(i).Key && currentEval > evaluation.evaluationResults.ElementAt(i).Key)
-                {
-                    currentEval = evaluation.evaluationResults.ElementAt(i).Key;
-                }
-            }
-
-            //Failed to find StrengthsLesson fitting evaluation
-            if (currentEval == int.MaxValue)
-            {
-                EvaluationResult = errorMsg;
-            }
-            else
-            {
-                EvaluationResult = evaluation.evaluationResults[currentEval];
             }
         }
     }
@@ -181,7 +155,7 @@ namespace PeopleCurer.ViewModels
         public string Issue { get => symptomCheckQuestion.issue; }
         public string Description { get => symptomCheckQuestion.description; }
 
-        public string LowText { get =>  symptomCheckQuestion.lowText; }
+        public string LowText { get => symptomCheckQuestion.lowText; }
         public string HighText { get => symptomCheckQuestion.highText; }
 
         public int AnswerValue
@@ -189,7 +163,7 @@ namespace PeopleCurer.ViewModels
             get => symptomCheckQuestion.answerValue;
             set
             {
-                if(value != symptomCheckQuestion.answerValue)
+                if (value != symptomCheckQuestion.answerValue)
                 {
                     symptomCheckQuestion.answerValue = value;
                     base.RaisePropertyChanged();
@@ -197,12 +171,12 @@ namespace PeopleCurer.ViewModels
             }
         }
 
-        public Dictionary<DateOnly, int> Data 
-        { 
-            get => symptomCheckQuestion.data; 
+        public Dictionary<DateOnly, int> Data
+        {
+            get => symptomCheckQuestion.data;
             set
             {
-                if(value != symptomCheckQuestion.data)
+                if (value != symptomCheckQuestion.data)
                 {
                     symptomCheckQuestion.data = value;
                     base.RaisePropertyChanged();
@@ -214,5 +188,102 @@ namespace PeopleCurer.ViewModels
         {
             this.symptomCheckQuestion = symptomCheckQuestion;
         }
+    }
+
+    public sealed class ThoughtTestLessonPart1ViewModel(ThoughtTestLessonViewModel vm) : LessonPartViewModel
+    {
+        public ThoughtTestLessonViewModel ThoughtTestLessonVM { get; } = vm;
+    }
+    public sealed class ThoughtTestLessonPart2ViewModel : LessonPartViewModel
+    {
+        public ThoughtTestLessonViewModel ThoughtTestLessonVM { get; }
+
+        public DelegateCommand AddEmotion { get; }
+        public DelegateCommand DeleteEmotion { get; }
+
+        public ThoughtTestLessonPart2ViewModel(ThoughtTestLessonViewModel vm)
+        {
+            ThoughtTestLessonVM = vm;
+
+            AddEmotion = new DelegateCommand((obj) => ThoughtTestLessonVM.AddEmotion());
+            DeleteEmotion = new DelegateCommand((obj) =>
+            {
+                if (obj is EmotionViewModel emotion)
+                {
+                    ThoughtTestLessonVM.RemoveEmotion(emotion);
+                }
+            });
+        }
+    }
+    public sealed class ThoughtTestLessonPart3ViewModel : LessonPartViewModel
+    {
+        public ThoughtTestLessonViewModel ThoughtTestLessonVM { get; }
+
+        public DelegateCommand AddAlternateThought { get; }
+        public DelegateCommand DeleteAlternateThought { get; }
+
+        public ThoughtTestLessonPart3ViewModel(ThoughtTestLessonViewModel vm)
+        {
+            ThoughtTestLessonVM = vm;
+
+            AddAlternateThought = new DelegateCommand((obj) => ThoughtTestLessonVM.AddAlternateThought());
+            DeleteAlternateThought = new DelegateCommand((obj) =>
+            {
+                if (obj is ThoughtViewModel thought)
+                {
+                    ThoughtTestLessonVM.RemoveAlternateThought(thought);
+                }
+            });
+        }
+    }
+    public sealed class ThoughtTestLessonPart4ViewModel(ThoughtTestLessonViewModel vm) : LessonPartViewModel
+    {
+        public ThoughtTestLessonViewModel ThoughtTestLessonVM { get; } = vm;
+    }
+
+    public sealed class SituationLessonPartCreate1ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
+    }
+    public sealed class SituationLessonPartCreate2ViewModel : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; }
+
+        public DelegateCommand AddSituationFear { get; }
+        public DelegateCommand DeleteSituationFear { get; }
+
+        public SituationLessonPartCreate2ViewModel(SituationLessonViewModel vm)
+        {
+            this.SituationLessonVM = vm;
+
+            AddSituationFear = new DelegateCommand((obj) => SituationLessonVM.AddSituationFear());
+            DeleteSituationFear = new DelegateCommand((obj) =>
+            {
+                if (obj is SituationFearViewModel fear)
+                {
+                    SituationLessonVM.RemoveSituationFear(fear);
+                }
+            });
+        }
+    }
+    public sealed class SituationLessonPartCreate3ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
+    }
+    public sealed class SituationLessonPartFinish1ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
+    }
+    public sealed class SituationLessonPartFinish2ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
+    }
+    public sealed class SituationLessonPartFinish3ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
+    }
+    public sealed class SituationLessonPartFinish4ViewModel(SituationLessonViewModel vm) : LessonPartViewModel
+    {
+        public SituationLessonViewModel SituationLessonVM { get; } = vm;
     }
 }

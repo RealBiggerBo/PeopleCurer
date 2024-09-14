@@ -1,3 +1,4 @@
+using Microsoft.Maui;
 using PeopleCurer.CustomEventArgs;
 using PeopleCurer.ViewModels;
 
@@ -12,18 +13,21 @@ public partial class LessonPage : ContentPage
         get => lesson;
         set
         {
-            //unsubscribe if possible
-            if (lesson != null)
-                lesson.NextLessonPartEvent -= (sender, eventArgs) => SwipeToLessonPart(sender, eventArgs);
-
             if (value != lesson)
             {
+                //unsubscribe if possible
+                if (lesson != null)
+                    lesson.UpdateLessonPartEvent -= (sender, eventArgs) => SwipeToLessonPart(sender, eventArgs);
+
                 BindingContext = value;
                 lesson = value;
 
-                //subscripe again to event
-                if(lesson != null)
-                    lesson.NextLessonPartEvent += (sender, eventArgs) => SwipeToLessonPart(sender, eventArgs);
+                //subscribe again to event
+                if (lesson != null)
+                {
+                    lesson.PrepareLesson();
+                    lesson.UpdateLessonPartEvent += (sender, eventArgs) => SwipeToLessonPart(sender, eventArgs);
+                }
 
                 OnPropertyChanged();
             }
@@ -31,12 +35,24 @@ public partial class LessonPage : ContentPage
     }
 
     public LessonPage()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
     private void SwipeToLessonPart(object? sender, IntEventArgs e)
     {
         CarouselView.ScrollTo(e.IntValue);
+        if (e.IntValue == lesson?.LessonParts.Length - 1)
+        {
+            nextButton.Text = "Abschlieﬂen";
+        }
+        else if (lesson?.LessonParts[e.IntValue + 1] is EvaluationViewModel)
+        {
+            nextButton.Text = "Auswerten";
+        }
+        else
+        {
+            nextButton.Text = "Weiter";
+        }
     }
 }

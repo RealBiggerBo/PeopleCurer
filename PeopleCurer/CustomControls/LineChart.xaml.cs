@@ -400,7 +400,7 @@ public partial class LineChart : ContentView
             label.Text = DateToString(entries.ElementAt(x + 1).Key, graphDisplayMode);
             label.TextColor = TextColor;
             label.FontSize = XAxisTextFontSize;
-            InitLabel(label, xCoord ,height - charHeight + barLength, true);
+            InitLabel(label, xCoord, height - charHeight + barLength, true);
 
             displayedXLabels.Add(label);
             statisticsAbsoluteLayout.Children.Add(label);

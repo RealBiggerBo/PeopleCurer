@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              xmlns:vc="clr-namespace:PeopleCurer.CustomValueConverters"
-             x:Class="PeopleCurer.Views.SituationEditPage"
-             x:DataType="{x:Type vm:SituationViewModel}">
+             x:Class="PeopleCurer.Views.SituationEditPage">
 
     <ScrollView>
         <VerticalStackLayout Spacing="5">
@@ -18,7 +17,7 @@
 
             <Label Text="Welche Befürchtungen hast du, wenn du an die Situationen denkst?"/>
 
-            <Button Text="Neue Angst hinzufügen" Command="{Binding AddSituationFear}"/>
+            <Button Text="Neue Angst hinzufügen" Command="{Binding}"/>
 
             <CollectionView ItemsSource="{Binding SituationFears}">
                 <CollectionView.ItemTemplate>
@@ -52,9 +51,9 @@
 
             <Label Text="Welches Sicherheitsverhalten möchtest du unterlassen?"/>
 
-            <Button Text="Neues Sicherheitsverhalten hinzufügen" Command="{Binding AddSafetyBehaviour}"/>
+            <Button Text="Neues Sicherheitsverhalten hinzufügen" Command="{Binding}"/>
 
-            <CollectionView ItemsSource="{Binding SituationSafetyBehaviours}">
+            <CollectionView ItemsSource="{Binding}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type vm:SafetyBehaviourViewModel}">
                         <Border Margin="0,10">
@@ -64,7 +63,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Button Text="Speichern" Command="{Binding SaveSituation}"/>
+            <Button Text="Speichern" Command="{Binding}"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

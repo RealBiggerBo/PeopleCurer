@@ -3,11 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
              x:Class="PeopleCurer.Views.RelaxationProcedurePage"
-             x:DataType="{x:Type vm:RelaxationProcedureViewModel}">
-    <VerticalStackLayout>
-        <Label Text="{Binding Title}"/>
-        <Label Text="AUDIOOOO"/>
-        <Label Text="{Binding Explanation}"/>
-        <Label Text="{Binding Effectiveness}"/>
-    </VerticalStackLayout>
+             x:DataType="{x:Type vm:RelaxationProcedureViewModel}"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Margin="10" Spacing="10">
+            <Label Text="{Binding Title}"
+                   Style="{StaticResource Headline}"/>
+            
+            <Label Text="{Binding Explanation}"
+                   Style="{StaticResource SubHeadline}"/>
+            
+            <Label Text="AUDIO"/>
+            
+            <Label Text="{Binding Effectiveness}"
+                   Style="{StaticResource SubHeadline}"/>
+            
+            <Button WidthRequest="130"
+                    Text="Abschließen" Background="{StaticResource DarkPurple}"
+                    Clicked="Button_Clicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

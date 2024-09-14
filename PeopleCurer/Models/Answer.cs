@@ -7,20 +7,13 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
-    public sealed class Answer
+    public sealed class Answer(string answerText, bool isCorrect)
     {
         [JsonInclude]
-        public readonly string answerText;
+        public readonly string answerText = answerText;
         [JsonInclude]
-        public readonly int answerValue;
+        public readonly bool isCorrect = isCorrect;
         [JsonInclude]
-        public bool isChosen;
-
-        public Answer(string answerText, int answerValue)
-        {
-            this.answerText = answerText;
-            this.answerValue = answerValue;
-            isChosen = false;
-        }
+        public bool isChosen = false;
     }
 }

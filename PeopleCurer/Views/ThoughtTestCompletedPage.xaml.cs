@@ -5,8 +5,8 @@ namespace PeopleCurer.Views;
 [QueryProperty(nameof(ThoughtTestVM), nameof(ThoughtTestVM))]
 public partial class ThoughtTestCompletedPage : ContentPage
 {
-    private ThoughtTestViewModel? thoughtTestVM;
-    public ThoughtTestViewModel? ThoughtTestVM
+    private ThoughtTestLessonViewModel? thoughtTestVM;
+    public ThoughtTestLessonViewModel? ThoughtTestVM
     {
         get => thoughtTestVM;
         set
@@ -25,4 +25,9 @@ public partial class ThoughtTestCompletedPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
+    }
 }

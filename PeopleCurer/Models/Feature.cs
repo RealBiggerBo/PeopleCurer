@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 namespace PeopleCurer.Models
 {
     [JsonDerivedType(typeof(Course),nameof(Course))]
-    [JsonDerivedType(typeof(BehaviourExperiment), nameof(BehaviourExperiment))]
+    [JsonDerivedType(typeof(BehaviourExperimentContainer), nameof(BehaviourExperimentContainer))]
     [JsonDerivedType(typeof(ThoughtTestContainer), nameof(ThoughtTestContainer))]
     [JsonDerivedType(typeof(RelaxationProcedureContainer), nameof(RelaxationProcedureContainer))]
     [JsonDerivedType(typeof(StrengthsCourse), nameof(StrengthsCourse))]
+    [JsonDerivedType(typeof(BodyScanContainer), nameof(BodyScanContainer))]
+    [JsonDerivedType(typeof(ResponseTrainingContainer), nameof(ResponseTrainingContainer))]
     public abstract class Feature;
 
     public sealed class Course : Feature
@@ -22,14 +24,20 @@ namespace PeopleCurer.Models
         [JsonInclude]
         public readonly string description;
         [JsonInclude]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public readonly ColorTheme courseColor;
+        [JsonInclude]
         public readonly Lesson[] lessons;
         [JsonInclude]
         public bool isActive;
 
-        public Course(string courseName, string description, params Lesson[] lessons)
+
+        public Course(string courseName, string description, ColorTheme courseColor, params Lesson[] lessons)
         {
             this.courseName = courseName;
             this.description = description;
+
+            this.courseColor = courseColor;
 
             this.lessons = lessons;
 
@@ -37,62 +45,73 @@ namespace PeopleCurer.Models
         }
     }
 
-    public sealed class BehaviourExperiment : Feature
+    public sealed class BehaviourExperimentContainer : Feature
     {
         [JsonInclude]
-        public List<Situation> situations;
+        public List<SituationLesson> situations;
         [JsonIgnore]
         public int requiredCourseProgress;
 
-        public BehaviourExperiment(List<Situation> situations)
+        public BehaviourExperimentContainer(List<SituationLesson> situations)
         {
             this.situations = situations;
             this.requiredCourseProgress = 306;
         }
     }
 
-    public sealed class ThoughtTestContainer : Feature
+    public sealed class ThoughtTestContainer(List<ThoughtTestLesson> thoughtTests) : Feature
     {
         [JsonInclude]
-        public List<ThoughtTest> thoughtTests;
+        public List<ThoughtTestLesson> thoughtTests = thoughtTests;
         [JsonIgnore]
-        public int requiredCourseProgress;
-
-        public ThoughtTestContainer(List<ThoughtTest> thoughtTests)
-        {
-            this.thoughtTests = thoughtTests;
-            this.requiredCourseProgress = 111;
-        }
+        public readonly int requiredCourseProgress = 111;
     }
 
-    public sealed class RelaxationProcedureContainer : Feature
+    public sealed class RelaxationProcedureContainer(List<RelaxationProcedure> relaxationProcedures) : Feature
     {
         [JsonInclude]
-        public List<RelaxationProcedure> relaxationProcedures;
+        public readonly List<RelaxationProcedure> relaxationProcedures = relaxationProcedures;
         [JsonIgnore]
-        public int requiredCourseProgress;
+        public readonly int requiredCourseProgress = 403;
+    }
 
-        public RelaxationProcedureContainer(List<RelaxationProcedure> relaxationProcedures)
-        {
-            this.relaxationProcedures = relaxationProcedures;
-            this.requiredCourseProgress = 403;
-        }
+    public sealed class BodyScanContainer() : Feature
+    {
+        [JsonIgnore]
+        public readonly int requiredCourseProgress = 202;
+    }
+
+    public sealed class ResponseTrainingContainer(ResponseTraining[] responseTrainings) : Feature
+    {
+        [JsonInclude]
+        public readonly ResponseTraining[] responseTrainings = responseTrainings;
+        [JsonIgnore]
+        public readonly int requiredCourseProgress = 202;
     }
 
     public sealed class StrengthsCourse : Feature
     {
         [JsonInclude]
-        public Lesson strengthsLesson;
+        public NormalLesson strengthsLesson;
         [JsonInclude]
-        public Lesson successMomentsLesson;
+        public NormalLesson successMomentsLesson;
         [JsonInclude]
-        public Lesson trainingSuccessLesson;
+        public NormalLesson trainingSuccessLesson;
 
-        public StrengthsCourse(Lesson strengthsLesson, Lesson successMomentsLesson, Lesson trainingSuccessLesson)
+        public StrengthsCourse(NormalLesson strengthsLesson, NormalLesson successMomentsLesson, NormalLesson trainingSuccessLesson)
         {
             this.strengthsLesson = strengthsLesson;
             this.successMomentsLesson = successMomentsLesson;
             this.trainingSuccessLesson = trainingSuccessLesson;
         }
+    }
+
+    public enum ColorTheme
+    {
+        Blue,
+        Green,
+        Red,
+        Purple,
+        Yellow,
     }
 }

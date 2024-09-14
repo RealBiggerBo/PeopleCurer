@@ -37,12 +37,12 @@ namespace PeopleCurer.Services
         {
             //TODO: Check creation time to only update if necesarry
 
-            if (SerializationManager.LoadUnmodifiedSymptomCheckData(out TherapyPage? unmodifiedSymptomCheck))
+            if (SerializationManager.LoadUnmodifiedSymptomCheckData(out NormalLesson? unmodifiedSymptomCheck))
             {
-                if (SerializationManager.LoadSymptomCheckData(out TherapyPage? modifiedSymptomCheck, false))
+                if (SerializationManager.LoadSymptomCheckData(out NormalLesson? modifiedSymptomCheck, false))
                 {
                     //get new SymptomCheck
-                    TherapyPage newModifiedSymptomCheck = DifferentialUpdate(unmodifiedSymptomCheck!, modifiedSymptomCheck!);
+                    NormalLesson newModifiedSymptomCheck = MergeNormalLesson(unmodifiedSymptomCheck!, modifiedSymptomCheck!);
                     //Serialize
                     SerializationManager.SaveSymptomCheckData(newModifiedSymptomCheck);
                     Trace.WriteLine("Merged modified and unmodified versions (SymptomCheck).");
@@ -104,7 +104,7 @@ namespace PeopleCurer.Services
 
         private static TherapyPage DifferentialUpdate(TherapyPage unmodified, TherapyPage modified)
         {
-            TherapyPage merged = new TherapyPage(unmodified.name,unmodified.description, MergeFeatures(unmodified.features, modified.features));
+            TherapyPage merged = new TherapyPage(unmodified.name, unmodified.description, MergeFeatures(unmodified.features, modified.features));
             return merged;
         }
 
@@ -128,6 +128,7 @@ namespace PeopleCurer.Services
                                     merged[i] = new Course(
                                         unmodifiedCourse.courseName,
                                         unmodifiedCourse.description,
+                                        unmodifiedCourse.courseColor,
                                         MergeLessons(unmodifiedCourse.lessons, modifiedCourse.lessons)
                                         )
                                     {
@@ -147,15 +148,15 @@ namespace PeopleCurer.Services
                     if(!foundCourse)
                         merged[i] = unmodified[i];
                 }
-                else if (unmodified[i] is BehaviourExperiment unmodifiedBehaviourExperiment)
+                else if (unmodified[i] is BehaviourExperimentContainer unmodifiedBehaviourExperiment)
                 {
                     bool foundBehaviourExperiment = false;
 
                     for (int j = 0; j < modified.Length; j++)
                     {
-                        if (modified[j] is BehaviourExperiment modifiedBehaviourExperiment)
+                        if (modified[j] is BehaviourExperimentContainer modifiedBehaviourExperiment)
                         {
-                            merged[i] = new BehaviourExperiment(modifiedBehaviourExperiment.situations);
+                            merged[i] = new BehaviourExperimentContainer(modifiedBehaviourExperiment.situations);
                             foundBehaviourExperiment = true;
                             break;
                         }
@@ -190,9 +191,9 @@ namespace PeopleCurer.Services
                         if (modified[j] is StrengthsCourse modifiedStrengthsCourse)
                         {
                             merged[i] = new StrengthsCourse(
-                                MergeLesson(unmodifiedStrengthsCourse.strengthsLesson, modifiedStrengthsCourse.strengthsLesson),
-                                MergeLesson(unmodifiedStrengthsCourse.successMomentsLesson, modifiedStrengthsCourse.successMomentsLesson),
-                                MergeLesson(unmodifiedStrengthsCourse.trainingSuccessLesson, modifiedStrengthsCourse.trainingSuccessLesson));
+                                MergeNormalLesson(unmodifiedStrengthsCourse.strengthsLesson, modifiedStrengthsCourse.strengthsLesson),
+                                MergeNormalLesson(unmodifiedStrengthsCourse.successMomentsLesson, modifiedStrengthsCourse.successMomentsLesson),
+                                MergeNormalLesson(unmodifiedStrengthsCourse.trainingSuccessLesson, modifiedStrengthsCourse.trainingSuccessLesson));
                             foundStrengthsCourse = true;
                             break;
                         }
@@ -210,43 +211,57 @@ namespace PeopleCurer.Services
             return merged;
         }
 
-        private static Lesson MergeLesson(Lesson unmodified, Lesson modified)
+        private static NormalLesson MergeNormalLesson(NormalLesson unmodified, NormalLesson modified)
         {
-            return new Lesson(unmodified.lessonName, unmodified.lessonReward, MergeLessonParts(unmodified.lessonParts, modified.lessonParts))
+            return new NormalLesson(unmodified.lessonName, unmodified.lessonDescription, unmodified.showStartPage, unmodified.lessonType, unmodified.saveFrequency, unmodified.lessonReward, MergeLessonParts(unmodified.lessonParts, modified.lessonParts))
             {
                 isActive = unmodified.isActive || modified.isActive,
                 isCompleted = modified.isCompleted,
-                saveFrequency = unmodified.saveFrequency,
             };
+        }
+        private static SituationLesson MergeSituationLesson(SituationLesson unmodified, SituationLesson modified)
+        {
+            return modified;
         }
 
         private static Lesson[] MergeLessons(Lesson[] unmodified, Lesson[] modified)
         {
             Lesson[] merged = new Lesson[unmodified.Length];
+
             for (int i = 0; i < unmodified.Length; i++)
             {
                 bool foundLesson = false;
 
                 for (int j = 0; j < modified.Length; j++)
                 {
-                    if (modified[j].lessonName == unmodified[i].lessonName)
+                    if (modified[j] is NormalLesson modNormalLesson &&
+                        unmodified[i] is NormalLesson unmodNormalLesson &&
+                        modNormalLesson.lessonName == unmodNormalLesson.lessonName)
                     {
-                        if (modified[j].isActive)
+                        if (modNormalLesson.isActive)
                         {
-                            merged[i] = new Lesson(
-                                unmodified[i].lessonName,
-                                unmodified[i].lessonReward,
-                                MergeLessonParts(unmodified[i].lessonParts, modified[j].lessonParts))
-                            {
-                                isActive = unmodified[i].isActive || modified[j].isActive,
-                                isCompleted = modified[j].isCompleted,
-                                saveFrequency = unmodified[j].saveFrequency,
-                            };
+                            merged[i] = MergeNormalLesson(unmodNormalLesson, modNormalLesson);
                         }
                         else
                         {
                             merged[i] = unmodified[i];
                         }
+                        foundLesson = true;
+                        break;
+                    }
+                    if (i == j &&
+                        modified[j] is SituationLesson modSituationLesson &&
+                        unmodified[i] is SituationLesson unmodSituationLesson)
+                    {
+                        merged[i] = modSituationLesson;
+                        foundLesson = true;
+                        break;
+                    }
+                    if (i == j &&
+                        modified[j] is ThoughtTestLesson modThoughtTestLesson &&
+                        unmodified[i] is ThoughtTestLesson unmodThoughtTestLesson)
+                    {
+                        merged[i] = modThoughtTestLesson;
                         foundLesson = true;
                         break;
                     }
@@ -261,6 +276,11 @@ namespace PeopleCurer.Services
 
         private static LessonPart[] MergeLessonParts(LessonPart[] unmodified, LessonPart[] modified)
         {
+            if (unmodified is null)
+                return [];
+            if (modified is null)
+                return unmodified;
+
             LessonPart[] merged = new LessonPart[unmodified.Length];
             for (int i = 0; i < unmodified.Length; i++)
             {
@@ -272,10 +292,10 @@ namespace PeopleCurer.Services
                     {
                         if (modified[j] is Question modifiedQuestion)
                         {
-                            if (modifiedQuestion.issue == unmodifiedQuestion.issue)
+                            if (modifiedQuestion.questionText == unmodifiedQuestion.questionText)
                             {
                                 merged[i] = new Question(
-                                    unmodifiedQuestion.issue,
+                                    unmodifiedQuestion.questionText,
                                     MergeAnswers(unmodifiedQuestion.answers, modifiedQuestion.answers)
                                     );
                                 foundQuestion = true;
@@ -433,6 +453,9 @@ namespace PeopleCurer.Services
 
         private static Answer[] MergeAnswers(Answer[] unmodified, Answer[] modified)
         {
+            if (unmodified is null)
+                return [];
+
             Answer[] merged = new Answer[unmodified.Length];
             for (int i = 0; i < unmodified.Length; i++)
             {

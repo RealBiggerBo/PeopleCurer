@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
+             x:Class="PeopleCurer.CustomControls.FAB"
+             x:Name="root">
+
+    <AbsoluteLayout>
+        <AbsoluteLayout.GestureRecognizers>
+            <DropGestureRecognizer AllowDrop="True"
+                                   Drop="DropGestureRecognizer_Drop"/>
+        </AbsoluteLayout.GestureRecognizers>
+
+        <Grid 
+              MaximumWidthRequest="{Binding Source={Reference root},Path=Width}"
+              MaximumHeightRequest="{Binding Source={Reference root},Path=Height}"
+              VerticalOptions="FillAndExpand">
+
+            <ContentPresenter x:Name="presenter"/>
+        </Grid>
+
+        <Border x:Name="dragElement" Background="{StaticResource DarkPurple}" ZIndex="1000">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="8"/>
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <DragGestureRecognizer CanDrag="True" DragStarting="DragGestureRecognizer_DragStarting"/>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+            </Border.GestureRecognizers>
+
+            <Image WidthRequest="50"
+                   HeightRequest="50">
+                <Image.Source>
+                    <FontImageSource FontFamily="IconsRegular"
+                                 Glyph="{Static fh:IconFont.AIFace}"
+                                 Color="{StaticResource Black}"/>
+                </Image.Source>
+            </Image>
+        </Border>
+    </AbsoluteLayout>
+</ContentView>

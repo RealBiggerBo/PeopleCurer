@@ -12,6 +12,7 @@ namespace PeopleCurer.Services
         private const string welcomePageCompletionStatus_Key = "welcomePageCompletionStatus";
         private const string courseProgress_Key = "courseProgress";
         private const string collectedRewardXP_Key = "collectedRewardXP";
+        private const string botUserID_Key = "botUserID";
 
         //last symptom check date
         public static void UpdateLastSymptomCheckDate()
@@ -91,6 +92,20 @@ namespace PeopleCurer.Services
         public static void RemoveRewardXP()
         {
             Preferences.Remove(collectedRewardXP_Key);
+        }
+
+        //bot user id
+        public static void SetBotUserID(string id)
+        {
+            Preferences.Set(botUserID_Key, id);
+        }
+        public static string? GetBotUserID()
+        {
+            return Preferences.Get(botUserID_Key, null);
+        }
+        public static void RemoveBotUserID()
+        {
+            Preferences.Remove(botUserID_Key);
         }
     }
 }

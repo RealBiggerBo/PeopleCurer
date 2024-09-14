@@ -9,7 +9,7 @@ namespace PeopleCurer.Services
 {
     static class GlobalViewModelManager
     {
-        private static BehaviourExperimentViewModel behaviourExperimentViewModel;
-        public static BehaviourExperimentViewModel BehaviourExperimentViewModel { get; private set; }
+        private static BehaviourExperimentContainerViewModel behaviourExperimentViewModel;
+        public static BehaviourExperimentContainerViewModel BehaviourExperimentViewModel { get; private set; }
     }
 }

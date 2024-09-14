@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             x:Class="PeopleCurer.Views.ChatBotPage"
+             x:DataType="{x:Type vm:ChatBotPageViewModel}">
+    <ContentPage.BindingContext>
+        <vm:ChatBotPageViewModel/>
+    </ContentPage.BindingContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+       Text="Rede mit Kuki!"
+       VerticalOptions="Center" 
+       HorizontalOptions="Center" />
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Messages}"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <Editor x:Name="messageBox" Grid.Column="0" Placeholder="Nachricht"/>
+
+            <Button x:Name="sendButton" Grid.Column="1" Text=">" Command="{Binding SendCmd}" CommandParameter="{Binding Text, Source={x:Reference messageBox}}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

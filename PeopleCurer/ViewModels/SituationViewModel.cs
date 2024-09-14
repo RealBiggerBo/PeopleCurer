@@ -12,202 +12,146 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
 {
-    public sealed class SituationViewModel : NotifyableBaseObject
-    {
-        public readonly Situation situation;
+    //public sealed class SituationViewModel : NotifyableBaseObject
+    //{
+    //    public readonly Situation situation;
 
-        public string SituationName 
-        { 
-            get => situation.situationName; 
-            set
-            {
-                if(situation.situationName != value)
-                {
-                    situation.situationName = value;
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
+    //    public string SituationName 
+    //    { 
+    //        get => situation.situationName; 
+    //        set
+    //        {
+    //            if(situation.situationName != value)
+    //            {
+    //                situation.situationName = value;
+    //                base.RaisePropertyChanged();
+    //            }
+    //        }
+    //    }
 
-        public string SituationTime
-        {
-            get => situation.situationTime;
-            set
-            {
-                if (situation.situationTime != value)
-                {
-                    situation.situationTime = value;
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
+    //    public string SituationTime
+    //    {
+    //        get => situation.situationTime;
+    //        set
+    //        {
+    //            if (situation.situationTime != value)
+    //            {
+    //                situation.situationTime = value;
+    //                base.RaisePropertyChanged();
+    //            }
+    //        }
+    //    }
 
-        public ObservableCollection<SituationFearViewModel> SituationFears { get; }
+    //    public ObservableCollection<SituationFearViewModel> SituationFears { get; }
 
-        public ObservableCollection<SafetyBehaviourViewModel> SituationSafetyBehaviours { get; }
+    //    public SafetyBehaviourViewModel SituationSafetyBehaviour { get; }
 
-        public int OverallFear 
-        { 
-            get => situation.overallFear; 
-            set
-            {
-                if (situation.overallFear != value)
-                {
-                    situation.overallFear = value;
-                    base.RaisePropertyChanged();
-                }
-            } 
-        }
+    //    public int OverallFear 
+    //    { 
+    //        get => situation.overallFear; 
+    //        set
+    //        {
+    //            if (situation.overallFear != value)
+    //            {
+    //                situation.overallFear = value;
+    //                base.RaisePropertyChanged();
+    //            }
+    //        } 
+    //    }
 
-        public string Conclusion
-        {
-            get => situation.conclusion;
-            set
-            {
-                if (situation.conclusion != value)
-                {
-                    situation.conclusion = value;
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
+    //    public string Conclusion
+    //    {
+    //        get => situation.conclusion;
+    //        set
+    //        {
+    //            if (situation.conclusion != value)
+    //            {
+    //                situation.conclusion = value;
+    //                base.RaisePropertyChanged();
+    //            }
+    //        }
+    //    }
 
-        public bool IsFinished
-        {
-            get => situation.isFinished;
-            set
-            {
-                if(value != situation.isFinished)
-                {
-                    situation.isFinished = value;
-                    base.RaisePropertyChanged();
-                }
-            }
-        }
+    //    public bool IsFinished
+    //    {
+    //        get => situation.isCompleted;
+    //        set
+    //        {
+    //            if(value != situation.isCompleted)
+    //            {
+    //                situation.isCompleted = value;
+    //                base.RaisePropertyChanged();
+    //            }
+    //        }
+    //    }
 
-        public DelegateCommand GoToSituationPage { get; }
-        public DelegateCommand AddSituationFear { get; }
-        public DelegateCommand DeleteSituationFear { get; }
-        public DelegateCommand AddSafetyBehaviour { get; }
-        public DelegateCommand DeleteSafetyBehaviour { get; }
-        public DelegateCommand SaveSituation { get; }
-        public DelegateCommand FinishSituation { get; }
-        public DelegateCommand CompletedSituation { get; }
-        public DelegateCommand GoBackCMD { get; }
+    //    public DelegateCommand GoToSituationPage { get; }
+    //    public DelegateCommand FinishSituation { get; }
 
-        //public EventHandler OnSituationFinishEditEvent;
+    //    public LessonViewModel situationLessonCreate;
+    //    public LessonViewModel? situationLessonFinish;
 
-        public SituationViewModel(Situation situation)
-        {
-            this.situation = situation;
+    //    public SituationViewModel(Situation situation)
+    //    {
+    //        this.situation = situation;
 
-            SituationFears = new ObservableCollection<SituationFearViewModel>();
-            for (int i = 0; i < situation.situationFears.Count; i++)
-            {
-                SituationFears.Add(new SituationFearViewModel(situation.situationFears[i]));
-            }
+    //        SituationFears = new ObservableCollection<SituationFearViewModel>();
+    //        for (int i = 0; i < situation.situationFears.Count; i++)
+    //        {
+    //            SituationFears.Add(new SituationFearViewModel(situation.situationFears[i]));
+    //        }
 
-            SituationSafetyBehaviours = new ObservableCollection<SafetyBehaviourViewModel>();
-            for (int i = 0; i < situation.situationSafetyBehaviours.Count; i++)
-            {
-                SituationSafetyBehaviours.Add(new SafetyBehaviourViewModel(situation.situationSafetyBehaviours[i]));
-            }
+    //        SituationSafetyBehaviour = new(situation.situationSafetyBehaviour);
 
-            GoToSituationPage = new DelegateCommand((obj) =>
-            {
-                if (this.IsFinished == false)
-                {
-                    Shell.Current.GoToAsync(nameof(SituationEditPage),
-                        new Dictionary<string, object>
-                        {
-                            ["Situation"] = this
-                        });
-                }
-                else
-                {
-                    Shell.Current.GoToAsync(nameof(SituationCompletedPage),
-                        new Dictionary<string, object>
-                        {
-                            ["Situation"] = this
-                        });
-                }
-            });
-            AddSituationFear = new DelegateCommand((obj) =>
-            {
-                SituationFear newFear = new SituationFear("Neue Angst", 50, 50);
+    //        NormalLesson situationLessonCreateModel = new("Verhaltensexperiment", "Erstelle ein Verhaltensexperiment.", false, LessonType.Practice, SaveFrequency.Never, 0, new SituationLessonPartCreate1(situation), new SituationLessonPartCreate2(situation), new SituationLessonPartCreate3(situation));
+    //        //situationLessonCreate = new(situationLessonCreateModel);
+    //        situationLessonCreate.UpdateLessonPartEvent += (obj, e) => UpdateDataFromLesson();
 
-                //Model
-                situation.situationFears ??= [];
-                situation.situationFears.Add(newFear);
-                //VM
-                SituationFears.Add(new SituationFearViewModel(newFear));
-            });
-            DeleteSituationFear = new DelegateCommand((obj) =>
-            {
-                if (obj is SituationFearViewModel fear)
-                {
-                    //Model
-                    situation.situationFears?.Remove(fear.situationFear);
-                    //VM
-                    SituationFears.Remove(fear);
-                }
-            });
-            AddSafetyBehaviour = new DelegateCommand((obj) =>
-            {
-                SafetyBehaviour newBehav = new SafetyBehaviour("Neues Sicherheitsverhalten", 50);
+    //        GoToSituationPage = new DelegateCommand((obj) =>
+    //        {
+    //            if (!this.IsFinished)
+    //            {
+    //                situationLessonCreate.GoToLessonPage.Execute(ColorTheme.Green);
+    //            }
+    //            else
+    //            {
+    //                Shell.Current.GoToAsync(nameof(SituationCompletedPage),
+    //                    new Dictionary<string, object>
+    //                    {
+    //                        ["Situation"] = this,
+    //                        ["DoReward"] = false,
+    //                    });
+    //            }
+    //        });
+    //        FinishSituation = new DelegateCommand((obj) =>
+    //        {
+    //            NormalLesson situationLessonFinishModel = new("Verhaltensexperiment", "Beende ein Verhaltensexperiment.", false, LessonType.Practice, SaveFrequency.Never, 0, new SituationLessonPartFinish1(situation), new SituationLessonPartFinish2(situation), new SituationLessonPartFinish3(situation));
+    //            situationLessonFinish = new NormalLessonViewModel(situationLessonFinishModel);
+    //            situationLessonFinish.UpdateLessonPartEvent += (obj, e) => UpdateDataFromLesson();
 
-                //Model
-                situation.situationSafetyBehaviours ??= [];
-                situation.situationSafetyBehaviours.Add(newBehav);
-                //VM
-                SituationSafetyBehaviours.Add(new SafetyBehaviourViewModel(newBehav));
-            });
-            DeleteSafetyBehaviour = new DelegateCommand((obj) =>
-            {
-                if (obj is SafetyBehaviourViewModel behav)
-                {
-                    //Model
-                    situation.situationSafetyBehaviours?.Remove(behav.safetyBehaviour);
-                    //VM
-                    SituationSafetyBehaviours.Remove(behav);
-                }
-            });
-            SaveSituation = new DelegateCommand((obj) =>
-            {
-                ProgressUpdateManager.UpdateTrainingData();
-                Shell.Current.GoToAsync("..");
-            });
-            FinishSituation = new DelegateCommand((obj) =>
-            {
-                Shell.Current.GoToAsync(nameof(SituationFinishPage),
-                        new Dictionary<string, object>
-                        {
-                            ["Situation"] = this
-                        });
-            });
-            CompletedSituation = new DelegateCommand((obj) =>
-            {
-                Shell.Current.GoToAsync("../" + nameof(SituationCompletedPage),
-                    new Dictionary<string, object>
-                    {
-                        ["Situation"] = this
-                    });
-            });
-            GoBackCMD = new DelegateCommand(async (obj) =>
-            {
-                if (!this.IsFinished)
-                {
-                    this.IsFinished = true;
-                    ProgressUpdateManager.UpdateTrainingData();
-                    await Shell.Current.GoToAsync($"..//{nameof(RewardPage)}?RewardValue={1000}");
-                }
-                else
-                {
-                    await Shell.Current.GoToAsync("..");
-                }
-            });
-        }
-    }
+    //            situationLessonFinish.GoToLessonPage.Execute(ColorTheme.Green);
+    //        });
+    //    }
+
+    //    private void UpdateDataFromLesson()
+    //    {
+    //        base.RaisePropertyChanged(nameof(SituationName));
+
+    //        //if (situationLessonFinish?.IsCompleted ?? false)
+    //        //{
+    //        //    IsFinished = true;
+    //        //    base.RaisePropertyChanged(nameof(SituationFears));
+    //        //    Shell.Current.GoToAsync(nameof(SituationCompletedPage),
+    //        //        new Dictionary<string, object>
+    //        //        {
+    //        //            ["Situation"] = this,
+    //        //            ["DoReward"] = true,
+    //        //        });
+    //        //}
+
+    //        ProgressUpdateManager.SaveTrainingData();
+    //    }
+    //}
 
     public sealed class SituationFearViewModel : NotifyableBaseObject
     {

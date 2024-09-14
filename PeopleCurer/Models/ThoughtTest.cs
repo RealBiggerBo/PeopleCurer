@@ -7,60 +7,18 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.Models
 {
-    public sealed class ThoughtTest
+    public sealed class Thought(string thoughtName, int thoughtProbability)
     {
         [JsonInclude]
-        public string situationName;
+        public string thoughtName = thoughtName;
 
         [JsonInclude]
-        public Thought mainThought;
-
-        [JsonInclude]
-        public List<Emotion> emotions;
-
-        [JsonInclude]
-        public List<Thought> alternateThoughts;
-
-        [JsonInclude]
-        public string conclusion;
-
-        [JsonInclude]
-        public bool isFinished;
-
-        public ThoughtTest(string situationName, Thought mainThought, List<Emotion> emotions, List<Thought> alternateThoughts, string conclusion, bool isFinished)
-        {
-            this.situationName = situationName;
-            this.mainThought = mainThought;
-            this.emotions = emotions;
-            this.alternateThoughts = alternateThoughts;
-            this.conclusion = conclusion;
-            this.isFinished = isFinished;
-        }
+        public int thoughtProbability = thoughtProbability;
     }
 
-    public sealed class Thought
+    public sealed class Emotion(string emotionName)
     {
         [JsonInclude]
-        public string thoughtName;
-
-        [JsonInclude]
-        public int thoughtProbability;
-
-        public Thought(string thoughtName, int thoughtProbability)
-        {
-            this.thoughtName = thoughtName;
-            this.thoughtProbability = thoughtProbability;
-        }
-    }
-
-    public sealed class Emotion
-    {
-        [JsonInclude]
-        public string emotionName;
-
-        public Emotion(string emotionName)
-        {
-            this.emotionName = emotionName;
-        }
+        public string emotionName = emotionName;
     }
 }

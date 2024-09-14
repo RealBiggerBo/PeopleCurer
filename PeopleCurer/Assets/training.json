@@ -3,10 +3,27 @@
   "description": "Herzlich wilkommen im Trainingsbereich. Wie im Sport sind theoretische Inhalte die Vorraussetzung, um die Übungen gut auszuführen. Doch die eigentlichen Ergebnisse werden erst im Training erzielt.",
   "features": [
     {
-      "$type": "BehaviourExperiment"
+      "$type": "ThoughtTestContainer"
     },
     {
-      "$type": "ThoughtTestContainer"
+      "$type": "BodyScanContainer"
+    },
+    {
+      "$type": "BehaviourExperimentContainer"
+    },
+    {
+      "$type": "ResponseTrainingContainer",
+      "responseTrainings": [
+        {
+          "situationDescription": "A"
+        },
+        {
+          "situationDescription": "B"
+        },
+        {
+          "situationDescription": "C"
+        }
+      ]
     },
     {
       "$type": "RelaxationProcedureContainer",

@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace PeopleCurer.ViewModels
 {
-    public sealed class AnswerViewModel : NotifyableBaseObject
+    public sealed class AnswerViewModel(Answer answer) : NotifyableBaseObject
     {
-        private readonly Answer answer;
+        private readonly Answer answer = answer;
 
         public event EventHandler<AnswerEventArgs>? AnswerChanged;
 
         public string AnswerText { get => answer.answerText; }
-        public int AnswerValue { get => answer.answerValue; }
+        public bool IsCorrect { get => answer.isCorrect; }
         public bool IsChosen
         {
             get => answer.isChosen;
@@ -30,11 +30,5 @@ namespace PeopleCurer.ViewModels
                 }
             }
         }
-
-        public AnswerViewModel(Answer answer)
-        {
-            this.answer = answer;
-        }
-
     }
 }

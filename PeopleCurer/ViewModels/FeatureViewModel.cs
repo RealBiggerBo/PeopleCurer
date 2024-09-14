@@ -26,6 +26,8 @@ namespace PeopleCurer.ViewModels
         public string CourseName { get => course.courseName; }
         public string Description { get => course.description; }
 
+        public ColorTheme CourseColor { get => course.courseColor; }
+
         public LessonViewModel[] Lessons { get; }
 
         public bool IsActive
@@ -36,12 +38,11 @@ namespace PeopleCurer.ViewModels
                 if(value != course.isActive)
                 {
                     course.isActive = value;
+                    VisitFeature?.RaiseCanExecuteChanged();
                     base.RaisePropertyChanged();
                 }
             }
         }
-
-        //public DelegateCommand GoToCoursePage { get; }
 
         public CourseViewModel(Course course)
         {
@@ -52,35 +53,61 @@ namespace PeopleCurer.ViewModels
             Lessons = new LessonViewModel[course.lessons.Length];
             for (int i = 0; i < course.lessons.Length; i++)
             {
-                Lessons[i] = new LessonViewModel(course.lessons[i]);
+                //Lessons[i] = new LessonViewModel(course.lessons[i]);
+                Lessons[i] = LessonModelToVM(course.lessons[i]);
             }
 
             //Routing command
-            base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(CoursePage),
+            base.VisitFeature = new DelegateCommand(async (obj) => await Shell.Current.GoToAsync(nameof(CoursePage),
                 new Dictionary<string, object>
                 {
                     ["Course"] = this
-                }));
+                }), (obj) => IsActive);
+        }
+
+        private static LessonViewModel LessonModelToVM(Lesson lesson)
+        {
+            if(lesson is NormalLesson normalLesson)
+            {
+                return new NormalLessonViewModel(normalLesson);
+            }
+            else if(lesson is SituationLesson situationLesson)
+            {
+                return new SituationLessonViewModel(situationLesson);
+            }
+            else if(lesson is ThoughtTestLesson thoughtTestLesson)
+            {
+                return new ThoughtTestLessonViewModel(thoughtTestLesson);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 
-    public sealed class BehaviourExperimentViewModel : FeatureViewModel
+    public sealed class BehaviourExperimentContainerViewModel : FeatureViewModel
     {
-        private readonly BehaviourExperiment behaviourExperiment;
+        private readonly BehaviourExperimentContainer behaviourExperiment;
 
-        public ObservableCollection<SituationViewModel> Situations { get; }
+        public ObservableCollection<SituationLessonViewModel> Situations { get; }
+
+        public bool CanBeVisited
+        {
+            get => VisitFeature?.CanExecute(null) ?? false;
+        }
 
         public DelegateCommand AddSituation { get; }
         public DelegateCommand DeleteSituation { get; }
 
-        public BehaviourExperimentViewModel(BehaviourExperiment behaviourExperiment)
+        public BehaviourExperimentContainerViewModel(BehaviourExperimentContainer behaviourExperiment)
         {
             this.behaviourExperiment = behaviourExperiment;
 
-            Situations = new ObservableCollection<SituationViewModel>();
+            Situations = [];
             for (int i = 0; i < (behaviourExperiment.situations?.Count ?? 0); i++)
             {
-                SituationViewModel vm = new SituationViewModel(behaviourExperiment.situations![i]);
+                SituationLessonViewModel vm = new SituationLessonViewModel(behaviourExperiment.situations![i]);
                 Situations.Add(vm);
             }
 
@@ -90,39 +117,35 @@ namespace PeopleCurer.ViewModels
                 ["BehaviourExperimentVM"] = this
             }),
             (obj) => behaviourExperiment.requiredCourseProgress == -1 || behaviourExperiment.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
+            VisitFeature.CanExecuteChanged += (o, e) => base.RaisePropertyChanged(nameof(CanBeVisited));
 
             AddSituation = new DelegateCommand((obj) =>
             {
-                Situation newSituation = new Situation("neue Situation", "", [], [], 0, string.Empty, false);
+                SituationLesson newSituation = new();
                 //Model
                 behaviourExperiment.situations ??= [];
                 behaviourExperiment.situations.Add(newSituation);
                 //VM
-                SituationViewModel vm = new SituationViewModel(newSituation);
+                SituationLessonViewModel vm = new(newSituation);
                 Situations.Add(vm);
 
                 //save changes
-                ProgressUpdateManager.UpdateTrainingData();
+                ProgressUpdateManager.SaveTrainingData();
 
                 //Go to next page and allow editing
-                Shell.Current.GoToAsync(nameof(SituationEditPage),
-                    new Dictionary<string, object>
-                    {
-                        ["Situation"] = vm
-                    });
+                vm.GoToLessonPage.Execute(null);
             });
-
             DeleteSituation = new DelegateCommand((obj) =>
             {
-                if (obj is SituationViewModel situation)
+                if (obj is SituationLessonViewModel situation)
                 {
                     //Model
-                    behaviourExperiment.situations?.Remove(situation.situation);
+                    behaviourExperiment.situations?.Remove(situation.lesson);
                     //VM
                     Situations.Remove(situation);
 
                     //save changes
-                    ProgressUpdateManager.UpdateTrainingData();
+                    ProgressUpdateManager.SaveTrainingData();
                 }
             });
         }
@@ -132,19 +155,24 @@ namespace PeopleCurer.ViewModels
     {
         public readonly ThoughtTestContainer thoughtTestContainer;
 
-        public ObservableCollection<ThoughtTestViewModel> ThoughtTests { get; }
+        public ObservableCollection<ThoughtTestLessonViewModel> ThoughtTests { get; }
 
-        public DelegateCommand AddSituation { get; }
-        public DelegateCommand DeleteSituation { get; }
+        public bool CanBeVisited 
+        {
+            get => VisitFeature?.CanExecute(null) ?? false;
+        }
+
+        public DelegateCommand AddThoughtTest { get; }
+        public DelegateCommand DeleteThoughtTest { get; }
 
         public ThoughtTestContainerViewModel(ThoughtTestContainer thoughtTestContainer)
         {
             this.thoughtTestContainer = thoughtTestContainer;
 
-            ThoughtTests = new ObservableCollection<ThoughtTestViewModel>();
+            ThoughtTests = [];
             for (int i = 0; i < (thoughtTestContainer.thoughtTests?.Count ?? 0); i++)
             {
-                ThoughtTests.Add(new ThoughtTestViewModel(thoughtTestContainer.thoughtTests![i]));
+                ThoughtTests.Add(new(thoughtTestContainer.thoughtTests![i]));
             }
 
             base.VisitFeature = new DelegateCommand((obj) => Shell.Current.GoToAsync(nameof(ThoughtTestContainerPage),
@@ -153,40 +181,37 @@ namespace PeopleCurer.ViewModels
                         ["ThoughtTestContainerVM"] = this
                     }),
             (obj) => thoughtTestContainer.requiredCourseProgress == -1 || thoughtTestContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
+            VisitFeature.CanExecuteChanged += (o, e) => base.RaisePropertyChanged(nameof(CanBeVisited));
 
-            AddSituation = new DelegateCommand((obj) =>
+            AddThoughtTest = new DelegateCommand((obj) =>
             {
-                ThoughtTest newTest = new ThoughtTest("neuer Gedankentest", new Thought("neuer Gedanke",50), [], [], string.Empty, false);
+                ThoughtTestLesson newTest = new();
                 //Model
                 thoughtTestContainer.thoughtTests ??= [];
                 thoughtTestContainer.thoughtTests.Add(newTest);
                 //VM
-                ThoughtTestViewModel vm = new ThoughtTestViewModel(newTest);
-                vm.OnTestFinishEditEvent += SaveThoughtTestExperiment;
+                ThoughtTestLessonViewModel vm = new ThoughtTestLessonViewModel(newTest);
                 ThoughtTests.Add(vm);
 
-                //Go to next page and allow editing
-                Shell.Current.GoToAsync(nameof(ThoughtTestEditPage),
-                    new Dictionary<string, object>
-                    {
-                        ["ThoughtTestVM"] = vm
-                    });
-
                 //save changes
-                ProgressUpdateManager.UpdateTrainingData();
+                ProgressUpdateManager.SaveTrainingData();
+
+                //Go to next page and allow editing
+                vm.GoToLessonPage.Execute(null);
+
             });
 
-            DeleteSituation = new DelegateCommand((obj) =>
+            DeleteThoughtTest = new DelegateCommand((obj) =>
             {
-                if (obj is ThoughtTestViewModel test)
+                if (obj is ThoughtTestLessonViewModel test)
                 {
                     //Model
-                    thoughtTestContainer.thoughtTests?.Remove(test.thoughtTest);
+                    thoughtTestContainer.thoughtTests?.Remove(test.lesson);
                     //VM
                     ThoughtTests.Remove(test);
 
                     //save changes
-                    ProgressUpdateManager.UpdateTrainingData();
+                    ProgressUpdateManager.SaveTrainingData();
                 }
             });
         }
@@ -194,7 +219,7 @@ namespace PeopleCurer.ViewModels
         private void SaveThoughtTestExperiment(object? obj, EventArgs e)
         {
             //Save new data
-            ProgressUpdateManager.UpdateTrainingData();
+            ProgressUpdateManager.SaveTrainingData();
         }
     }
 
@@ -203,6 +228,11 @@ namespace PeopleCurer.ViewModels
         public readonly RelaxationProcedureContainer relaxationProcedureContainer;
 
         public RelaxationProcedureViewModel[] RelaxationProcedures { get; }
+
+        public bool CanBeVisited
+        {
+            get => VisitFeature?.CanExecute(null) ?? false;
+        }
 
         public RelaxationProcedureContainerViewModel(RelaxationProcedureContainer relaxationProcedureContainer)
         {
@@ -220,24 +250,59 @@ namespace PeopleCurer.ViewModels
                         ["RelaxationProcedureContainerVM"] = this
                     }),
             (obj) => relaxationProcedureContainer.requiredCourseProgress == -1 || relaxationProcedureContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
+            VisitFeature.CanExecuteChanged += (o, e) => base.RaisePropertyChanged(nameof(CanBeVisited));
         }
     }
 
-    public sealed class StrengthsCourseViewModel : FeatureViewModel
+    public sealed class BodyScanContainerViewModel : FeatureViewModel
     {
-        public readonly StrengthsCourse strengthsCourse;
+        private readonly BodyScanContainer bodyScanContainer;
 
-        public LessonViewModel StrengthsLesson { get; }
-        public LessonViewModel SuccessMomentsLesson { get; }
-        public LessonViewModel TrainingSuccessLesson { get; }
-
-        public StrengthsCourseViewModel(StrengthsCourse strengthsCourse)
+        public bool CanBeVisited
         {
-            this.strengthsCourse = strengthsCourse;
+            get => VisitFeature?.CanExecute(null) ?? false;
+        }
 
-            StrengthsLesson = new LessonViewModel(strengthsCourse.strengthsLesson);
-            SuccessMomentsLesson = new LessonViewModel(strengthsCourse.successMomentsLesson);
-            TrainingSuccessLesson = new LessonViewModel(strengthsCourse.trainingSuccessLesson);
+        public BodyScanContainerViewModel(BodyScanContainer bodyScanContainer)
+        {
+            this.bodyScanContainer = bodyScanContainer;
+
+            base.VisitFeature = new DelegateCommand(
+                async (obj) => await Shell.Current.GoToAsync(nameof(BodyScanPage)),
+                (obj) => bodyScanContainer.requiredCourseProgress == -1 || bodyScanContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
+            VisitFeature.CanExecuteChanged += (o, e) => base.RaisePropertyChanged(nameof(CanBeVisited));
+
+        }
+    }
+
+    public sealed class ResponseTrainingContainerViewModel : FeatureViewModel
+    {
+        private readonly ResponseTrainingContainer responseTrainingContainer;
+
+        public bool CanBeVisited
+        {
+            get => VisitFeature?.CanExecute(null) ?? false;
+        }
+
+        public ResponseTrainingContainerViewModel(ResponseTrainingContainer responseTrainingContainer)
+        {
+            this.responseTrainingContainer = responseTrainingContainer;
+
+            base.VisitFeature = new DelegateCommand(
+                async (obj) =>
+                {
+                    if(responseTrainingContainer.responseTrainings is null)
+                        return;
+                    int chosenResponseTrainingIndex = Random.Shared.Next(0, responseTrainingContainer.responseTrainings.Length);
+
+                    await Shell.Current.GoToAsync(nameof(ResponseTrainingPage),
+                        new Dictionary<string, object>
+                        {
+                            ["ResponseTrainingVM"] = new ResponseTrainingViewModel(responseTrainingContainer.responseTrainings[chosenResponseTrainingIndex])
+                        });
+                },
+                (obj) => responseTrainingContainer.requiredCourseProgress == -1 || responseTrainingContainer.requiredCourseProgress <= PreferenceManager.GetCourseProgress());
+            VisitFeature.CanExecuteChanged += (o, e) => base.RaisePropertyChanged(nameof(CanBeVisited));
         }
     }
 }

@@ -2,41 +2,104 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
              x:Class="PeopleCurer.Views.CoursePage"
-             x:DataType="{x:Type vm:CourseViewModel}">
+             x:DataType="{x:Type vm:CourseViewModel}"
+             Shell.NavBarIsVisible="False"
+             x:Name="page">
 
-    <Shell.NavBarIsVisible>False</Shell.NavBarIsVisible>
-
-    <Grid RowSpacing="10">
+    <Grid RowSpacing="10" Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0" x:Name="pageHeading" Text="{Binding CourseName}" FontSize="Large" FontAttributes="Bold"/>
+        <Label Grid.Row="0" Text="{Binding CourseName}" Style="{StaticResource Headline}"/>
+        
         <Label Grid.Row="1" Text="{Binding Description}"/>
-        <ListView Grid.Row="2" ItemsSource="{Binding Lessons}" HasUnevenRows="True">
-            <ListView.ItemTemplate>
+        
+        <CollectionView Grid.Row="2" 
+                        ItemsSource="{Binding Lessons}" 
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type vm:LessonViewModel}">
-                    <ViewCell Height="100">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+
+                    <Border Background="{Binding Source={x:Reference Name=page},Path=BindingContext.CourseColor, Converter={StaticResource colorThemeToColorVC}, ConverterParameter=mid}"
+                            Margin="0,5">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+
+                        <Grid Padding="5" ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="45"/>
                                 <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="45"/>
                             </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding LessonName}" FontAttributes="Bold" FontSize="Large"/>
-                            <Label Grid.Row="1" Grid.Column="0" Text="Description?"/>
-                            <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Text=">" Command="{Binding GoToLessonPage}" IsEnabled="{Binding IsActive}"/>
+                            <Image Grid.Column="0"
+                                   Margin="5">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Bulb}" Color="{StaticResource Black}"/>
+                                </Image.Source>
+
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="Image" Binding="{Binding LessonType}" Value="Interactive">
+                                        <Setter Property="Source">
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Pen}" Color="{StaticResource Black}"/>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding LessonType}" Value="Quiz">
+                                        <Setter Property="Source">
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.TalkBubbles}" Color="{StaticResource Black}"/>
+                                        </Setter>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Image" Binding="{Binding LessonType}" Value="Practice">
+                                        <Setter Property="Source">
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
+
+                            <Label Grid.Column="1" Text="{Binding LessonName}"
+                                   Style="{StaticResource CourseButton}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="False">
+                                        <Setter Property="Text" Value="???"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Image Grid.Column="2"
+                                   Margin="5">
+                                <Image.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                </Image.Source>
+
+                                <Image.Triggers>
+                                    <DataTrigger TargetType="{x:Type Image}" Binding="{Binding IsActive}" Value="False">
+                                        <Setter Property="Source">
+                                            <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Lock}" Color="{StaticResource Black}"/>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Image.Triggers>
+                            </Image>
                         </Grid>
-                    </ViewCell>
+
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsActive}" Value="False">
+                                <Setter Property="Background" Value="{StaticResource Gray}"/>
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToLessonPage}"
+                                                  CommandParameter="{Binding Source={Reference Name=page}, Path=BindingContext.CourseColor}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

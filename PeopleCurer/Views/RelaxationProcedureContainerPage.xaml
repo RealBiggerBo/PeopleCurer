@@ -2,19 +2,62 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PeopleCurer.ViewModels"
+             xmlns:fh="clr-namespace:PeopleCurer.FontHelpers"
              x:Class="PeopleCurer.Views.RelaxationProcedureContainerPage"
-             x:DataType="{x:Type vm:RelaxationProcedureContainerViewModel}">
-    <VerticalStackLayout>
-        <Label Text="Entspannungsverfahren"/>
+             x:DataType="{x:Type vm:RelaxationProcedureContainerViewModel}"
+             Shell.NavBarIsVisible="False">
+    
+    <Grid Margin="10" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Label Text="Entspannungsverfahren"
+               Style="{StaticResource Headline}"
+               TextType="Html"/>
 
-        <Label Text="Alle 3 Übungen helfen dir deine Angst nachhaltig zu reduzieren. Auch hier gilt: Übung macht den Meister"/>
+        <Label Grid.Row="1" 
+               Text="Alle 3 Übungen helfen dir deine Angst nachhaltig zu reduzieren. Auch hier gilt: Übung macht den Meister"
+               Style="{StaticResource SubHeadline}"/>
 
-        <CollectionView ItemsSource="{Binding RelaxationProcedures}">
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding RelaxationProcedures}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type vm:RelaxationProcedureViewModel}">
-                    <Button Text="{Binding Title}" Command="{Binding GoToRelaxationProcedurePage}" Margin="5"/>
+                    <Border Background="{StaticResource MidPurple}" Margin="10" Padding="8">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image>
+                                <Image.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.Dumbbell}" Color="{StaticResource Black}"/>
+                                </Image.Source>
+                            </Image>
+
+                            <Label Grid.Column="1"
+                                   Text="{Binding Title}"
+                                   Style="{StaticResource SubHeadline}"/>
+
+                            <ImageButton Grid.Column="2" 
+                                         Command="{Binding GoToRelaxationProcedurePage}" Margin="5">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="IconsRegular" Glyph="{Static fh:IconFont.ArrowRight}" Color="{StaticResource Black}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

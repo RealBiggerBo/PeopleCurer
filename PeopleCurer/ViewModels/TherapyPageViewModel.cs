@@ -11,7 +11,7 @@ namespace PeopleCurer.ViewModels
 {
     public sealed class TherapyPageViewModel : NotifyableBaseObject
     {
-        private readonly TherapyPage therapyPage;
+        public readonly TherapyPage therapyPage;
 
         public string Name { get => therapyPage.name;}
 
@@ -36,9 +36,9 @@ namespace PeopleCurer.ViewModels
             {
                 return new CourseViewModel(course);
             }
-            else if(feature is BehaviourExperiment behExp)
+            else if(feature is BehaviourExperimentContainer behExp)
             {
-                return new BehaviourExperimentViewModel(behExp);
+                return new BehaviourExperimentContainerViewModel(behExp);
             }
             else if(feature is ThoughtTestContainer thoughtTest)
             {
@@ -48,14 +48,19 @@ namespace PeopleCurer.ViewModels
             {
                 return new RelaxationProcedureContainerViewModel(relaxProcedure);
             }
-            else if(feature is StrengthsCourse strengthsCourse)
+            else if(feature is BodyScanContainer bodyScanContainer)
             {
-                return new StrengthsCourseViewModel(strengthsCourse);
+                return new BodyScanContainerViewModel(bodyScanContainer);
+            }
+            else if(feature is ResponseTrainingContainer responseTrainingContainer)
+            {
+                return new ResponseTrainingContainerViewModel(responseTrainingContainer);
             }
             else
                 throw new ArgumentException("Error whilie trying to convert model to viewModel!");
         }
 
+        [Obsolete("Make readonly field public instead")]
         public TherapyPage GetPage() => therapyPage;
     }
 }
